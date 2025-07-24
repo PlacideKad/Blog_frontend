@@ -10,6 +10,8 @@
     @apply block
   }
   .sidebar-responsive-media{
-    @apply hidden
+    @apply absolute -right-[400px]
+    flex flex-col items-center justify-evenly
+    w-5/10 h-screen bg-green-200
   }
 }

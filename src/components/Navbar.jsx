@@ -1,6 +1,6 @@
 import adminIcon from '../images/icons8-admin-female-64.png';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useState , useEffect , useRef } from 'react';
 
 const Navbar=()=>{
   /**
@@ -30,14 +30,26 @@ const Navbar=()=>{
   
   const [showSidebar,setShowSidebar]=useState(false);
   const handleMenuClick=()=>{
-    setShowSidebar(true);
+    setShowSidebar(prev=>!prev);
+  };
+  const sidebarRef=useRef(null);
+  const menubtnRef=useRef(null)
+  const clickOutside=(event)=>{
+    if(sidebarRef.current && !sidebarRef.current.contains(event.target) && !menubtnRef.current.contains(event.target)) setShowSidebar(false);
   }
+
+  useEffect(()=>{
+    if(showSidebar) document.addEventListener('click',clickOutside)
+    else document.removeEventListener('click',clickOutside);
+    return ()=>{
+      document.removeEventListener('click',clickOutside)
+    }
+  },[showSidebar])
   return(
     <nav 
       className="w-full h-15/100 min-h-[40px] max-h-[150px]
       relative
       flex items-center justify-between
-      bg-red-200
     ">
       <Link to='/home' className='w-2/10 h-full max-w-[250px]'>
         <div
@@ -49,6 +61,7 @@ const Navbar=()=>{
       </Link>
       <div
         id="sidebar"
+        ref={sidebarRef}
         className={`w-8/10 h-full max-w-[900px] grow-1
         flex items-center justify-evenly
         sidebar-responsive-media
@@ -94,6 +107,7 @@ const Navbar=()=>{
           </button>
       </div>
       <span 
+        ref={menubtnRef}
         className="menu-responsive-media"
         onClick={handleMenuClick}
       >

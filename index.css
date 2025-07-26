@@ -1,17 +1,1 @@
 @import "tailwindcss";
-
-@media (width>=640px){
-  .menu-responsive-media{
-    @apply hidden
-  }
-}
-@media (width<640px){
-  .menu-responsive-media{
-    @apply block
-  }
-  .sidebar-responsive-media{
-    @apply absolute -right-[400px] top-[15vh]
-    flex flex-col items-center justify-evenly
-    w-5/10 h-[85vh] bg-green-200
-  }
-}

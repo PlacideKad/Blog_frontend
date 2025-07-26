@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import { useState , useEffect , useRef } from 'react';
+import { useState , useEffect , useRef , useContext } from 'react';
+import { NavbarButtonsContext } from './App';
 
 const Navbar=()=>{
   /**
@@ -7,24 +8,8 @@ const Navbar=()=>{
    * @param {icon} String est le nom de classe de l'icone
    * @param {link} String est le path vers lequel on est dirigé en cliquant sur le button
    */
-  const buttons=[{
-    name:'Articles',
-    link:'/articles',
-    icon:'article',
-    active:false},{
 
-    name:'Admin',
-    icon:'manage_accounts',
-    link:'/dashboard',
-    active:false},{
-
-    name:'Thème'},{
-
-    name:'A Propos',
-    link:'/about',
-    icon:'info',
-    active:false}
-  ];
+  const {buttons}=useContext(NavbarButtonsContext);
   const [showSidebar,setShowSidebar]=useState(false);
   const [windowWidth,setWindowWidth]=useState(window.innerWidth);
   const handleMenuClick=()=>{
@@ -51,11 +36,6 @@ const Navbar=()=>{
     window.addEventListener('resize',watchWindowWidth);
     return ()=>{window.removeEventListener('resize',watchWindowWidth)}
   },[]);
-  const handleButtonActive=(index)=>{
-    if(index!=2){
-
-    }
-  }
   return(
     <nav 
       className={`w-full ${windowWidth<640?'h-1/10 min-h-20':'h-15/100 min-h-[40px] max-h-[150px]'} 
@@ -85,15 +65,14 @@ const Navbar=()=>{
               return(
                 <Link key={index} to={button.link}>
                   <button 
-                    className="px-3 py-1 border-b-4 border-black
+                    className={`px-3 py-1 border-b-4 border-black
                       flex items-center justify-evenly
+                      ${button.active?'border-purple-400':null}
                       hover:cursor-pointer
                       hover:bg-purple-400
                       hover:border-pink-200
                       hover:text-white
-                      transition-all ease duration-200
-                    "
-                    onClick={()=>{handleButtonActive(index)}}
+                      transition-all ease duration-200`}
                     >
                       <span className={`${button.icon&& 'mx-1'}`}>{button.name}</span>
                       {button.icon && 

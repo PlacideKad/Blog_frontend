@@ -9,7 +9,7 @@ const Navbar=()=>{
    * @param {icon} String est le nom de classe de l'icone
    * @param {link} String est le path vers lequel on est dirigé en cliquant sur le button
    */
-
+  
   const {buttons,showSidebar,setShowSidebar}=useContext(NavbarContext);
   const [windowWidth,setWindowWidth]=useState(window.innerWidth);
   const handleMenuClick=()=>{
@@ -59,9 +59,9 @@ const Navbar=()=>{
         className={
           `${windowWidth>=640 && 'w-8/10'} max-w-[900px] grow-1
           flex items-center justify-evenly
-          ${windowWidth<640 ? `absolute -right-[400px] top-[10vh] h-[90vh]
+          ${windowWidth<640 ? `absolute -right-[400px] top-[10vh] h-[60vh]
           flex flex-col items-center justify-evenly
-            ${windowWidth<350 ? 'w-3/4':'w-5/10'} 
+            ${windowWidth<350 ? 'w-4/4':'w-3/4'} 
           bg-purple-100 rounded-bl-3xl`:'h-full'}
           ${windowWidth<640 && showSidebar?'[transform:translateX(-400px)]':null} 
           transition-transform ease-linear duration-400`
@@ -91,6 +91,9 @@ const Navbar=()=>{
             )
           })
         }
+        <div>
+          Theme
+        </div>
         <Link to='/login'>
           <ButtonClikable
             type=''
@@ -100,18 +103,6 @@ const Navbar=()=>{
             border_radius='rounded-md'
             shadow='sm'
           />
-          {/* <button
-            id="btn_connection"
-            className="
-            px-3 py-2
-            rounded-md
-            hover:cursor-pointer
-            hover:scale-103
-            transition-scale ease-in duration-200
-            text-white bg-purple-400"
-          >
-            Connexion
-          </button> */}
         </Link>
       </div>
       {windowWidth<640 &&

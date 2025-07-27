@@ -1,11 +1,6 @@
-import { BrowserRouter as Router , Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 import { useState , createContext } from "react";
-import LandingPage from "./LandingPage";
-import MissingPage from "./MissingPage";
-import ArticlesPage from "./ArticlesPage";
-import AboutPage from "./AboutPage";
-import AdminDashboard from "./AdminDashboard";
-import Login from "./Login";
+import DefaultPage from "./DefaultPage";
 
 import Navbar from "./Navbar";
 
@@ -42,9 +37,7 @@ const navbar_buttons=[{
   icon:'manage_accounts',
   link:'/dashboard',
   active:false},{
-
-  name:'Thème'},{
-
+    
   name:'A Propos',
   link:'/about',
   icon:'info',
@@ -55,20 +48,13 @@ const NavbarContext=createContext();
 const App=()=>{
   const [buttons,setButtons]=useState(navbar_buttons);
   const [showSidebar,setShowSidebar]=useState(false);
+  const [showNavbar,setShowNavbar]=useState(true);
 
   return(
     <Router>
-      <NavbarContext.Provider value={{buttons,setButtons,handleButtonActive,showSidebar,setShowSidebar}}>
-        <Navbar/>
-        <Routes>
-            <Route path="*" element={<MissingPage/>}></Route>
-            <Route path="/" element={<LandingPage/>}></Route>
-            <Route path="/home" element={<LandingPage/>}></Route>
-            <Route path="/articles" element={<ArticlesPage/>}></Route>
-            <Route path="/dashboard" element={<AdminDashboard/>}></Route>
-            <Route path="/about" element={<AboutPage/>}></Route>
-            <Route path="/login" element={<Login/>}></Route>
-        </Routes>
+      <NavbarContext.Provider value={{buttons,setButtons,handleButtonActive,showSidebar,setShowSidebar,setShowNavbar}}>
+        {showNavbar && <Navbar/>}
+        <DefaultPage/>
       </NavbarContext.Provider>
     </Router>
   );

@@ -1,16 +1,13 @@
 import { useEffect , useContext } from "react";
 import { NavbarContext } from "./App";
 
-const AdminDashboard=()=>{
+const AboutPage=()=>{
   const {handleButtonActive, setButtons}=useContext(NavbarContext);
   useEffect(()=>{
     setButtons((prev)=>handleButtonActive(prev,1));
   },[])
-
   return(
-    <div className="h-85/100 grow-1 w-full">
-      <p>This is the admin dashboard</p>
-    </div>
-  );
+    <p>This is the admin dash board</p>
+  )
 }
-export default AdminDashboard
+export default AboutPage;

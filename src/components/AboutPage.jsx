@@ -7,9 +7,7 @@ const AboutPage=()=>{
     setButtons((prev)=>handleButtonActive(prev,3));
   },[])
   return(
-    <div className="h-85/100 grow-1 w-full">
-      <p>This is the about page</p>
-    </div>
+    <p>This is the about page</p>
   )
 }
 export default AboutPage;

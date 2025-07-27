@@ -6,7 +6,7 @@ import ButtonClikable from './utils/ButtonClikable';
 const Login=()=>{
   return(
     <div className="absolute 
-      z-10 w-full h-full 
+      z-10 w-full h-full
       flex items-center justify-center
       bg-purple-50">
       <div className="w-8/10 max-w-[600px] max-h-[300px] h-4/10 sm:w-6/10 lg:w-5/10 

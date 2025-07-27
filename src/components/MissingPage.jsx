@@ -2,7 +2,8 @@ import { useEffect , useContext } from "react";
 import { NavbarContext } from "./App";
 
 const  MissingPage=()=>{
-  const {handleButtonActive, setButtons}=useContext(NavbarContext);
+  const {handleButtonActive, setButtons, setShowNavbar}=useContext(NavbarContext);
+  setShowNavbar(false);
   useEffect(()=>{
     setButtons((prev)=>handleButtonActive(prev));
   },[])

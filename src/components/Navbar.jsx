@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useState , useEffect , useRef , useContext } from 'react';
-import { NavbarButtonsContext } from './App';
+import { NavbarContext } from './App';
 import ButtonClikable from './utils/ButtonClikable';
 
 const Navbar=()=>{
@@ -10,8 +10,7 @@ const Navbar=()=>{
    * @param {link} String est le path vers lequel on est dirigé en cliquant sur le button
    */
 
-  const {buttons}=useContext(NavbarButtonsContext);
-  const [showSidebar,setShowSidebar]=useState(false);
+  const {buttons,showSidebar,setShowSidebar}=useContext(NavbarContext);
   const [windowWidth,setWindowWidth]=useState(window.innerWidth);
   const handleMenuClick=()=>{
     setShowSidebar(prev=>!prev);

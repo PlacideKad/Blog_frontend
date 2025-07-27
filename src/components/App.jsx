@@ -51,12 +51,14 @@ const navbar_buttons=[{
   active:false}
 ];
 
-const NavbarButtonsContext=createContext()
+const NavbarContext=createContext();
 const App=()=>{
   const [buttons,setButtons]=useState(navbar_buttons);
+  const [showSidebar,setShowSidebar]=useState(false);
+
   return(
     <Router>
-      <NavbarButtonsContext.Provider value={{buttons,setButtons,handleButtonActive}}>
+      <NavbarContext.Provider value={{buttons,setButtons,handleButtonActive,showSidebar,setShowSidebar}}>
         <Navbar/>
         <Routes>
             <Route path="*" element={<MissingPage/>}></Route>
@@ -67,9 +69,9 @@ const App=()=>{
             <Route path="/about" element={<AboutPage/>}></Route>
             <Route path="/login" element={<Login/>}></Route>
         </Routes>
-      </NavbarButtonsContext.Provider>
+      </NavbarContext.Provider>
     </Router>
   );
 }
 export default App;
-export {NavbarButtonsContext};
+export {NavbarContext};

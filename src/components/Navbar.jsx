@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useState , useEffect , useRef , useContext } from 'react';
 import { NavbarButtonsContext } from './App';
+import ButtonClikable from './utils/ButtonClikable';
 
 const Navbar=()=>{
   /**
@@ -41,8 +42,11 @@ const Navbar=()=>{
       className={`w-full ${windowWidth<640?'h-1/10 min-h-20':'h-15/100 min-h-[40px] max-h-[150px]'} 
       relative
       flex items-center justify-between
+      bg-purple-100
+      shadow-sm shadow-purple-950
+      z-1
     `}>
-      <Link to='/home' className='w-2/10 h-full max-w-[250px]'>
+      <Link to='/home' className={`${windowWidth<640?'w-1/2':'w-2/10'} h-full max-w-[250px]`}>
         <div
           id="site-name"  
           className="w-full h-full
@@ -53,39 +57,51 @@ const Navbar=()=>{
       <div
         id="sidebar"
         ref={sidebarRef}
-        className={`${windowWidth>=640 && 'w-8/10'} ${windowWidth<640?'h-[90vh]':'h-full'} max-w-[900px] grow-1
-        flex items-center justify-evenly
-        ${windowWidth<640 &&`absolute -right-[400px] top-[10vh]
+        className={
+          `${windowWidth>=640 && 'w-8/10'} max-w-[900px] grow-1
+          flex items-center justify-evenly
+          ${windowWidth<640 ? `absolute -right-[400px] top-[10vh] h-[90vh]
           flex flex-col items-center justify-evenly
-          ${windowWidth<350 ? 'w-3/4':'w-5/10'} bg-purple-100 rounded-tl-3xl rounded-bl-3xl`}
-        ${windowWidth<640 && showSidebar?'[transform:translateX(-400px)]':null} 
-        transition-transform ease-linear duration-400`}>
-          {
-            buttons.map((button,index)=>{
-              return(
-                <Link key={index} to={button.link}>
-                  <button 
-                    className={`px-3 py-1 border-b-4 border-black
-                      flex items-center justify-evenly
-                      ${button.active?'border-purple-400':null}
-                      hover:cursor-pointer
-                      hover:bg-purple-400
-                      hover:border-pink-200
-                      hover:text-white
-                      transition-all ease duration-200`}
-                    >
-                      <span className={`${button.icon&& 'mx-1'}`}>{button.name}</span>
-                      {button.icon && 
-                        <span className='material-symbols-outlined text-inherit'>
-                          {button.icon}
-                        </span>
-                      }
-                  </button>
-                </Link>
-              )
-            })
-          }
-          <button
+            ${windowWidth<350 ? 'w-3/4':'w-5/10'} 
+          bg-purple-100 rounded-bl-3xl`:'h-full'}
+          ${windowWidth<640 && showSidebar?'[transform:translateX(-400px)]':null} 
+          transition-transform ease-linear duration-400`
+        }>
+        {
+          buttons.map((button,index)=>{
+            return(
+              <Link key={index} to={button.link}>
+                <button 
+                  className={`px-3 py-1 border-b-4 border-black
+                    flex items-center justify-evenly
+                    ${button.active?'border-purple-400 text-purple-500 text-xl':null}
+                    hover:cursor-pointer
+                    hover:bg-purple-400
+                    hover:border-pink-200
+                    hover:text-white
+                    transition-all ease duration-200`}
+                  >
+                    <span className={`${button.icon&& 'mx-1'}`}>{button.name}</span>
+                    {button.icon && 
+                      <span className='material-symbols-outlined text-inherit'>
+                        {button.icon}
+                      </span>
+                    }
+                </button>
+              </Link>
+            )
+          })
+        }
+        <Link to='/login'>
+          <ButtonClikable
+            type=''
+            height='h-[6vh] max-h-14 min-h-8'
+            width='w-[14vw] max-w-40 min-w-25'
+            text_content='Se Connecter'
+            border_radius='rounded-md'
+            shadow='sm'
+          />
+          {/* <button
             id="btn_connection"
             className="
             px-3 py-2
@@ -96,7 +112,8 @@ const Navbar=()=>{
             text-white bg-purple-400"
           >
             Connexion
-          </button>
+          </button> */}
+        </Link>
       </div>
       {windowWidth<640 &&
         <span 

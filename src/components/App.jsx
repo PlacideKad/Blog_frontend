@@ -5,6 +5,7 @@ import MissingPage from "./MissingPage";
 import ArticlesPage from "./ArticlesPage";
 import AboutPage from "./AboutPage";
 import AdminDashboard from "./AdminDashboard";
+import Login from "./Login";
 
 import Navbar from "./Navbar";
 
@@ -64,6 +65,7 @@ const App=()=>{
             <Route path="/articles" element={<ArticlesPage/>}></Route>
             <Route path="/dashboard" element={<AdminDashboard/>}></Route>
             <Route path="/about" element={<AboutPage/>}></Route>
+            <Route path="/login" element={<Login/>}></Route>
         </Routes>
       </NavbarButtonsContext.Provider>
     </Router>

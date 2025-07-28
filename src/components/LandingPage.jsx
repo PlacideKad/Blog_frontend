@@ -4,16 +4,7 @@ import { NavbarContext } from "./App";
 const LandingPage=()=>{
   const {handleButtonActive, setButtons}=useContext(NavbarContext);
   useEffect(()=>{
-    const checkUser=async()=>{
-      const res=await fetch('http://localhost:3000/api/user',{
-        method:'GET',
-        credentials:'include'
-      });
-      const resJson=await res.json();
-      console.log(resJson);
-    }
     setButtons((prev)=>handleButtonActive(prev));
-    (async()=>{await checkUser()})()
   },[]);
 
   return(

@@ -24,8 +24,8 @@ const Login=()=>{
           >
             <span className='text-center h-full w-5/10 grid content-center'>Connect using:</span>
             <div id="logos" className='flex items-center justify-evenly w-1/2 h-1/2'>
-              <img onClick={()=>{handleAuth('google')}} src={googleImg} alt="google logo" />
-              <img src={xImg} alt="x logo" />
+              <img className='cursor-pointer' onClick={()=>{handleAuth('google')}} src={googleImg} alt="google logo" />
+              <img className='cursor-pointer' src={xImg} alt="x logo" />
             </div>
         </div>
         <div className='h-7/60 w-9/10

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useState , useEffect , useRef , useContext } from 'react';
-import { NavbarContext } from './App';
+import { NavbarContext , AuthenticatedContext } from './App';
 import ButtonClikable from './utils/ButtonClikable';
 
 const Navbar=()=>{
@@ -11,6 +11,8 @@ const Navbar=()=>{
    */
   
   const {buttons,showSidebar,setShowSidebar}=useContext(NavbarContext);
+  const {isAuthenticated}=useContext(AuthenticatedContext);
+
   const [windowWidth,setWindowWidth]=useState(window.innerWidth);
   const handleMenuClick=()=>{
     setShowSidebar(prev=>!prev);
@@ -94,16 +96,20 @@ const Navbar=()=>{
         <div>
           Theme
         </div>
-        <Link to='/login'>
-          <ButtonClikable
-            type=''
-            height='h-[6vh] max-h-14 min-h-8'
-            width='w-[14vw] max-w-40 min-w-25'
-            text_content='Se Connecter'
-            border_radius='rounded-md'
-            shadow='sm'
-          />
-        </Link>
+        {
+          isAuthenticated?
+          <span>Authenticated</span>:
+          <Link to='/login'>
+            <ButtonClikable
+              type=''
+              height='h-[6vh] max-h-14 min-h-8'
+              width='w-[14vw] max-w-40 min-w-25'
+              text_content='Se Connecter'
+              border_radius='rounded-md'
+              shadow='sm'
+            />
+          </Link>
+        }
       </div>
       {windowWidth<640 &&
         <span 

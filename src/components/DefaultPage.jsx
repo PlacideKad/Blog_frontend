@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import { NavbarContext } from "./App";
+import { NavbarContext , AuthenticatedContext } from "./App";
 import { Routes , Route , useLocation } from "react-router-dom";
 
 import LandingPage from "./LandingPage";
@@ -12,7 +12,25 @@ import Login from "./Login";
 const DefaultPage=()=>{
   const location=useLocation();
   const {setShowSidebar,showSidebar,setShowNavbar}=useContext(NavbarContext);
+  const {setIsAuthenticated}=useContext(AuthenticatedContext);
+
   useEffect(()=>{
+    const checkUser=async()=>{
+      try{
+        const res=await fetch('http://localhost:3000/api/user',{
+          method:'GET',
+          credentials:'include'
+        });
+        if(!res.ok) throw new Error('Error when checking the user');
+        const resJson=await res.json();
+        setIsAuthenticated(resJson.authenticated);
+      }catch(err){
+        console.error(err);
+        setIsAuthenticated(false);
+      }
+    }
+
+    (async()=>{await checkUser()})()
     setShowNavbar(location.pathname.split('/')[1]!=='login');
     setShowSidebar(false);
   },[location])

@@ -45,19 +45,24 @@ const navbar_buttons=[{
 ];
 
 const NavbarContext=createContext();
+const AuthenticatedContext=createContext();
+
 const App=()=>{
   const [buttons,setButtons]=useState(navbar_buttons);
   const [showSidebar,setShowSidebar]=useState(false);
   const [showNavbar,setShowNavbar]=useState(true);
+  const [isAuthenticated,setIsAuthenticated]=useState(false);
 
   return(
     <Router>
-      <NavbarContext.Provider value={{buttons,setButtons,handleButtonActive,showSidebar,setShowSidebar,setShowNavbar}}>
-        {showNavbar && <Navbar/>}
-        <DefaultPage/>
-      </NavbarContext.Provider>
+      <AuthenticatedContext.Provider value={{isAuthenticated,setIsAuthenticated}}>
+        <NavbarContext.Provider value={{buttons,setButtons,handleButtonActive,showSidebar,setShowSidebar,setShowNavbar}}>
+          {showNavbar && <Navbar/>}
+          <DefaultPage/>
+        </NavbarContext.Provider>
+      </AuthenticatedContext.Provider>
     </Router>
   );
 }
 export default App;
-export {NavbarContext};
+export {NavbarContext,AuthenticatedContext};

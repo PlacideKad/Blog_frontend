@@ -4,6 +4,10 @@ import { Link } from 'react-router-dom';
 import ButtonClikable from './utils/ButtonClikable';
 
 const Login=()=>{
+  const backendURL='http://localhost:3000/api'
+  const handleAuth=async (namesocial)=>{
+    window.location.href=`${backendURL}/auth/${namesocial}`;
+  }
   return(
     <div className="absolute 
       z-10 w-full h-full
@@ -20,7 +24,7 @@ const Login=()=>{
           >
             <span className='text-center h-full w-5/10 grid content-center'>Connect using:</span>
             <div id="logos" className='flex items-center justify-evenly w-1/2 h-1/2'>
-              <img src={googleImg} alt="google logo" />
+              <img onClick={()=>{handleAuth('google')}} src={googleImg} alt="google logo" />
               <img src={xImg} alt="x logo" />
             </div>
         </div>

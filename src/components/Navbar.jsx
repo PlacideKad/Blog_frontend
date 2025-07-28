@@ -59,7 +59,7 @@ const Navbar=()=>{
         className={
           `${windowWidth>=640 && 'w-8/10'} max-w-[900px] grow-1
           flex items-center justify-evenly
-          ${windowWidth<640 ? `absolute -right-[400px] top-[10vh] h-[60vh]
+          ${windowWidth<640 ? `absolute -right-[400px] top-[8.5vh] h-[60vh]
           flex flex-col items-center justify-evenly
             ${windowWidth<350 ? 'w-4/4':'w-3/4'} 
           bg-purple-100 rounded-bl-3xl`:'h-full'}

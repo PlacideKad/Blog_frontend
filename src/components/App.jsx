@@ -12,7 +12,7 @@ const handleButtonActive=(buttons_list,index=null)=>{
     The function returns a new list with the updated active field.
   `
   let updated_buttons_list=[];
-  if((index || index===0) && index!=2){
+  if(index || index===0){
     buttons_list.forEach((button,id)=>{
       id===index? button.active=true: button.active=false;
       updated_buttons_list.push(button);

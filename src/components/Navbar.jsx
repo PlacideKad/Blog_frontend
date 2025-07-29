@@ -40,19 +40,22 @@ const Navbar=()=>{
   },[]);
   return(
     <nav 
-      className={`w-full ${windowWidth<640?'h-1/10 min-h-20':'h-15/100 min-h-[40px] max-h-[150px]'} 
+      className={`w-full ${windowWidth<640?'h-1/10':'h-15/100 min-h-[40px] max-h-[150px]'} 
       relative
       flex items-center justify-between
       bg-purple-100
       shadow-sm shadow-purple-950
       z-1
     `}>
-      <Link to='/home' className={`${windowWidth<640?'w-1/2':'w-2/10'} h-full max-w-[250px]`}>
+      <Link to='/home' className={`${windowWidth<640?'w-1/2':'w-2/10'} h-5/10 max-w-[250px]`}>
         <div
           id="site-name"  
-          className="w-full h-full
-          flex items-center justify-start">
-            Site name
+          className="title w-full h-full
+          flex items-center justify-start ml-1">
+            <div className='h-full flex items-end justify-end text-3xl'>S</div>
+            <div className='h-full flex items-end justify-start'>
+              ite feministe
+            </div>
         </div>
       </Link>
       <div
@@ -61,7 +64,7 @@ const Navbar=()=>{
         className={
           `${windowWidth>=640 && 'w-8/10'} max-w-[900px] grow-1
           flex items-center justify-evenly
-          ${windowWidth<640 ? `absolute -right-[400px] top-[8.5vh] h-[60vh]
+          ${windowWidth<640 ? `absolute -right-[400px] top-9/10  h-[60vh]
           flex flex-col items-center justify-evenly
             ${windowWidth<350 ? 'w-4/4':'w-3/4'} 
           bg-purple-100 rounded-bl-3xl`:'h-full'}

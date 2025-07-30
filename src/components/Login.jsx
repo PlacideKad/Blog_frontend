@@ -1,8 +1,7 @@
 import googleImg from '../img/loginPage/icons8-google.svg';
 import xImg from '../img/loginPage/icons8-x.svg';
-import { Link } from 'react-router-dom';
 import ButtonClikable from './utils/ButtonClikable';
-
+import Title from './utils/Title';
 const Login=()=>{
   const backendURL='http://localhost:3000/api'
   const handleAuth=async (namesocial)=>{
@@ -67,11 +66,9 @@ const Login=()=>{
             shadow='md'/>
         </form>
       </div>
-      <Link to='/home' className="absolute top-0 left-0">
-        <div id="title" className='h-full w-full'>
-            SIte name
-        </div>
-      </Link>
+      <div className="absolute top-0 left-0">
+        <Title windowWidth={window.innerWidth}/>
+      </div>
     </div>
   )
 }

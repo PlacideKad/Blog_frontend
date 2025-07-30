@@ -36,7 +36,7 @@ const DefaultPage=()=>{
     setShowSidebar(false);
   },[location])
   return(
-    <div className={`h-85/100 grow-1 w-full overflow-auto relative 
+    <div className={`h-85/100 grow-1 w-full overflow-y-auto overflow-x-hidden relative 
       ${showSidebar&&'[filter:blur(1px)]'}
       [&::-webkit-scrollbar]:w-2
       [&::-webkit-scrollbar-track]:bg-purple-200

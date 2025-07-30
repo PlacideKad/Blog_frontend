@@ -1,5 +1,5 @@
 import { BrowserRouter as Router } from "react-router-dom";
-import { useState , createContext } from "react";
+import { useState , createContext , useEffect} from "react";
 import DefaultPage from "./DefaultPage";
 import Navbar from "./Navbar";
 
@@ -45,23 +45,32 @@ const navbar_buttons=[{
 
 const NavbarContext=createContext();
 const AuthenticatedContext=createContext();
-
+const WindowSizeContext=createContext();
 const App=()=>{
   const [buttons,setButtons]=useState(navbar_buttons);
   const [showSidebar,setShowSidebar]=useState(false);
   const [showNavbar,setShowNavbar]=useState(true);
   const [isAuthenticated,setIsAuthenticated]=useState(false);
-
+  const [windowWidth,setWindowWidth]=useState(window.innerWidth);
+  useEffect(()=>{
+    const watchWindowWidth=()=>{
+      setWindowWidth(window.innerWidth);
+    }
+    window.addEventListener('resize',watchWindowWidth);
+    return ()=>{window.removeEventListener('resize',watchWindowWidth)}
+  },[]);
   return(
     <Router>
       <AuthenticatedContext.Provider value={{isAuthenticated,setIsAuthenticated}}>
-        <NavbarContext.Provider value={{buttons,setButtons,handleButtonActive,showSidebar,setShowSidebar,setShowNavbar}}>
-          {showNavbar && <Navbar/>}
-          <DefaultPage/>
-        </NavbarContext.Provider>
+        <WindowSizeContext.Provider value={{windowWidth}}>
+          <NavbarContext.Provider value={{buttons,setButtons,handleButtonActive,showSidebar,setShowSidebar,setShowNavbar}}>
+            {showNavbar && <Navbar/>}
+            <DefaultPage/>
+          </NavbarContext.Provider>
+        </WindowSizeContext.Provider>
       </AuthenticatedContext.Provider>
     </Router>
   );
 }
 export default App;
-export {NavbarContext,AuthenticatedContext};
+export {NavbarContext,AuthenticatedContext,WindowSizeContext};

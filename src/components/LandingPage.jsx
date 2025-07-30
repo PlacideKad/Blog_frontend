@@ -1,5 +1,6 @@
 import { useEffect , useContext } from "react";
-import { NavbarContext } from "./App";
+import { NavbarContext , WindowSizeContext } from "./App";
+
 import contestWomen1 from "../img/landingPage/svg/Women's Day protest-cuate.svg";
 import contestWomen2 from "../img/landingPage/svg/Women's Day protest-rafiki.svg";
 import readingWoman from "../img/landingPage/svg/Book lover-bro.svg";
@@ -12,6 +13,8 @@ import voting from '../img/landingPage/svg/Voting-bro.svg';
 
 const LandingPage=()=>{
   const {handleButtonActive, setButtons}=useContext(NavbarContext);
+  const {windowWidth}=useContext(WindowSizeContext);
+
   useEffect(()=>{
     setButtons((prev)=>handleButtonActive(prev));
   },[]);
@@ -32,9 +35,11 @@ const LandingPage=()=>{
       </div>
       <div id="gallery" className="h-[100vh] flex flex-col">
         <img src={speachWoman} className="h-[20vh]" alt="conference speaker" />
-        <div id="caroussel" className="w-full h-[70vh] bg-green-400">
-          
-        </div>
+          {windowWidth<768?
+          <div>
+            
+          </div>
+          :null}
       </div>
       <div className='w-full md:flex md:items-center'>
         <div id="text-lecture" className='text-justify md:w-1/3 md:h-1/2 background-flowers'>

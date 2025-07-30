@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import { useState , useEffect , useRef , useContext } from 'react';
-import { NavbarContext , AuthenticatedContext } from './App';
+import { useEffect , useRef , useContext } from 'react';
+import { NavbarContext , AuthenticatedContext , WindowSizeContext } from './App';
 import ButtonClikable from './utils/ButtonClikable';
 import Title from './utils/Title';
 const Navbar=()=>{
@@ -12,8 +12,8 @@ const Navbar=()=>{
   
   const {buttons,showSidebar,setShowSidebar}=useContext(NavbarContext);
   const {isAuthenticated}=useContext(AuthenticatedContext);
-
-  const [windowWidth,setWindowWidth]=useState(window.innerWidth);
+  const {windowWidth}=useContext(WindowSizeContext);
+  
   const handleMenuClick=()=>{
     setShowSidebar(prev=>!prev);
   };
@@ -31,13 +31,6 @@ const Navbar=()=>{
     }
   },[showSidebar]);
 
-  useEffect(()=>{
-    const watchWindowWidth=()=>{
-      setWindowWidth(window.innerWidth);
-    }
-    window.addEventListener('resize',watchWindowWidth);
-    return ()=>{window.removeEventListener('resize',watchWindowWidth)}
-  },[]);
   return(
     <nav 
       className={`w-full ${windowWidth<640?'h-1/10':'h-15/100 min-h-[40px] max-h-[150px]'} 

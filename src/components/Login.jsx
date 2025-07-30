@@ -2,7 +2,12 @@ import googleImg from '../img/loginPage/icons8-google.svg';
 import xImg from '../img/loginPage/icons8-x.svg';
 import ButtonClikable from './utils/ButtonClikable';
 import Title from './utils/Title';
+import { useContext } from 'react';
+import { WindowSizeContext } from './App';
+
 const Login=()=>{
+  const {windowWidth}=useContext(WindowSizeContext);
+
   const backendURL='http://localhost:3000/api'
   const handleAuth=async (namesocial)=>{
     window.location.href=`${backendURL}/auth/${namesocial}`;
@@ -67,7 +72,7 @@ const Login=()=>{
         </form>
       </div>
       <div className="absolute top-0 left-0">
-        <Title windowWidth={window.innerWidth}/>
+        <Title windowWidth={windowWidth}/>
       </div>
     </div>
   )

@@ -1,2 +1,11 @@
 @import "tailwindcss";
 
+.noto-sans-style{
+  font-family: "Noto Sans", sans-serif;
+  font-optical-sizing: auto;
+}
+.dancing-script-style{
+  font-family: "Rouge Script", cursive;
+  font-weight: lighter;
+  font-optical-sizing: auto;
+}

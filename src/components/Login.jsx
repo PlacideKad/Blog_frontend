@@ -1,5 +1,5 @@
-import googleImg from '../img/icons8-google.svg';
-import xImg from '../img/icons8-x.svg';
+import googleImg from '../img/loginPage/icons8-google.svg';
+import xImg from '../img/loginPage/icons8-x.svg';
 import { Link } from 'react-router-dom';
 import ButtonClikable from './utils/ButtonClikable';
 

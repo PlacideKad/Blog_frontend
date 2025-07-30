@@ -1,7 +1,6 @@
 import { BrowserRouter as Router } from "react-router-dom";
 import { useState , createContext } from "react";
 import DefaultPage from "./DefaultPage";
-
 import Navbar from "./Navbar";
 
 const handleButtonActive=(buttons_list,index=null)=>{

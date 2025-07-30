@@ -8,6 +8,7 @@ import ArticlesPage from "./ArticlesPage";
 import AboutPage from "./AboutPage";
 import AdminDashboard from "./AdminDashboard";
 import Login from "./Login";
+import Footer from "./Footer";
 
 const DefaultPage=()=>{
   const location=useLocation();
@@ -53,6 +54,7 @@ const DefaultPage=()=>{
         <Route path="/about" element={<AboutPage/>}></Route>
         <Route path="/login" element={<Login/>}></Route>
       </Routes>
+      <Footer/>
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import { useEffect , useContext } from "react";
+import { useEffect , useContext ,useState } from "react";
 import { NavbarContext , WindowSizeContext } from "./App";
 
 import contestWomen1 from "../img/landingPage/svg/Women's Day protest-cuate.svg";
@@ -10,15 +10,61 @@ import tree2 from '../img/landingPage/svg/cherry tree-pana.svg';
 import autonomy from '../img/landingPage/svg/autonomy-pana.svg';
 import emancipation from '../img/landingPage/svg/Emancipation of women-cuate.svg';
 import voting from '../img/landingPage/svg/Voting-bro.svg';
-
+import audrelorde from '../img/landingPage/people/AudreLorde.jpg';
+import malala from '../img/landingPage/people/Malala.jpg';
+import michelleobama from '../img/landingPage/people/MichelleObama.jpg';
+import simone from '../img/landingPage/people/simoneDeBeauvoir.jpg';
+import oprah from '../img/landingPage/people/Opra.jpg';
 const LandingPage=()=>{
+  const feminists=[
+    {
+      img : audrelorde,
+      name : 'Audre Lorde'
+    },
+    {
+      img : malala,
+      name : 'Malala'
+    },
+    {
+      img : michelleobama,
+      name : 'Michelle Obama'
+    },
+    {
+      img : simone,
+      name : 'Simone de Beauvoir'
+    },
+    {
+      img :oprah,
+      name : 'Oprah Winfrey'
+    },
+  ];
+  const fill_array=(n)=>{
+    const new_array=[];
+    for(let i=-1;i<2;i++){
+      n+i<0?new_array.push(feminists[4]):new_array.push(feminists[n+i]);
+    };
+    return new_array
+  }
   const {handleButtonActive, setButtons}=useContext(NavbarContext);
   const {windowWidth}=useContext(WindowSizeContext);
+  const [carousselItem,setCarousselItem]=useState(fill_array(0));
+  const [indexFocus,setIndexFocus]=useState(0);
 
   useEffect(()=>{
     setButtons((prev)=>handleButtonActive(prev));
   },[]);
-
+  const handleIncreaseIndex=()=>{
+    setIndexFocus(prev=>{
+      setCarousselItem(fill_array(prev+1));
+      return prev+1;
+    });
+  }
+  const handleDecreaseIndex=()=>{
+    setIndexFocus(prev=>{
+      setCarousselItem(fill_array(prev-1));
+      return prev-1;
+    })
+  }
   return(
     <div className="min-h-full w-full p-2 relative">
       <div className="[text-align:justify] [text-justify:inter-word]">
@@ -33,11 +79,17 @@ const LandingPage=()=>{
       <div className="text-justify">
         Ici, nous rallumons les flammes oubliées, célébrons les voix qui dérangent et tissons des ponts entre les luttes d'hier et celles d'aujourd'hui
       </div>
-      <div id="gallery" className="h-[100vh] flex flex-col">
+      <div id="gallery" className="h-[55vh] flex flex-col">
         <img src={speachWoman} className="h-[20vh]" alt="conference speaker" />
           {windowWidth<768?
-          <div>
-            
+          <div className="w-full h-[30vh] flex bg-green-200 items-top justify-evenly relative z-0">
+            {carousselItem.map((item,index)=>(
+              <div key={index} className="h-9/10 w-3/10 z-0">
+                <img src={item.img} alt={item.name} className={`h-full w-full [object-fit:cover] rounded-2xl transition-all ease duration-300 ${indexFocus!==index-1 && 'scale-90 [filter:blur(2px)] '}`} />
+              </div>
+            ))}
+            <button onClick={handleIncreaseIndex} className="absolute left-0 top-1/2 z-1 bg-blue-400 text-white">Left</button>
+            <button onClick={handleDecreaseIndex} className="absolute right-0 top-1/2 z-1 bg-blue-400 text-white">Right</button>
           </div>
           :null}
       </div>

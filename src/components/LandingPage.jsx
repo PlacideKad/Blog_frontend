@@ -38,33 +38,24 @@ const LandingPage=()=>{
       name : 'Oprah Winfrey'
     },
   ];
-  const fill_array=(n)=>{
-    const new_array=[];
-    for(let i=-1;i<2;i++){
-      n+i<0?new_array.push(feminists[4]):new_array.push(feminists[n+i]);
-    };
+  const fill_array=()=>{
+    const new_array=feminists.concat(feminists).concat(feminists).concat(feminists).concat(feminists);
     return new_array
   }
   const {handleButtonActive, setButtons}=useContext(NavbarContext);
   const {windowWidth}=useContext(WindowSizeContext);
-  const [carousselItem,setCarousselItem]=useState(fill_array(0));
   const [indexFocus,setIndexFocus]=useState(0);
 
+  const carousselItem=fill_array();
+  const handleMoveToLeft=()=>{
+    console.log('moving left');
+  }
+  const handleMoveToRight=()=>{
+    console.log('moving right');
+  }
   useEffect(()=>{
     setButtons((prev)=>handleButtonActive(prev));
   },[]);
-  const handleIncreaseIndex=()=>{
-    setIndexFocus(prev=>{
-      setCarousselItem(fill_array(prev+1));
-      return prev+1;
-    });
-  }
-  const handleDecreaseIndex=()=>{
-    setIndexFocus(prev=>{
-      setCarousselItem(fill_array(prev-1));
-      return prev-1;
-    })
-  }
   return(
     <div className="min-h-full w-full p-2 relative">
       <div className="[text-align:justify] [text-justify:inter-word]">
@@ -81,15 +72,17 @@ const LandingPage=()=>{
       </div>
       <div id="gallery" className="h-[55vh] flex flex-col">
         <img src={speachWoman} className="h-[20vh]" alt="conference speaker" />
-          {windowWidth<768?
-          <div className="w-full h-[30vh] flex bg-green-200 items-top justify-evenly relative z-0">
-            {carousselItem.map((item,index)=>(
-              <div key={index} className="h-9/10 w-3/10 z-0">
-                <img src={item.img} alt={item.name} className={`h-full w-full [object-fit:cover] rounded-2xl transition-all ease duration-300 ${indexFocus!==index-1 && 'scale-90 [filter:blur(2px)] '}`} />
-              </div>
-            ))}
-            <button onClick={handleIncreaseIndex} className="absolute left-0 top-1/2 z-1 bg-blue-400 text-white">Left</button>
-            <button onClick={handleDecreaseIndex} className="absolute right-0 top-1/2 z-1 bg-blue-400 text-white">Right</button>
+          {windowWidth<500?
+          <div className="w-full h-[30vh] max-h-[250px]  bg-red-200 relative z-0 overflow-hidden">
+            <div className={`w-[833.33%] h-full flex bg-green-200 -translate-x-1/25 items-center justify-evenly relative -left-9/3 top-0 z-0`} >
+              {carousselItem.map((item,index)=>(
+                <div key={index} className="h-9/10 w-1/25 flex flex-col items-center justify-start z-0">
+                  <img src={item.img} alt={item.name} className={`h-9/10 w-9/10 [object-fit:cover] rounded-2xl transition-all ease duration-300`} />
+                </div>
+              ))}
+            </div>
+            <button onClick={handleMoveToLeft} className="absolute left-0 top-1/2 z-1 bg-blue-400 text-white">Left</button>
+            <button onClick={handleMoveToRight} className="absolute right-0 top-1/2 z-1 bg-blue-400 text-white">Right</button>
           </div>
           :null}
       </div>

@@ -44,14 +44,33 @@ const LandingPage=()=>{
   }
   const {handleButtonActive, setButtons}=useContext(NavbarContext);
   const {windowWidth}=useContext(WindowSizeContext);
-  const [indexFocus,setIndexFocus]=useState(0);
+  const [indexFocus,setIndexFocus]=useState(10);
+  const [counter,setCounter]=useState(0);
 
   const carousselItem=fill_array();
   const handleMoveToLeft=()=>{
-    console.log('moving left');
+    setCounter(prev=>{
+      if(prev===-4){
+        return 0;
+      }else return prev-1;
+    });
+    setIndexFocus(prev=>{
+      if(prev===14)return 10;
+      else return prev+1;
+    });
   }
   const handleMoveToRight=()=>{
-    console.log('moving right');
+   setCounter(prev=>{
+    if(prev===4) return 0;
+    else return prev+1;
+   });
+   setIndexFocus(prev=>{
+    if(prev===6) return 10;
+    else return prev-1
+   });
+  }
+  const translate_caroussel=(n)=>{
+    return `translateX(${(n * 100) / 25}%)`;
   }
   useEffect(()=>{
     setButtons((prev)=>handleButtonActive(prev));
@@ -73,10 +92,21 @@ const LandingPage=()=>{
       <div id="gallery" className="h-[55vh] flex flex-col">
         <img src={speachWoman} className="h-[20vh]" alt="conference speaker" />
           {windowWidth<500?
-          <div className="w-full h-[30vh] max-h-[250px]  bg-red-200 relative z-0 overflow-hidden">
-            <div className={`w-[833.33%] h-full flex bg-green-200 -translate-x-1/25 items-center justify-evenly relative -left-9/3 top-0 z-0`} >
+          <div className="w-full h-[30vh] max-h-[250px]  bg-red-200 relative transition-caroussel z-0 overflow-hidden">
+            <div 
+            style={{
+              transform:translate_caroussel(counter),
+              transition:'transform ease 400ms'
+            }}
+            className={`w-[833.33%] h-full flex bg-green-200 items-center justify-evenly relative -left-9/3 top-0 z-0`} >
               {carousselItem.map((item,index)=>(
-                <div key={index} className="h-9/10 w-1/25 flex flex-col items-center justify-start z-0">
+                <div key={index} 
+                style={{
+                  filter:`${index!==(indexFocus)?'blur(2px)':''}`,
+                  scale:`${index!==(indexFocus)?'.90':'1.01'}`,
+                  transition:'scale ease 400ms'
+                }}
+                className="h-9/10 w-1/25 flex flex-col items-center justify-start z-0">
                   <img src={item.img} alt={item.name} className={`h-9/10 w-9/10 [object-fit:cover] rounded-2xl transition-all ease duration-300`} />
                 </div>
               ))}

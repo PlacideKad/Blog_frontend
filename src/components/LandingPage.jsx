@@ -1,4 +1,4 @@
-import { useEffect , useContext ,useState } from "react";
+import { useEffect , useContext ,useState ,useRef} from "react";
 import { NavbarContext , WindowSizeContext } from "./App";
 
 import contestWomen1 from "../img/landingPage/svg/Women's Day protest-cuate.svg";
@@ -23,7 +23,7 @@ const LandingPage=()=>{
     },
     {
       img : malala,
-      name : 'Malala'
+      name : 'Malala Yousafzai'
     },
     {
       img : michelleobama,
@@ -89,16 +89,16 @@ const LandingPage=()=>{
       <div className="text-justify">
         Ici, nous rallumons les flammes oubliées, célébrons les voix qui dérangent et tissons des ponts entre les luttes d'hier et celles d'aujourd'hui
       </div>
-      <div id="gallery" className="h-[55vh] flex flex-col">
+      <div id="gallery" className="h-[50vh] flex flex-col">
         <img src={speachWoman} className="h-[20vh]" alt="conference speaker" />
           {windowWidth<500?
-          <div className="w-full h-[30vh] max-h-[250px]  bg-red-200 relative transition-caroussel z-0 overflow-hidden">
+          <div className="w-full h-[30vh] max-h-[250px] relative transition-caroussel z-0 overflow-hidden">
             <div 
             style={{
               transform:translate_caroussel(counter),
               transition:'transform ease 400ms'
             }}
-            className={`w-[833.33%] h-full flex bg-green-200 items-center justify-evenly relative -left-9/3 top-0 z-0`} >
+            className={`w-[833.33%] h-full flex items-center justify-evenly relative -left-9/3 top-0 z-0`} >
               {carousselItem.map((item,index)=>(
                 <div key={index} 
                 style={{
@@ -108,11 +108,12 @@ const LandingPage=()=>{
                 }}
                 className="h-9/10 w-1/25 flex flex-col items-center justify-start z-0">
                   <img src={item.img} alt={item.name} className={`h-9/10 w-9/10 [object-fit:cover] rounded-2xl transition-all ease duration-300`} />
+                  <span className="text-[.8rem]">{item.name}</span>
                 </div>
               ))}
             </div>
-            <button onClick={handleMoveToLeft} className="absolute left-0 top-1/2 z-1 bg-blue-400 text-white">Left</button>
-            <button onClick={handleMoveToRight} className="absolute right-0 top-1/2 z-1 bg-blue-400 text-white">Right</button>
+            <button onClick={handleMoveToLeft} className="material-symbols-outlined absolute left-0 top-1/2 z-1 bg-[rgba(0,0,0,.3)] text-white rounded-full p-2">chevron_left</button>
+            <button onClick={handleMoveToRight} className="material-symbols-outlined absolute right-0 top-1/2 z-1 bg-[rgba(0,0,0,.3)] text-white rounded-full p-2">chevron_right</button>
           </div>
           :null}
       </div>

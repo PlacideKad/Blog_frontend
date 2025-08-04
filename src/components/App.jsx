@@ -52,6 +52,7 @@ const App=()=>{
   const [showNavbar,setShowNavbar]=useState(true);
   const [isAuthenticated,setIsAuthenticated]=useState(false);
   const [windowWidth,setWindowWidth]=useState(window.innerWidth);
+  const [user,setUser]=useState({});
   useEffect(()=>{
     const watchWindowWidth=()=>{
       setWindowWidth(window.innerWidth);
@@ -61,7 +62,7 @@ const App=()=>{
   },[]);
   return(
     <Router>
-      <AuthenticatedContext.Provider value={{isAuthenticated,setIsAuthenticated}}>
+      <AuthenticatedContext.Provider value={{isAuthenticated,setIsAuthenticated,user,setUser}}>
         <WindowSizeContext.Provider value={{windowWidth}}>
           <NavbarContext.Provider value={{buttons,setButtons,handleButtonActive,showSidebar,setShowSidebar,setShowNavbar}}>
             {showNavbar && <Navbar/>}

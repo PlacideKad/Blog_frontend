@@ -13,7 +13,7 @@ import Footer from "./Footer";
 const DefaultPage=()=>{
   const location=useLocation();
   const {setShowSidebar,showSidebar,setShowNavbar}=useContext(NavbarContext);
-  const {setIsAuthenticated}=useContext(AuthenticatedContext);
+  const {setIsAuthenticated,setUser}=useContext(AuthenticatedContext);
 
   useEffect(()=>{
     const checkUser=async()=>{
@@ -25,6 +25,7 @@ const DefaultPage=()=>{
         if(!res.ok) throw new Error('Error when checking the user');
         const resJson=await res.json();
         setIsAuthenticated(resJson.authenticated);
+        setUser(resJson.decoded);
       }catch(err){
         console.error(err);
         setIsAuthenticated(false);

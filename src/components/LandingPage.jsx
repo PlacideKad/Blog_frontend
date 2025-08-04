@@ -124,12 +124,12 @@ const LandingPage=()=>{
               }}
               className="h-9/10 w-1/15 flex flex-col items-center justify-start z-0">
                 <img src={item.img} alt={item.name} className={`h-9/10 w-9/10 [object-fit:cover] rounded-2xl transition-all ease duration-300`} />
-                <span className="text-[.8rem] md:text-[1rem]">{item.name}</span>
+                <span className="text-[.7rem] md:text-[1rem]">{item.name}</span>
               </div>
             ))}
           </div>
-          <button onClick={handleMoveToLeft} className="material-symbols-outlined absolute left-0 top-1/2 z-1 bg-[rgba(0,0,0,.3)] text-white rounded-full p-2">chevron_left</button>
-          <button onClick={handleMoveToRight} className="material-symbols-outlined absolute right-0 top-1/2 z-1 bg-[rgba(0,0,0,.3)] text-white rounded-full p-2">chevron_right</button>
+          <button onClick={handleMoveToLeft} className="material-symbols-outlined cursor-pointer absolute left-0 top-1/2 z-1 bg-[rgba(0,0,0,.3)] text-white rounded-full p-2">chevron_left</button>
+          <button onClick={handleMoveToRight} className="material-symbols-outlined cursor-pointer absolute right-0 top-1/2 z-1 bg-[rgba(0,0,0,.3)] text-white rounded-full p-2">chevron_right</button>
         </div>
       </div>
       <div className='w-full md:flex md:items-center'>

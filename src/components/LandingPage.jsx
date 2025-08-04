@@ -106,33 +106,31 @@ const LandingPage=()=>{
       <div className="text-justify">
         Ici, nous rallumons les flammes oubliées, célébrons les voix qui dérangent et tissons des ponts entre les luttes d'hier et celles d'aujourd'hui
       </div>
-      <div id="gallery" className="h-[50vh] flex flex-col">
+      <div id="gallery" className={`flex flex-col items-center h-[min-content] lg:flex-row lg:justify-center lg:gap-4 `}>
         <img src={speachWoman} className="h-[20vh]" alt="conference speaker" />
-          {windowWidth<500?
-          <div className="w-full h-[30vh] max-h-[250px] relative transition-caroussel z-0 overflow-hidden">
-            <div 
-            style={{
-              transform:translate_caroussel(counter),
-              transition:'transform ease 400ms'
-            }}
-            className={`w-[500%] h-full flex items-center justify-evenly relative -left-4/3 top-0 z-0`} >
-              {carousselItem.map((item,index)=>(
-                <div key={index} 
-                style={{
-                  filter:`${index!==(indexFocus)?'blur(2px)':''}`,
-                  scale:`${index!==(indexFocus)?'.90':'1.01'}`,
-                  transition:'scale ease 400ms'
-                }}
-                className="h-9/10 w-1/15 flex flex-col items-center justify-start z-0">
-                  <img src={item.img} alt={item.name} className={`h-9/10 w-9/10 [object-fit:cover] rounded-2xl transition-all ease duration-300`} />
-                  <span className="text-[.8rem]">{item.name}</span>
-                </div>
-              ))}
-            </div>
-            <button onClick={handleMoveToLeft} className="material-symbols-outlined absolute left-0 top-1/2 z-1 bg-[rgba(0,0,0,.3)] text-white rounded-full p-2">chevron_left</button>
-            <button onClick={handleMoveToRight} className="material-symbols-outlined absolute right-0 top-1/2 z-1 bg-[rgba(0,0,0,.3)] text-white rounded-full p-2">chevron_right</button>
+        <div className={`${windowWidth<500?'w-full h-[30vh] max-h-[250px]':'[aspect-ratio:2/1] max-w-[600px] lg:max-w-[900px] w-85/100'} relative z-0 overflow-hidden`}>
+          <div 
+          style={{
+            transform:translate_caroussel(counter),
+            transition:'transform ease 400ms'
+          }}
+          className={`w-[500%] h-full flex items-center justify-evenly relative -left-4/3 top-0 z-0`} >
+            {carousselItem.map((item,index)=>(
+              <div key={index} 
+              style={{
+                filter:`${index!==(indexFocus)?'blur(2px)':''}`,
+                scale:`${index!==(indexFocus)?'.90':'1.01'}`,
+                transition:'scale ease 400ms'
+              }}
+              className="h-9/10 w-1/15 flex flex-col items-center justify-start z-0">
+                <img src={item.img} alt={item.name} className={`h-9/10 w-9/10 [object-fit:cover] rounded-2xl transition-all ease duration-300`} />
+                <span className="text-[.8rem] md:text-[1rem]">{item.name}</span>
+              </div>
+            ))}
           </div>
-          :null}
+          <button onClick={handleMoveToLeft} className="material-symbols-outlined absolute left-0 top-1/2 z-1 bg-[rgba(0,0,0,.3)] text-white rounded-full p-2">chevron_left</button>
+          <button onClick={handleMoveToRight} className="material-symbols-outlined absolute right-0 top-1/2 z-1 bg-[rgba(0,0,0,.3)] text-white rounded-full p-2">chevron_right</button>
+        </div>
       </div>
       <div className='w-full md:flex md:items-center'>
         <div id="text-lecture" className='text-justify md:w-1/3 md:h-1/2 background-flowers'>

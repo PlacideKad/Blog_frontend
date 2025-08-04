@@ -39,42 +39,59 @@ const LandingPage=()=>{
     },
   ];
   const fill_array=()=>{
-    const new_array=feminists.concat(feminists).concat(feminists).concat(feminists).concat(feminists);
+    const new_array=feminists.concat(feminists).concat(feminists);
     return new_array
   }
   const {handleButtonActive, setButtons}=useContext(NavbarContext);
   const {windowWidth}=useContext(WindowSizeContext);
-  const [indexFocus,setIndexFocus]=useState(10);
+  const [indexFocus,setIndexFocus]=useState(5);
   const [counter,setCounter]=useState(0);
+  const [isCarousselMoving,setIsCarousselMoving]=useState(true);
 
   const carousselItem=fill_array();
   const handleMoveToLeft=()=>{
+    setIsCarousselMoving(false);
     setCounter(prev=>{
       if(prev===-4){
         return 0;
       }else return prev-1;
     });
     setIndexFocus(prev=>{
-      if(prev===14)return 10;
+      if(prev===9)return 5;
       else return prev+1;
     });
+    setTimeout(()=>{
+      setIsCarousselMoving(true);
+    },3000);
   }
   const handleMoveToRight=()=>{
-   setCounter(prev=>{
-    if(prev===4) return 0;
-    else return prev+1;
-   });
-   setIndexFocus(prev=>{
-    if(prev===6) return 10;
-    else return prev-1
-   });
+    setIsCarousselMoving(false);
+    setCounter(prev=>{
+      if(prev===4) return 0;
+      else return prev+1;
+    });
+    setIndexFocus(prev=>{
+      if(prev===1) return 5;
+      else return prev-1
+    });
+    setTimeout(()=>{
+      setIsCarousselMoving(true);
+    },3000);
   }
   const translate_caroussel=(n)=>{
-    return `translateX(${(n * 100) / 25}%)`;
+    return `translateX(${(n * 100) / 15}%)`;
   }
   useEffect(()=>{
     setButtons((prev)=>handleButtonActive(prev));
   },[]);
+  useEffect(()=>{
+    if(isCarousselMoving){
+      const interval=setInterval(()=>{
+        handleMoveToLeft();
+      },2000);
+      return ()=>clearInterval(interval);
+    }
+  },[counter,isCarousselMoving])
   return(
     <div className="min-h-full w-full p-2 relative">
       <div className="[text-align:justify] [text-justify:inter-word]">
@@ -98,7 +115,7 @@ const LandingPage=()=>{
               transform:translate_caroussel(counter),
               transition:'transform ease 400ms'
             }}
-            className={`w-[833.33%] h-full flex items-center justify-evenly relative -left-9/3 top-0 z-0`} >
+            className={`w-[500%] h-full flex items-center justify-evenly relative -left-4/3 top-0 z-0`} >
               {carousselItem.map((item,index)=>(
                 <div key={index} 
                 style={{
@@ -106,7 +123,7 @@ const LandingPage=()=>{
                   scale:`${index!==(indexFocus)?'.90':'1.01'}`,
                   transition:'scale ease 400ms'
                 }}
-                className="h-9/10 w-1/25 flex flex-col items-center justify-start z-0">
+                className="h-9/10 w-1/15 flex flex-col items-center justify-start z-0">
                   <img src={item.img} alt={item.name} className={`h-9/10 w-9/10 [object-fit:cover] rounded-2xl transition-all ease duration-300`} />
                   <span className="text-[.8rem]">{item.name}</span>
                 </div>

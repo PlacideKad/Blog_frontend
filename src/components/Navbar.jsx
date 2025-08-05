@@ -22,19 +22,19 @@ const Navbar=()=>{
   const clickOutside=(event)=>{
     if(sidebarRef.current && !sidebarRef.current.contains(event.target) && !menubtnRef.current.contains(event.target)) setShowSidebar(false);
   }
-  const handleDisconnect=async ()=>{
-    try{
-      const res=await fetch('http://localhost:3000/api/logout',{
-        method:'GET',
-        credentials:'include'
-      });
-      if(!res.ok) throw new Error('Error occured when disconnecting');
-      const resJson=await res.json();
-      if(resJson.disconnected) setIsAuthenticated(false);
-    }catch(err){
-      console.log(err);
-    }
-  }
+  // const handleDisconnect=async ()=>{
+  //   try{
+  //     const res=await fetch('http://localhost:3000/api/logout',{
+  //       method:'GET',
+  //       credentials:'include'
+  //     });
+  //     if(!res.ok) throw new Error('Error occured when disconnecting');
+  //     const resJson=await res.json();
+  //     if(resJson.disconnected) setIsAuthenticated(false);
+  //   }catch(err){
+  //     console.log(err);
+  //   }
+  // }
   useEffect(()=>{
     if(showSidebar) document.addEventListener('click',clickOutside)
     else document.removeEventListener('click',clickOutside);
@@ -96,13 +96,15 @@ const Navbar=()=>{
         </div>
         {
           isAuthenticated?
-          <div className='cursor-pointer w-15 h-15 rounded-full ring-purple-400 ring-2 hover:scale-103 hover:ring-4 transition-all ease-in-out duration-200'>
-          <img
-            className="w-20 [aspect-ratio:1/1] rounded-full object-cover"
-            src={`http://localhost:3000/api/user/avatar/?url=${user.picture}`}
-            alt="profile picture"
-          />
-          </div>:
+          <Link to='/profile'>
+            <div className='cursor-pointer w-15 h-15 rounded-full ring-purple-400 ring-2 hover:scale-103 hover:ring-4 transition-all ease-in-out duration-200'>
+              <img
+                className="w-20 [aspect-ratio:1/1] rounded-full object-cover"
+                src={`http://localhost:3000/api/user/avatar/?url=${user.picture}`}
+                alt="profile picture"
+              />
+            </div>
+          </Link>:
           <Link to='/login'>
             <ButtonClikable
               type=''

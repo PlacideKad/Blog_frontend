@@ -95,7 +95,7 @@ const LandingPage=()=>{
   return(
     <div className="min-h-full w-full p-2 relative">
       <div className="[text-align:justify] [text-justify:inter-word]">
-        <span className="dancing-script-style text-4xl text-purple-400">B</span>
+        <span className="dancing-script-style text-6xl text-purple-400">B</span>
         ienvenue sur le <span className="dancing-script-style text-4xl text-purple-400">S</span>ite féministe, un espace où le féminisme pulse, où chaque mot est un coup de poing contre l'invisible, et chaque image, un éclat de résistance
       </div>
       <div id="pics"

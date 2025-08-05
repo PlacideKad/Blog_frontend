@@ -6,6 +6,7 @@ import LandingPage from "./LandingPage";
 import MissingPage from "./MissingPage";
 import ArticlesPage from "./ArticlesPage";
 import AboutPage from "./AboutPage";
+import ProfilePage from "./ProfilePage";
 import AdminDashboard from "./AdminDashboard";
 import Login from "./Login";
 import Footer from "./Footer";
@@ -33,7 +34,7 @@ const DefaultPage=()=>{
     }
 
     (async()=>{await checkUser()})()
-    setShowNavbar(location.pathname.split('/')[1]!=='login');
+    setShowNavbar(location.pathname.split('/')[1]!=='login' && location.pathname.split('/')[1]!=='profile');
     setShowSidebar(false);
   },[location])
   return(
@@ -54,6 +55,7 @@ const DefaultPage=()=>{
         <Route path="/dashboard" element={<AdminDashboard/>}></Route>
         <Route path="/about" element={<AboutPage/>}></Route>
         <Route path="/login" element={<Login/>}></Route>
+        <Route path="/profile" element={<ProfilePage/>}></Route>
       </Routes>
       <Footer/>
     </div>

@@ -22,19 +22,6 @@ const Navbar=()=>{
   const clickOutside=(event)=>{
     if(sidebarRef.current && !sidebarRef.current.contains(event.target) && !menubtnRef.current.contains(event.target)) setShowSidebar(false);
   }
-  // const handleDisconnect=async ()=>{
-  //   try{
-  //     const res=await fetch('http://localhost:3000/api/logout',{
-  //       method:'GET',
-  //       credentials:'include'
-  //     });
-  //     if(!res.ok) throw new Error('Error occured when disconnecting');
-  //     const resJson=await res.json();
-  //     if(resJson.disconnected) setIsAuthenticated(false);
-  //   }catch(err){
-  //     console.log(err);
-  //   }
-  // }
   useEffect(()=>{
     if(showSidebar) document.addEventListener('click',clickOutside)
     else document.removeEventListener('click',clickOutside);

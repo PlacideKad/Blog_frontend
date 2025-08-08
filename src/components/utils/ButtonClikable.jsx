@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const ButtonClikable=({height,width,border_radius,type,text_content,shadow})=>{
+const ButtonClikable=({type,content,p_style,onclick,color})=>{
   const [isPressed,setIsPressed]=useState(false);
   const handleMouseDown=()=>{
     setIsPressed(true);
@@ -10,20 +10,18 @@ const ButtonClikable=({height,width,border_radius,type,text_content,shadow})=>{
   }
 
   return(
-    <button
+    <div
     type={type}
     onMouseUp={handleMouseUp}
     onMouseDown={handleMouseDown}
     onTouchStart={handleMouseDown}
     onTouchEnd={handleMouseUp}
-    className={`${height} ${width}
-    cursor-pointer ${border_radius}  
-    bg-purple-400  text-white
-    transition-all ease duration-200
-    ${isPressed?'scale-98':`shadow-${shadow} shadow-black` }
-    `}>
-      {text_content}
-    </button>
+    onClick={onclick}
+    className={`cursor-pointer ${color?color:'bg-purple-400'}  text-white transition-all ease duration-200
+      ${p_style} 
+      ${isPressed?'scale-98':`shadow-md shadow-black`}`}>
+      {content}
+    </div>
   );
 }
 export default ButtonClikable

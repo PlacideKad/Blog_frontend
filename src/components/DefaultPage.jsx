@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect , useState } from "react";
 import { NavbarContext , AuthenticatedContext } from "./App";
 import { Routes , Route , useLocation } from "react-router-dom";
 
@@ -15,6 +15,7 @@ const DefaultPage=()=>{
   const location=useLocation();
   const {setShowSidebar,showSidebar,setShowNavbar}=useContext(NavbarContext);
   const {setIsAuthenticated,setUser}=useContext(AuthenticatedContext);
+  const [userId,setUserId]=useState(null);
 
   useEffect(()=>{
     const checkUser=async()=>{
@@ -26,17 +27,36 @@ const DefaultPage=()=>{
         if(!res.ok) throw new Error('Error when checking the user');
         const resJson=await res.json();
         setIsAuthenticated(resJson.authenticated);
-        setUser(resJson.decoded);
+        setUserId(resJson.decoded.id);
       }catch(err){
         console.error(err);
         setIsAuthenticated(false);
       }
     }
-
     (async()=>{await checkUser()})()
     setShowNavbar(location.pathname.split('/')[1]!=='login' && location.pathname.split('/')[1]!=='profile');
     setShowSidebar(false);
-  },[location])
+  },[location]);
+
+  useEffect(()=>{
+    if(userId){
+      const getUser=async()=>{
+        try{
+          const res=await fetch('http://localhost:3000/api/user',{
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({id:userId})
+          });
+          if(!res.ok) throw new Error('Error occured when getting the user');
+          const user=await res.json();
+          setUser(user);
+        }catch(err){
+          console.log(err);
+        }
+      }
+      (async()=>{await getUser()})()
+    }
+  },[userId])
   return(
     <div className={`h-85/100 grow-1 w-full overflow-y-auto overflow-x-hidden relative 
       ${showSidebar&&'[filter:blur(1px)]'}

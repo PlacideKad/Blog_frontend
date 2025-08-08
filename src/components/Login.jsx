@@ -64,11 +64,8 @@ const Login=()=>{
           </div>
           <ButtonClikable 
             type='submit'
-            height='h-3/10'
-            width='w-3/10'
-            text_content='Submit'
-            border_radius='rounded-md'
-            shadow='md'/>
+            p_style="rounded-md py-2 px-8"
+            content='Submit'/>
         </form>
       </div>
       <div className="absolute top-0 left-0">

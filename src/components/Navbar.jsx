@@ -11,7 +11,7 @@ const Navbar=()=>{
    */
   
   const {buttons,showSidebar,setShowSidebar}=useContext(NavbarContext);
-  const {isAuthenticated,setIsAuthenticated,user}=useContext(AuthenticatedContext);
+  const {isAuthenticated,user}=useContext(AuthenticatedContext);
   const {windowWidth}=useContext(WindowSizeContext);
   
   const handleMenuClick=()=>{
@@ -87,7 +87,7 @@ const Navbar=()=>{
             <div className='cursor-pointer w-15 h-15 rounded-full ring-purple-400 ring-2 hover:scale-103 hover:ring-4 transition-all ease-in-out duration-200'>
               <img
                 className="w-20 [aspect-ratio:1/1] rounded-full object-cover"
-                src={`http://localhost:3000/api/user/avatar/?url=${user.picture}`}
+                src={user.picture && `http://localhost:3000/api/user/avatar/?url=${user.picture}`}
                 alt="profile picture"
               />
             </div>
@@ -95,11 +95,8 @@ const Navbar=()=>{
           <Link to='/login'>
             <ButtonClikable
               type=''
-              height='h-[6vh] max-h-14 min-h-8'
-              width='w-[14vw] max-w-40 min-w-25'
-              text_content='Se Connecter'
-              border_radius='rounded-md'
-              shadow='sm'
+              content='Se Connecter'
+              p_style="rounded-md p-2"
             />
           </Link>
         }

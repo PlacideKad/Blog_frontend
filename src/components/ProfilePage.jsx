@@ -6,7 +6,7 @@ import ButtonClikable from "./utils/ButtonClikable";
 
 const ProfilePage=()=>{
   const {windowWidth}=useContext(WindowSizeContext);
-  const {setIsAuthenticated , user}=useContext(AuthenticatedContext);
+  const {setIsAuthenticated , user,setUser}=useContext(AuthenticatedContext);
   const [nameEdited,setNameEdited]=useState(false);
   const [nameInput,setNameInput]=useState('');
   const [famNameInput,setFamNameInput]=useState('');
@@ -42,14 +42,26 @@ const ProfilePage=()=>{
       console.log(err);
     }
   };
-  const handleSubmitEdits=(formData)=>{
+  const handleSubmitEdits=async (formData)=>{
     if(allowedToSubmit){
       const given_name=formData.get('given_name');
       const family_name=formData.get('family_name');
       let data={};
       if(given_name) data.given_name=given_name;
       if(family_name) data.family_name=family_name;
-      console.log(data);
+      try{
+        const res=await fetch('http://localhost:3000/api/user/updateinfos',{
+          method:'PATCH',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({...data,id:user.id})
+        });
+        if(!res.ok) throw new Error('Error on update');
+        const resJson=await res.json();
+        setUser(resJson.user);
+        if(resJson.updated) window.location.reload()
+      }catch(err){
+        console.log(err);
+      }
     }
   }
   return(
@@ -57,6 +69,7 @@ const ProfilePage=()=>{
       w-full h-full
       flex items-center justify-center p-4
       bg-purple-50">
+      {Object.keys(user).length!==0?
       <div className="w-full h-6/10 flex flex-col items-center justify-evenly">
         <div 
         id="profile-picture" 
@@ -147,16 +160,27 @@ const ProfilePage=()=>{
           className={`cursor-pointer bg-purple-400  text-white transition-all ease duration-200 px-4 py-2 rounded-md ${(nameEdited || famNameEdited)?'scale-100':'scale-0'} ${!allowedToSubmit?'opacity-40':isPressed?'opacity-100 scale-98':`opacity-100 shadow-md shadow-black`}`}
           value='Confirmer'/>
         </form>
+      </div>:
+      <div>
+        Please Login to your account
       </div>
+      }
 
 
       <div className="absolute top-0 left-0 w-full flex items-center justify-between ">
         <Title windowWidth={windowWidth}/>
+        {Object.keys(user).length!==0?
         <div onClick={handleDisconnect}
         className="flex items-center justify-evenly cursor-pointer">
           <span className="text-[.9rem]">Se deconnecter</span>
           <span className="material-symbols-outlined m-2 ![font-size:2rem] text-purple-400">logout</span>
-        </div>
+        </div>:
+        <ButtonClikable
+          content='Se connecter'
+          onclick={()=>{navigate('/login')}}
+          p_style='p-2 mx-1 rounded-md'
+        />
+        }
       </div>
     </div>
   );

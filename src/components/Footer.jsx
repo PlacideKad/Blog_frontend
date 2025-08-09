@@ -1,3 +1,7 @@
+import xIcon from '../img/footer/icons8-x.svg';
+import instaIcon from '../img/footer/instagram-svgrepo-com.svg';
+import tiktokIcon from '../img/footer/tiktok-svgrepo-com.svg';
+
 const Footer=()=>{
   return (
     <footer className="bg-fuchsia-900 text-gray-300 py-10 mt-12">
@@ -33,15 +37,35 @@ const Footer=()=>{
           </p>
           <div className="flex space-x-4">
             {/* Liens fictifs */}
-            <a href="https://instagram.com" target="_blank" rel="noreferrer" className="hover:text-pink-400 transition">
-              Instagram ✨
-            </a>
-            <a href="https://twitter.com" target="_blank" rel="noreferrer" className="hover:text-pink-400 transition">
-              Twitter 🐦
-            </a>
-            <a href="https://github.com" target="_blank" rel="noreferrer" className="hover:text-pink-400 transition">
-              GitHub 💻
-            </a>
+            <div 
+            href="https://instagram.com" target="_blank" rel="noreferrer" 
+            className="hover:text-pink-400 transition flex items-center justify-evenly space-x-1">
+              <span>Instagram</span> 
+              <img 
+              className='w-6 h-6'
+              src={instaIcon} 
+              alt="instagram icon" />
+            </div>
+
+            <div 
+            href="https://tiktok.com" target="_blank" rel="noreferrer" 
+            className="hover:text-pink-400 transition flex items-center justify-evenly space-x-1">
+              <span>TikTok</span> 
+              <img 
+              className='w-6 h-6'
+              src={tiktokIcon} 
+              alt="instagram icon" />
+            </div>
+
+            <div 
+            href="https://X.com" target="_blank" rel="noreferrer" 
+            className="hover:text-pink-400 transition flex items-center justify-evenly space-x-1">
+              <span>X</span> 
+              <img 
+              className='w-6 h-6 bg-white rounded-sm'
+              src={xIcon} 
+              alt="instagram icon" />
+            </div>
           </div>
         </div>
 

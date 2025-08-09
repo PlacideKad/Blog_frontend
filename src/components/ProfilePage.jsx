@@ -26,7 +26,7 @@ const ProfilePage=()=>{
     if(user.family_name) setFamNameInput(user.family_name);
   },[user.given_name,user.family_name]);
   useEffect(()=>{
-    setAllowedToSubmit((nameInput!==user.given_name || famNameInput!==user.family_name) && (nameEdited || famNameEdited))
+    setAllowedToSubmit((nameInput.trim()!==user.given_name || famNameInput.trim()!==user.family_name) && (nameEdited || famNameEdited))
   },[nameInput,famNameInput,nameEdited,famNameEdited])
   const handleDisconnect=async ()=>{
     try{
@@ -47,8 +47,8 @@ const ProfilePage=()=>{
       const given_name=formData.get('given_name');
       const family_name=formData.get('family_name');
       let data={};
-      if(given_name) data.given_name=given_name;
-      if(family_name) data.family_name=family_name;
+      if(given_name && given_name.trim()) data.given_name=given_name.trim();
+      if(family_name && family_name.trim()) data.family_name=family_name.trim();
       try{
         const res=await fetch('http://localhost:3000/api/user/updateinfos',{
           method:'PATCH',

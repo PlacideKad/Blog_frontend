@@ -29,7 +29,7 @@ const Footer=()=>{
         <div>
           <h3 className="text-lg font-semibold text-white mb-4">Réseaux sociaux</h3>
           <p className="text-sm mb-3">
-            Suivez ma sœur pour ses articles 📚 et moi pour mes lignes de code 💻
+            Suivez nous sur les réseaux pour agrandir notre communauté et nous soutenir dans notre travail
           </p>
           <div className="flex space-x-4">
             {/* Liens fictifs */}
@@ -68,7 +68,7 @@ const Footer=()=>{
       </div>
 
       <div className="mt-10 border-t border-gray-100 pt-4 text-center text-xs text-gray-100">
-        © {new Date().getFullYear()} Blog de ma sœur — Développement par moi 😎
+        © {new Date().getFullYear()} Blog feministe
       </div>
     </footer>
   );

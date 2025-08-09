@@ -17,7 +17,7 @@ const articles = [
       "Faire du pain chez soi, ce n’est pas si compliqué ! Je vous donne ma recette et mes astuces pour une croûte dorée et une mie parfaite.",
     category: "Cuisine",
     coverImage:
-      "https://images.unsplash.com/photo-1608198093002-0c13b67c47f9?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1623039405147-547794f92e9e?q=80&w=826&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
   {
     id: 3,
@@ -64,15 +64,11 @@ const ArticlesPage=()=>{
   },[])
   return(
     <div className="min-h-screen bg-gray-50 p-6">
-      <h1 className="text-3xl font-bold mb-6 text-center">
-        Les articles de ma sœur 📚
-      </h1>
-
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {articles.map((article) => (
           <div
             key={article.id}
-            className="bg-white rounded-2xl shadow hover:shadow-lg transition overflow-hidden flex flex-col"
+            className="bg-white rounded-2xl shadow-md hover:shadow-xl transition overflow-hidden flex flex-col"
           >
             <img
               src={article.coverImage}

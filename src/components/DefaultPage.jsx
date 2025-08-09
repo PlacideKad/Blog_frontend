@@ -58,7 +58,7 @@ const DefaultPage=()=>{
     }
   },[userId])
   return(
-    <div className={`h-85/100 grow-1 w-full overflow-y-auto overflow-x-hidden relative 
+    <div className={`h-85/100 grow-1 bg-gray-50 w-full overflow-y-auto overflow-x-hidden relative 
       ${showSidebar&&'[filter:blur(1px)]'}
       [&::-webkit-scrollbar]:w-2
       [&::-webkit-scrollbar-track]:bg-fuchsia-200

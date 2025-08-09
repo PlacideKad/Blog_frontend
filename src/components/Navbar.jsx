@@ -60,9 +60,8 @@ const Navbar=()=>{
                 <button 
                   className={`px-3 py-1 border-b-4 border-purple-900
                     flex items-center justify-evenly
-                    ${button.active?'border-fuchsia-400 text-fuchsia-500 text-xl':null}
+                    ${button.active?'!border-fuchsia-400 text-fuchsia-400 text-xl':'text-purple-900 border-purple-900'}
                     hover:cursor-pointer
-                    text-purple-900
                     hover:bg-fuchsia-400
                     hover:border-pink-200
                     hover:text-white

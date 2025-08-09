@@ -1,77 +1,44 @@
-import { useEffect , useContext } from "react";
+import { useEffect , useContext , useState } from "react";
 import { NavbarContext } from "./App";
-const articles = [
-  {
-    id: 1,
-    title: "Voyager seule à travers l’Italie : récit et conseils",
-    summary:
-      "Entre Rome et Venise, découvrez mes coups de cœur, mes bons plans, et les petites galères qui font tout le charme d’un voyage en solo.",
-    category: "Voyage",
-    coverImage:
-      "https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?auto=format&fit=crop&w=800&q=80",
-  },
-  {
-    id: 2,
-    title: "Les secrets d’un pain maison croustillant",
-    summary:
-      "Faire du pain chez soi, ce n’est pas si compliqué ! Je vous donne ma recette et mes astuces pour une croûte dorée et une mie parfaite.",
-    category: "Cuisine",
-    coverImage:
-      "https://images.unsplash.com/photo-1623039405147-547794f92e9e?q=80&w=826&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
-    id: 3,
-    title: "10 livres qui ont changé ma façon de voir le monde",
-    summary:
-      "De la philosophie à la fiction, voici une sélection d’ouvrages qui m’ont marquée et que je relis régulièrement.",
-    category: "Lecture",
-    coverImage:
-      "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=800&q=80",
-  },
-  {
-    id: 4,
-    title: "Minimalisme : comment désencombrer sa vie",
-    summary:
-      "Réduire ses possessions pour mieux profiter de l’essentiel : je partage mon expérience et mes conseils pratiques.",
-    category: "Lifestyle",
-    coverImage:
-      "https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=800&q=80",
-  },
-  {
-    id: 5,
-    title: "Randonnée en montagne : guide pour débutants",
-    summary:
-      "De l’équipement à la préparation physique, tout ce qu’il faut savoir avant de partir à l’assaut des sentiers.",
-    category: "Sport",
-    coverImage:
-      "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=80",
-  },
-  {
-    id: 6,
-    title: "Photographie urbaine : capturer l’âme d’une ville",
-    summary:
-      "Conseils techniques et inspirations pour photographier l’architecture et la vie citadine.",
-    category: "Art",
-    coverImage:
-      "https://images.unsplash.com/photo-1508057198894-247b23fe5ade?auto=format&fit=crop&w=800&q=80",
-  },
-];
+
 
 const ArticlesPage=()=>{
+  const [articles ,setArticles]=useState([]);
+  // const [pageNumber,setPageNumber]=useState(1); sera utile pour la pagination
   const {handleButtonActive, setButtons}=useContext(NavbarContext);
+  
   useEffect(()=>{
     setButtons((prev)=>handleButtonActive(prev,0));
+  },[]);
+
+  useEffect(()=>{
+    const getArticles=async()=>{
+      try{
+        const res=await fetch('http://localhost:3000/api/articles');
+        if(!res.ok) throw new Error('Error when fetching the articles');
+        const resJson=await res.json();
+        setArticles(resJson);
+      }catch(err){
+        console.log(err);
+      }
+    };
+    (async()=>{await getArticles()})();
   },[])
+
   return(
     <div className="min-h-screen bg-gray-50 p-6">
+    {articles.length===0?
+      <div className="h-full w-full flex items-center justify-center">
+        No articles published yet
+      </div>:
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {articles.map((article) => (
           <div
-            key={article.id}
+            key={article._id}
             className="bg-white rounded-2xl shadow-md hover:shadow-xl transition overflow-hidden flex flex-col"
           >
             <img
-              src={article.coverImage}
+              src={article.cover.link}
               alt={article.title}
               className="w-full h-48 object-cover"
             />
@@ -90,6 +57,7 @@ const ArticlesPage=()=>{
           </div>
         ))}
       </div>
+    }
     </div>
   )
 }

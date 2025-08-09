@@ -68,12 +68,12 @@ const ProfilePage=()=>{
     <div className="absolute 
       w-full h-full
       flex items-center justify-center p-4
-      bg-purple-50">
+      bg-fuchsia-50">
       {Object.keys(user).length!==0?
       <div className="w-full !max-w-[1400px] h-6/10 lg:h-8/10 lg:flex-row flex flex-col items-center justify-evenly lg:justify-center lg:gap-8">
         <div 
         id="profile-picture" 
-        className="w-2/5 min-w-[150px] max-w-[270px] [aspect-ratio:1/1] rounded-full sm:rounded-4xl bg-purple-400 flex items-center justify-center">
+        className="w-2/5 min-w-[150px] max-w-[270px] [aspect-ratio:1/1] rounded-full sm:rounded-4xl bg-fuchsia-400 flex items-center justify-center">
           <img
             className="w-9/10 sm:w-95/100 [aspect-ratio:1/1] rounded-full sm:rounded-4xl object-cover"
             src={user.picture && `http://localhost:3000/api/user/avatar/?url=${user.picture}`}
@@ -106,8 +106,8 @@ const ProfilePage=()=>{
               value={nameInput}
               onChange={(event)=>{
                 setNameInput(event.target.value)}}
-              className="w-8/10 px-2 py-1 border-b-2 border-b-purple-400 outline-none focus:scale-103 transition-all ease duration-300" />:
-              <div className="w-8/10 [aspect-ratio:100/18] px-2 py-1 rounded-lg outline-none ring-2 ring-purple-400 flex items-center justify-start">
+              className="w-8/10 px-2 py-1 border-b-2 border-b-fuchsia-400 outline-none focus:scale-103 transition-all ease duration-300" />:
+              <div className="w-8/10 [aspect-ratio:100/18] px-2 py-1 rounded-lg outline-none ring-2 ring-fuchsia-400 flex items-center justify-start">
                 {user.given_name}
               </div>
             }
@@ -136,8 +136,8 @@ const ProfilePage=()=>{
               value={famNameInput}
               onChange={(event)=>{
                 setFamNameInput(event.target.value)}}
-              className="w-8/10 px-2 py-1 border-b-2 border-b-purple-400 outline-none focus:scale-103 transition-all ease duration-300" />:
-              <div className="w-8/10 [aspect-ratio:100/18] px-2 py-1 rounded-lg outline-none ring-2 ring-purple-400 flex items-center justify-start">
+              className="w-8/10 px-2 py-1 border-b-2 border-b-fuchsia-400 outline-none focus:scale-103 transition-all ease duration-300" />:
+              <div className="w-8/10 [aspect-ratio:100/18] px-2 py-1 rounded-lg outline-none ring-2 ring-fuchsia-400 flex items-center justify-start">
                 {user.family_name}
               </div>
             }
@@ -157,7 +157,7 @@ const ProfilePage=()=>{
           onMouseDown={handleMouseDown}
           onTouchStart={handleMouseDown}
           onTouchEnd={handleMouseUp}
-          className={`cursor-pointer bg-purple-400  text-white transition-all ease duration-200 px-4 py-2 sm:px-8 sm:py-4 sm:rounded-2xl rounded-md ${(nameEdited || famNameEdited)?'scale-100':'scale-0'} ${!allowedToSubmit?'opacity-40':isPressed?'opacity-100 scale-98':`opacity-100 shadow-md shadow-black`}`}
+          className={`cursor-pointer bg-fuchsia-400  text-white transition-all ease duration-200 px-4 py-2 sm:px-8 sm:py-4 sm:rounded-2xl rounded-md ${(nameEdited || famNameEdited)?'scale-100':'scale-0'} ${!allowedToSubmit?'opacity-40':isPressed?'opacity-100 scale-98':`opacity-100 shadow-md shadow-black`}`}
           value='Confirmer'/>
         </form>
       </div>:
@@ -173,7 +173,7 @@ const ProfilePage=()=>{
         <div onClick={handleDisconnect}
         className="flex items-center justify-evenly cursor-pointer">
           <span className="text-[.9rem] md:text-xl">Se deconnecter</span>
-          <span className="material-symbols-outlined m-2 ![font-size:2rem] !md:[font-size:2.5rem] text-purple-400">logout</span>
+          <span className="material-symbols-outlined m-2 ![font-size:2rem] !md:[font-size:2.5rem] text-fuchsia-400">logout</span>
         </div>:
         <ButtonClikable
           content='Se connecter'

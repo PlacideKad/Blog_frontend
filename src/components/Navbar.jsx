@@ -35,8 +35,8 @@ const Navbar=()=>{
       className={`w-full ${windowWidth<640?'h-1/10':'h-15/100 min-h-[40px] max-h-[150px]'} 
       relative
       flex items-center justify-between
-      bg-purple-100
-      shadow-sm shadow-purple-950
+      bg-fuchsia-100
+      shadow-sm shadow-fuchsia-950
       z-1
     `}>
       <Title windowWidth={windowWidth}/>
@@ -49,7 +49,7 @@ const Navbar=()=>{
           ${windowWidth<640 ? `absolute -right-[600px] top-9/10  h-[60vh]
           flex flex-col items-center justify-evenly
             ${windowWidth<350 ? 'w-4/4':'w-3/4'} 
-          bg-purple-100 rounded-bl-3xl`:'h-full'}
+          bg-fuchsia-100 rounded-bl-3xl`:'h-full'}
           ${windowWidth<640 && showSidebar?'[transform:translateX(-600px)]':null} 
           transition-transform ease-in-out duration-400`
         }>
@@ -58,11 +58,12 @@ const Navbar=()=>{
             return(
               <Link key={index} to={button.link}>
                 <button 
-                  className={`px-3 py-1 border-b-4 border-black
+                  className={`px-3 py-1 border-b-4 border-purple-900
                     flex items-center justify-evenly
-                    ${button.active?'border-purple-400 text-purple-500 text-xl':null}
+                    ${button.active?'border-fuchsia-400 text-fuchsia-500 text-xl':null}
                     hover:cursor-pointer
-                    hover:bg-purple-400
+                    text-purple-900
+                    hover:bg-fuchsia-400
                     hover:border-pink-200
                     hover:text-white
                     transition-all ease duration-200`}
@@ -78,13 +79,10 @@ const Navbar=()=>{
             )
           })
         }
-        <div>
-          Theme
-        </div>
         {
           isAuthenticated?
           <Link to='/profile'>
-            <div className='cursor-pointer w-15 h-15 rounded-full ring-purple-400 ring-2 hover:scale-103 hover:ring-4 transition-all ease-in-out duration-200'>
+            <div className='cursor-pointer w-15 h-15 rounded-full ring-fuchsia-400 ring-2 hover:scale-103 hover:ring-4 transition-all ease-in-out duration-200'>
               <img
                 className="w-20 [aspect-ratio:1/1] rounded-full object-cover"
                 src={user.picture && `http://localhost:3000/api/user/avatar/?url=${user.picture}`}
@@ -105,7 +103,7 @@ const Navbar=()=>{
         <span 
           ref={menubtnRef}
           onClick={handleMenuClick}
-          className="material-symbols-outlined text-purple-400 ![font-size:max(35px,10vw)]">
+          className="material-symbols-outlined text-fuchsia-400 ![font-size:max(35px,10vw)]">
             {showSidebar?'close':'menu'}
         </span>
       }

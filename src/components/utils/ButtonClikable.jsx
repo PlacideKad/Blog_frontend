@@ -17,9 +17,9 @@ const ButtonClikable=({type,content,p_style,onclick,color})=>{
     onTouchStart={handleMouseDown}
     onTouchEnd={handleMouseUp}
     onClick={onclick}
-    className={`cursor-pointer ${color?color:'bg-purple-400'}  text-white transition-all ease duration-200
+    className={`cursor-pointer ${color?color:'bg-fuchsia-400'}  text-white transition-all ease duration-200
       ${p_style} 
-      ${isPressed?'scale-98':`shadow-md shadow-black`}`}>
+      ${isPressed?'scale-98':`shadow-md shadow-gray-700`}`}>
       {content}
     </div>
   );

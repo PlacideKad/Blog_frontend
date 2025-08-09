@@ -16,11 +16,11 @@ const Login=()=>{
     <div className="absolute 
       w-full h-full
       flex items-center justify-center
-      bg-purple-50">
+      bg-fuchsia-50">
       <div className="w-8/10 max-w-[600px] max-h-[300px] h-4/10 sm:w-6/10 lg:w-5/10 
       flex flex-col items-center justify-evenly
-      rounded-xl bg-purple-100
-      shadow-md shadow-purple-200
+      rounded-xl bg-fuchsia-100
+      shadow-md shadow-fuchsia-200
       ">
         <div
           id="connect-with-socials"
@@ -34,9 +34,9 @@ const Login=()=>{
         </div>
         <div className='h-7/60 w-9/10
           flex items-end '>
-          <hr className='w-45/100 h-1/2 grid content-center border-purple-400' /> 
+          <hr className='w-45/100 h-1/2 grid content-center border-fuchsia-400' /> 
             <span className='w-1/10 h-full grid content-center text-center'>Or</span>
-          <hr className='w-45/100 h-1/2 grid content-center border-purple-400' />
+          <hr className='w-45/100 h-1/2 grid content-center border-fuchsia-400' />
         </div>
         <form 
         id="connect-with-mail" 
@@ -57,8 +57,8 @@ const Login=()=>{
             border-black border-2
             focus:scale-103
             focus:ring-2
-            focus:ring-purple-400
-            focus:border-purple-400
+            focus:ring-fuchsia-400
+            focus:border-fuchsia-400
             transition-all ease duration-300
             ' />
           </div>

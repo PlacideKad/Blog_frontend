@@ -64,7 +64,7 @@ const App=()=>{
     <Router>
       <AuthenticatedContext.Provider value={{isAuthenticated,setIsAuthenticated,user,setUser}}>
         <WindowSizeContext.Provider value={{windowWidth}}>
-          <NavbarContext.Provider value={{buttons,setButtons,handleButtonActive,showSidebar,setShowSidebar,setShowNavbar}}>
+          <NavbarContext.Provider value={{buttons,setButtons,handleButtonActive,showSidebar,setShowSidebar,setShowNavbar,showNavbar}}>
             {showNavbar && <Navbar/>}
             <DefaultPage/>
           </NavbarContext.Provider>

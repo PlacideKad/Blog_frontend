@@ -13,7 +13,7 @@ import Footer from "./Footer";
 
 const DefaultPage=()=>{
   const location=useLocation();
-  const {setShowSidebar,showSidebar,setShowNavbar}=useContext(NavbarContext);
+  const {setShowSidebar,showSidebar,setShowNavbar,showNavbar}=useContext(NavbarContext);
   const {setIsAuthenticated,setUser}=useContext(AuthenticatedContext);
   const [userId,setUserId]=useState(null);
 
@@ -34,7 +34,7 @@ const DefaultPage=()=>{
       }
     }
     (async()=>{await checkUser()})()
-    setShowNavbar(location.pathname.split('/')[1]!=='login' && location.pathname.split('/')[1]!=='profile');
+    setShowNavbar(!['login','profile','dashboard'].includes(location.pathname.split('/')[1]));
     setShowSidebar(false);
   },[location]);
 
@@ -56,7 +56,7 @@ const DefaultPage=()=>{
       }
       (async()=>{await getUser()})()
     }
-  },[userId])
+  },[userId]);
   return(
     <div className={`h-85/100 grow-1 bg-gray-50 w-full overflow-y-auto overflow-x-hidden relative 
       ${showSidebar&&'[filter:blur(1px)]'}
@@ -77,7 +77,7 @@ const DefaultPage=()=>{
         <Route path="/login" element={<Login/>}></Route>
         <Route path="/profile" element={<ProfilePage/>}></Route>
       </Routes>
-      <Footer/>
+      {showNavbar && <Footer/> }
     </div>
   )
 }

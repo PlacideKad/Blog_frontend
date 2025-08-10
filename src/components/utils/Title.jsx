@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 
 const Title=({windowWidth})=>{
   return(
-    <Link to='/home' className={`${windowWidth<640?'w-1/2':'w-2/10'} h-5/10 max-w-[250px]`}>
+    <Link to='/home' className={`${windowWidth<640?'w-1/2':'w-2/10'} max-w-[250px]`}>
       <div
         id="site-name"  
         className="title w-full h-full

@@ -26,17 +26,17 @@ const AdminDashboard=()=>{
         <Title windowWidth={window.innerWidth}/>
       </section>
       {/** left menu */}
-      <div className="fixed left-2 top-1/2 transform -translate-y-1/2 w-1/10 h-2/10">
-        <section className="floating-bar relative bg-transparent flex flex-col items-center justify-evenly h-full w-full rounded-md shadow-md shadow-gray-900 overflow-hidden">
+      <div className="fixed left-1/2 top-[8vh] transform -translate-x-1/2 w-1/2 h-10">
+        <section className="floating-bar relative bg-transparent flex items-center justify-evenly h-full w-full rounded-md shadow-md shadow-gray-900 overflow-hidden">
           {buttons.map((button,index)=>(
-            <div key={index}  className={`[&>span]:!text-[2rem] [&>span]:!text-purple-900 w-full h-1/3 flex items-center justify-center ${button.selected?'bg-fuchsia-200':'bg-transparent'} transition-all ease duration-300`} onClick={()=>handleChangeAdminPage(index)}>
+            <div key={index}  className={`[&>span]:!text-[2rem] [&>span]:!text-purple-900 h-full w-1/3 flex items-center justify-center ${button.selected?'bg-fuchsia-200':'bg-transparent'} transition-all ease duration-300`} onClick={()=>handleChangeAdminPage(index)}>
               <span
               className="material-symbols-outlined">{button.name}</span>
             </div>
           ))}
         </section>
       </div>
-      <div className="mt-[10vh] bg-green-100">
+      <div className="mt-[10vh]">
       {
         buttons.find(button=> button.selected).element
       }

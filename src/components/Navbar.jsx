@@ -46,10 +46,10 @@ const Navbar=()=>{
         className={
           `${windowWidth>=640 && 'w-8/10'} max-w-[900px] grow-1
           flex items-center justify-evenly
-          ${windowWidth<640 ? `absolute -right-[600px] top-9/10  h-[60vh]
+          ${windowWidth<640 ? `absolute -right-[600px] top-[20vh]  h-[60vh]
           flex flex-col items-center justify-evenly
             ${windowWidth<350 ? 'w-4/4':'w-3/4'} 
-          bg-fuchsia-100 rounded-bl-3xl`:'h-full'}
+          bg-linear-45 from-fuchsia-200 to-purple-200 rounded-l-3xl shadow-lg shadow-fuchsia-900`:'h-full'}
           ${windowWidth<640 && showSidebar?'[transform:translateX(-600px)]':null} 
           transition-transform ease-in-out duration-400`
         }>

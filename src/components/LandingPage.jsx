@@ -122,7 +122,7 @@ const LandingPage=()=>{
       <section className="flex flex-col md:flex-row md:items-center gap-6 md:gap-10 px-4 md:px-0 max-w-6xl mx-auto">
         <div
           id="text-lecture"
-          className="text-justify md:w-1/3 md:h-1/2 p-6 rounded-lg bg-fuchsia-50 text-fuchsia-800 font-semibold shadow-md"
+          className="text-justify md:w-1/3 md:h-1/2 p-6 rounded-lg bg-linear-45 from-fuchsia-300 to-purple-100 text-fuchsia-900 font-semibold shadow-md"
         >
           <p>
             Explorez des articles percutants sur le féminisme et ses luttes.

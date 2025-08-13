@@ -1,4 +1,26 @@
+import { useEffect, useRef } from "react";
+import "quill/dist/quill.snow.css";
+import Quill from "quill";
+
 const AdminCreateArticlePage=()=>{
+  const editorRef = useRef(null);
+  const quillInstance = useRef(null);  
+  useEffect(()=>{
+    const options={
+      modules:{
+        toolbar:true
+      },
+      placeholder:'Redigez votre article ici...',
+      theme:'snow'
+    };
+    if(!quillInstance.current && editorRef.current){
+      quillInstance.current=new Quill(editorRef.current,options)
+    }
+  },[]);
+  const handleSubmit=(formData)=>{
+    const delta=quillInstance.current.getContents();
+    console.log(delta);
+  }
   return(
     <div className="min-h-full w-full pt-8">
 
@@ -8,37 +30,35 @@ const AdminCreateArticlePage=()=>{
       </section>
 
       {/* formulaire */}
-      <form action=""
+      <form action={handleSubmit}
       className="w-full min-h-full flex flex-col items-center justify-start space-y-4 mt-2">
 
         {/* titre */}
-        <div className="w-full flex items-center justify-evenly">
+        <div className="w-full flex space-x-2 items-center justify-evenly">
           <label 
-          className="w-2/10"
+          className="w-min  font-extrabold text-xl text-nowrap"
           htmlFor="title">Titre <span className="text-[.8rem] text-red-500">*</span>
           </label>
           <input 
           type="text" 
           id="title"
-          className="w-7/10 ring-fuchsia-500 ring-2 rounded-md outline-none px-4 py-1 focus:ring-4 transition-all ease duration-200"
+          className="grow-1 ring-fuchsia-500 ring-2 rounded-md outline-none px-4 py-1 focus:ring-4 transition-all ease duration-200"
           placeholder="" />
         </div>
 
         {/* Sous-titre */}
-        <div className="w-full flex items-center justify-evenly">
+        <div className="w-full flex items-center justify-evenly space-x-2">
           <label 
-          className="w-3/10"
-          htmlFor="sub-title">Sous-titre <span className="text-[.8rem] text-red-500">*</span>
+          className="w-min font-extrabold text-xl text-nowrap"
+          htmlFor="subtitle">Sous-Titre <span className="text-[.8rem] text-red-500">*</span>
           </label>
-          <div className="w-6/10 h-20">
-            <textarea 
-            name="sub-title" 
-            className="w-full h-full ring-fuchsia-500 ring-2 rounded-md outline-none px-3 py-0 focus:ring-4 focus:py-1 transition-all ease duration-200"
-            id="sub-title"
-            placeholder="">
-            </textarea>
-          </div>
+          <input 
+          type="text" 
+          id="subtitle"
+          className=" grow-1 ring-fuchsia-500 ring-2 rounded-md outline-none px-4 py-1 focus:ring-4 transition-all ease duration-200"
+          placeholder="" />
         </div>
+
         {/* pieces jointes */}
         <div>
 
@@ -46,15 +66,14 @@ const AdminCreateArticlePage=()=>{
 
         {/* Article content */}
         <div 
-        className="flex flex-col w-full min-h-[70vh] px-4">
+        className="flex flex-col w-full min-h-[70vh]">
           <label 
           className="font-extrabold text-xl"
           htmlFor="content">Article <span className="text-[.8rem] text-red-500">*</span></label>
-          <textarea 
-          name="content" 
-          id="content" 
-          className="w-full h-[69vh] outline-none border-t-2 pt-4 border-fuchsia-500"
-          placeholder="Redigez votre article ici"></textarea>
+          <div 
+          className="w-full !h-[69vh] !border-2 !border-fuchsia-400 !rounded-b-lg" 
+          ref={editorRef}>
+          </div>
         </div>
         <button 
         className="bg-linear-to-r from-fuchsia-400 to-purple-400 text-gray-50 px-8 py-2 rounded-lg shadow-md"

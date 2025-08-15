@@ -1,6 +1,6 @@
 import { useEffect , useContext , useState } from "react";
 import { NavbarContext } from "./App";
-
+import '../../index.css';
 
 const ArticlesPage=()=>{
   const [articles ,setArticles]=useState([]);
@@ -43,9 +43,16 @@ const ArticlesPage=()=>{
               className="w-full h-48 object-cover"
             />
             <div className="p-4 flex-1 flex flex-col">
-              <span className="text-xs font-semibold text-white px-2 py-1 rounded bg-fuchsia-400 w-fit">
-                {article.category}
-              </span>
+              <div className="w-1/3 flex items-center justify-between px-2 py-1 bg-fuchsia-400 rounded-full">
+                <div className="flex items-center justify-between space-x-0.5 !text-gray-100">
+                  <span className="">{article.read}</span>
+                  <span className="material-symbols-outlined">visibility</span>
+                </div>
+                <div className="flex items-center justify-between space-x-0.5 !text-gray-100">
+                  <span className="">{article.likes}</span>
+                  <span className="material-symbols-outlined" style={{'--FILL':1}}>favorite</span>
+                </div>
+              </div>
               <h2 className="mt-2 text-lg font-bold">{article.title}</h2>
               <p className="text-sm text-gray-600 mt-1 flex-1">
                 {article.summary}

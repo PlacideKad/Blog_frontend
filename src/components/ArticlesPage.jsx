@@ -1,9 +1,11 @@
 import { useEffect , useContext , useState } from "react";
 import { NavbarContext } from "./App";
+import { useNavigate } from "react-router-dom";
 import '../../index.css';
 
 const ArticlesPage=()=>{
   const [articles ,setArticles]=useState([]);
+  const navigate=useNavigate();
   // const [pageNumber,setPageNumber]=useState(1); sera utile pour la pagination
   const {handleButtonActive, setButtons}=useContext(NavbarContext);
   
@@ -35,6 +37,7 @@ const ArticlesPage=()=>{
         {articles.map((article) => (
           <div
             key={article._id}
+            onClick={()=>{navigate(`/articles/${article._id}`)}}
             className="bg-white rounded-2xl shadow-md hover:shadow-xl transition overflow-hidden flex flex-col"
           >
             <img
@@ -43,7 +46,7 @@ const ArticlesPage=()=>{
               className="w-full h-48 object-cover"
             />
             <div className="p-4 flex-1 flex flex-col">
-              <div className="w-1/3 flex items-center justify-between px-2 py-1 bg-fuchsia-400 rounded-full">
+              <div className="w-fit flex items-center justify-between px-2 py-2 bg-fuchsia-400 rounded-full space-x-5">
                 <div className="flex items-center justify-between space-x-0.5 !text-gray-100">
                   <span className="">{article.read}</span>
                   <span className="material-symbols-outlined">visibility</span>

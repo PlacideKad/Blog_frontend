@@ -10,6 +10,7 @@ import ProfilePage from "./ProfilePage";
 import AdminDashboard from "./AdminDashboard";
 import Login from "./Login";
 import Footer from "./Footer";
+import ReadArticlePage from "./ReadArticlePage";
 
 const DefaultPage=()=>{
   const location=useLocation();
@@ -72,6 +73,7 @@ const DefaultPage=()=>{
         <Route path="/" element={<LandingPage/>}></Route>
         <Route path="/home" element={<LandingPage/>}></Route>
         <Route path="/articles" element={<ArticlesPage/>}></Route>
+        <Route path="/articles/:id" element={<ReadArticlePage/>}></Route>
         <Route path="/dashboard" element={<AdminDashboard/>}></Route>
         <Route path="/about" element={<AboutPage/>}></Route>
         <Route path="/login" element={<Login/>}></Route>

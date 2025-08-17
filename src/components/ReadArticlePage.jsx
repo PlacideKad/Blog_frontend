@@ -99,16 +99,16 @@ const ReadArticlePage=()=>{
             <div className="w-9/10 flex flex-col" key={index}>
               <div className="w-full min-h-15 max-h-40 h-auto flex items-start justify-evenly">
                 <img className="w-1/10 [aspect-ratio:1/1] rounded-full" src={comment.picture} alt="author_profile_picture" />
-                <span className="w-8/10 h-full py-1 px-2 bg-fuchsia-100 rounded-lg">{comment.content}</span>
+                <span className="w-8/10 h-full py-1 px-2 bg-purple-100 rounded-lg">{comment.content}</span>
               </div>
               <div className="w-95/100 flex items-center space-x-2 justify-end">
                 <div className="flex items-center">
                   <span className="font-bold text-[.9rem]">0</span>
-                  <span className="material-symbols-outlined !text-[1rem]">favorite</span>
+                  <span className="material-symbols-outlined !text-[1rem] !text-purple-400">favorite</span>
                 </div>
                 <div className="flex items-center">
                   <span className="font-bold text-[.9rem]">0</span>
-                  <span className="material-symbols-outlined !text-[1rem]">reply</span>
+                  <span className="material-symbols-outlined !text-[1rem] !text-purple-400">reply</span>
                 </div>
               </div>
             </div>

@@ -16,11 +16,16 @@ const ReadArticlePage=()=>{
   const [isPressed,setIsPressed]=useState(false);
   const {isAuthenticated,user,backendURL}=useContext(AuthenticatedContext);
   const [isAnimated,setIsAnimated]=useState(false);
+  const [triggerComments,setTriggerComments]=useState(false);
 
   useEffect(()=>{
     const fetchArticleData=async (article_id)=>{
       try{
-        const res=await fetch(`${backendURL}/articles/${article_id}`);
+        const res=await fetch(`${backendURL}/articles/${article_id}`,{
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:isAuthenticated?JSON.stringify({user_id:user._id}):null
+        });
         if(!res) throw new Error('Error happened when fetching the article page content');
         const resJson=await res.json();
         if(resJson.found){
@@ -34,7 +39,7 @@ const ReadArticlePage=()=>{
       }
     }
     (async()=>{await fetchArticleData(id)})();
-  },[]);
+  },[triggerComments]);
   useEffect(()=>{
     if(editorRef.current){
       const options={
@@ -50,10 +55,47 @@ const ReadArticlePage=()=>{
     }
   },[article]);
 
-  const handleNewComment=()=>{
-    console.log('hello');
-  }
+  useEffect(()=>{
+    if(likes.includes(user._id)) setIsLiked(true);
+  },[likes,user]);
 
+  const handleNewComment=async (formData)=>{
+    const content_=formData.get('newComment');
+    const content=content_.trim();
+    if(content){
+      const author_id=user._id;
+      const parent_id=id;
+      const parentModel='article';
+      const data={content,author_id,parent_id,parentModel};
+      try{
+        const res=await fetch(`${backendURL}/comment`,{
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify(data)
+        });
+        setTriggerComments(prev=>!prev);
+      }catch(err){
+        console.log(err);
+      }
+    }
+  }
+  
+  const handleNewLike=async ()=>{
+    if(isAuthenticated){
+      try{
+        const res=await fetch(`${backendURL}/articles/${id}/like`,{
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({id:user._id})
+        });
+        const resJson=await res.json();
+        setIsLiked(resJson.userLiked);
+        setLikes(resJson.likes);
+      }catch(err){
+        console.log(err);
+      }
+    }else setIsAnimated(true)
+  }
   return(
     <div className="flex flex-col items-center justify-start min-h-[50vh] w-full space-y-4">
       {/* cover */}
@@ -76,13 +118,13 @@ const ReadArticlePage=()=>{
       <section className="w-full mt-2 p-1 border-t-2 border-fuchsia-400">
         {/* Check if the user is authenticated */}
         {!isAuthenticated&&
-        <div onAnimationEnd={()=>{setIsAnimated(false)}} className={`mb-2 italic text-sm w-full h-20 rounded-xl flex items-center bg-yellow-400 justify-center p-2 ${isAnimated&&'shake-div'} shadow shadow-neutral-400`}> Connectez-vous à votre compte pour pouvoir liker et commenter</div>}
+        <div onAnimationEnd={()=>{setIsAnimated(false)}} className={`mb-2 italic text-sm w-full h-20 rounded-xl flex items-center bg-linear-45 from-purple-400 to-fuchsia-400 text-neutral-100 justify-center p-2 color-animation ${isAnimated&&'shake-div'} shadow shadow-neutral-400`}> Connectez-vous à votre compte pour pouvoir liker et commenter</div>}
         {/* likes & comments */}
         <div className="flex items-center space-x-2">
           {/* likes number */}
           <div className="w-fit flex items-center">
             <span className="font-bold">{likes.length}</span>
-            <div onClick={()=>{isAuthenticated?setIsLiked(prev=>!prev):setIsAnimated(true)}} className="cursor-pointer h-full grid content-center">
+            <div onClick={handleNewLike} className="cursor-pointer h-full grid content-center">
               <span className="material-symbols-outlined text-fuchsia-400 !text-[2rem]" style={{'--FILL':isLiked?1:0}}>
                 favorite
               </span>
@@ -136,7 +178,8 @@ const ReadArticlePage=()=>{
           onMouseUp={()=>{setIsPressed(false)}}
           onMouseDown={()=>{setIsPressed(true)}}
           onTouchStart={()=>{setIsPressed(true)}}
-          onTouchEnd={()=>{setIsPressed(false)}}>
+          onTouchEnd={()=>{setIsPressed(false)}}
+          >
             <span>Envoyer</span>
             <span className="material-symbols-outlined">send</span>
           </button>

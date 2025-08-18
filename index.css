@@ -37,7 +37,7 @@
 .shake-div{
   animation-name: shake;
   animation-timing-function: linear;
-  animation-duration: .5s;
+  animation-duration: .3s;
   animation-direction: normal;
   animation-iteration-count: 1;
 }

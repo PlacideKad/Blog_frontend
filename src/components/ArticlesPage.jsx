@@ -49,7 +49,7 @@ const ArticlesPage=()=>{
             <div className="p-4 flex-1 flex flex-col">
               <div className="w-fit flex items-center justify-between px-2 py-2 bg-fuchsia-400 rounded-full space-x-5">
                 <div className="flex items-center justify-between space-x-0.5 !text-gray-100">
-                  <span className="">{article.read}</span>
+                  <span className="">{article.read?.length}</span>
                   <span className="material-symbols-outlined">visibility</span>
                 </div>
                 <div className="flex items-center justify-between space-x-0.5 !text-gray-100">

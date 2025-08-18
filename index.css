@@ -26,3 +26,18 @@
   'opsz' 24;
   transition: all ease 200ms;
 }
+@keyframes shake{
+  0%{transform: translateX(0px)}
+  20%{transform: translateX(40px);}
+  40%{transform: translateX(-40px)}
+  60%{transform: translateX(20px)}
+  80%{transform: translateX(-20px)}
+  100%{transform: translateX(0px)}
+}
+.shake-div{
+  animation-name: shake;
+  animation-timing-function: linear;
+  animation-duration: .5s;
+  animation-direction: normal;
+  animation-iteration-count: 1;
+}

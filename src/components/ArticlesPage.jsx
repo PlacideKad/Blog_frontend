@@ -41,7 +41,7 @@ const ArticlesPage=()=>{
             className="bg-white rounded-2xl shadow-md hover:shadow-xl transition overflow-hidden flex flex-col"
           >
             <img
-              src={article.cover.link}
+              src={article.cover?.link}
               alt={article.title}
               className="w-full h-48 object-cover"
             />
@@ -52,7 +52,7 @@ const ArticlesPage=()=>{
                   <span className="material-symbols-outlined">visibility</span>
                 </div>
                 <div className="flex items-center justify-between space-x-0.5 !text-gray-100">
-                  <span className="">{article.likes}</span>
+                  <span className="">{article.likes?.length}</span>
                   <span className="material-symbols-outlined" style={{'--FILL':1}}>favorite</span>
                 </div>
               </div>

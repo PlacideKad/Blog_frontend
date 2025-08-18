@@ -131,7 +131,7 @@ const ReadArticlePage=()=>{
           <textarea 
           className="w-full h-30 px-2 py-1 rounded-2xl outline-none ring-1 ring-fuchsia-900 focus:ring-fuchsia-400 focus:ring-3 transition-all ease duration-200" 
           name="newComment" id="newComment" 
-          placeholder="Ajouter un commentaire..." disabled={isAuthenticated?'false':'true'}></textarea>
+          placeholder="Ajouter un commentaire..." disabled={isAuthenticated?false:true}></textarea>
           <button className={`px-4 py-2 bg-linear-to-r from-fuchsia-400 to-purple-500 text-white rounded-lg ${isAuthenticated&& `${isPressed?'scale-97':'shadow-md shadow-neutral-700'}`} transition-all ease duration-200 flex items-center space-x-1`}
           onMouseUp={()=>{setIsPressed(false)}}
           onMouseDown={()=>{setIsPressed(true)}}

@@ -14,13 +14,13 @@ const ReadArticlePage=()=>{
   const [likes,setLikes]=useState([]);
   const [isLiked,setIsLiked]=useState(false);//when we fetch article from the data base, we must verify if the user has liked this article or not and accordingly setIsLiked inside the useEffect
   const [isPressed,setIsPressed]=useState(false);
-  const {isAuthenticated,user}=useContext(AuthenticatedContext);
+  const {isAuthenticated,user,backendURL}=useContext(AuthenticatedContext);
   const [isAnimated,setIsAnimated]=useState(false);
 
   useEffect(()=>{
     const fetchArticleData=async (article_id)=>{
       try{
-        const res=await fetch(`http://localhost:3000/api/articles/${article_id}`);
+        const res=await fetch(`${backendURL}/articles/${article_id}`);
         if(!res) throw new Error('Error happened when fetching the article page content');
         const resJson=await res.json();
         if(resJson.found){
@@ -76,7 +76,7 @@ const ReadArticlePage=()=>{
       <section className="w-full mt-2 p-1 border-t-2 border-fuchsia-400">
         {/* Check if the user is authenticated */}
         {!isAuthenticated&&
-        <span onAnimationEnd={()=>{setIsAnimated(false)}} className={`italic text-sm bg-yellow-400 w-full h-fit block p-2 ${isAnimated&&'shake-div'}`}>Connectez-vous à votre compte pour pouvoir liker et commenter</span>}
+        <div onAnimationEnd={()=>{setIsAnimated(false)}} className={`mb-2 italic text-sm w-full h-20 rounded-xl flex items-center bg-yellow-400 justify-center p-2 ${isAnimated&&'shake-div'} shadow shadow-neutral-400`}> Connectez-vous à votre compte pour pouvoir liker et commenter</div>}
         {/* likes & comments */}
         <div className="flex items-center space-x-2">
           {/* likes number */}

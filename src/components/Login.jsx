@@ -3,12 +3,11 @@ import xImg from '../img/loginPage/icons8-x.svg';
 import ButtonClikable from './utils/ButtonClikable';
 import Title from './utils/Title';
 import { useContext } from 'react';
-import { WindowSizeContext } from './App';
+import { WindowSizeContext , AuthenticatedContext } from './App';
 
 const Login=()=>{
   const {windowWidth}=useContext(WindowSizeContext);
-
-  const backendURL='http://localhost:3000/api'
+  const {backendURL}=useContext(AuthenticatedContext);
   const handleAuth=async (namesocial)=>{
     window.location.href=`${backendURL}/auth/${namesocial}`;
   }

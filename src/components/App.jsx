@@ -47,6 +47,7 @@ const NavbarContext=createContext();
 const AuthenticatedContext=createContext();
 const WindowSizeContext=createContext();
 const App=()=>{
+  const backendURL='http://localhost:3000/api';
   const [buttons,setButtons]=useState(navbar_buttons);
   const [showSidebar,setShowSidebar]=useState(false);
   const [showNavbar,setShowNavbar]=useState(true);
@@ -62,7 +63,7 @@ const App=()=>{
   },[]);
   return(
     <Router>
-      <AuthenticatedContext.Provider value={{isAuthenticated,setIsAuthenticated,user,setUser}}>
+      <AuthenticatedContext.Provider value={{isAuthenticated,setIsAuthenticated,user,setUser,backendURL}}>
         <WindowSizeContext.Provider value={{windowWidth}}>
           <NavbarContext.Provider value={{buttons,setButtons,handleButtonActive,showSidebar,setShowSidebar,setShowNavbar,showNavbar}}>
             {showNavbar && <Navbar/>}

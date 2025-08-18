@@ -1,4 +1,5 @@
-import { useEffect, useRef , useState} from "react";
+import { useEffect, useRef , useState ,useContext} from "react";
+import { AuthenticatedContext } from "./App";
 import "quill/dist/quill.snow.css";
 import Quill from "quill";
 
@@ -9,7 +10,7 @@ const AdminCreateArticlePage=()=>{
   const [subtitle,setSubtitle]=useState('');
   const [isReadyToSubmit,setIsReadyToSubmit]=useState(false);
   const [isPressed,setIsPressed]=useState(false);
-
+  const {backendURL}=useContext(AuthenticatedContext);
   useEffect(()=>{
     const options={
       modules:{
@@ -36,7 +37,7 @@ const AdminCreateArticlePage=()=>{
       if(subtitle && subtitle.trim()) data.summary=subtitle.trim();
       data.content=JSON.stringify(delta);
       try{
-        const res=await fetch('http://localhost:3000/api/admin/article',{
+        const res=await fetch(`${backendURL}/admin/article`,{
           method:'POST',
           headers:{'Content-Type':'application/json'},
           body:JSON.stringify(data)

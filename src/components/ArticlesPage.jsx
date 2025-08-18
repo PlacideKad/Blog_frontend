@@ -1,5 +1,5 @@
 import { useEffect , useContext , useState } from "react";
-import { NavbarContext } from "./App";
+import { NavbarContext ,AuthenticatedContext } from "./App";
 import { useNavigate } from "react-router-dom";
 import '../../index.css';
 
@@ -8,6 +8,7 @@ const ArticlesPage=()=>{
   const navigate=useNavigate();
   // const [pageNumber,setPageNumber]=useState(1); sera utile pour la pagination
   const {handleButtonActive, setButtons}=useContext(NavbarContext);
+  const {backendURL}=useContext(AuthenticatedContext);
   
   useEffect(()=>{
     setButtons((prev)=>handleButtonActive(prev,0));
@@ -16,7 +17,7 @@ const ArticlesPage=()=>{
   useEffect(()=>{
     const getArticles=async()=>{
       try{
-        const res=await fetch('http://localhost:3000/api/articles');
+        const res=await fetch(`${backendURL}/articles`);
         if(!res.ok) throw new Error('Error when fetching the articles');
         const resJson=await res.json();
         setArticles(resJson);

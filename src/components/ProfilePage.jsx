@@ -6,7 +6,7 @@ import ButtonClikable from "./utils/ButtonClikable";
 
 const ProfilePage=()=>{
   const {windowWidth}=useContext(WindowSizeContext);
-  const {setIsAuthenticated , user,setUser}=useContext(AuthenticatedContext);
+  const {setIsAuthenticated , user,setUser,backendURL}=useContext(AuthenticatedContext);
   const [nameEdited,setNameEdited]=useState(false);
   const [nameInput,setNameInput]=useState('');
   const [famNameInput,setFamNameInput]=useState('');
@@ -30,7 +30,7 @@ const ProfilePage=()=>{
   },[nameInput,famNameInput,nameEdited,famNameEdited])
   const handleDisconnect=async ()=>{
     try{
-      const res=await fetch('http://localhost:3000/api/logout',{
+      const res=await fetch(`${backendURL}/logout`,{
         method:'GET',
         credentials:'include'
       });
@@ -50,7 +50,7 @@ const ProfilePage=()=>{
       if(given_name && given_name.trim()) data.given_name=given_name.trim();
       if(family_name && family_name.trim()) data.family_name=family_name.trim();
       try{
-        const res=await fetch('http://localhost:3000/api/user/updateinfos',{
+        const res=await fetch(`${backendURL}/user/updateinfos`,{
           method:'PATCH',
           headers:{'Content-Type':'application/json'},
           body:JSON.stringify({...data,id:user.id})
@@ -76,7 +76,7 @@ const ProfilePage=()=>{
         className="w-2/5 min-w-[150px] max-w-[270px] [aspect-ratio:1/1] rounded-full sm:rounded-4xl bg-fuchsia-400 flex items-center justify-center">
           <img
             className="w-9/10 sm:w-95/100 [aspect-ratio:1/1] rounded-full sm:rounded-4xl object-cover"
-            src={user.picture && `http://localhost:3000/api/user/avatar/?url=${user.picture}`}
+            src={user.picture && `${backendURL}/user/avatar/?url=${user.picture}`}
             alt="profile picture"
           />
         </div>

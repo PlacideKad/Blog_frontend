@@ -15,13 +15,13 @@ import ReadArticlePage from "./ReadArticlePage";
 const DefaultPage=()=>{
   const location=useLocation();
   const {setShowSidebar,showSidebar,setShowNavbar,showNavbar}=useContext(NavbarContext);
-  const {setIsAuthenticated,setUser}=useContext(AuthenticatedContext);
+  const {setIsAuthenticated,setUser,backendURL}=useContext(AuthenticatedContext);
   const [userId,setUserId]=useState(null);
 
   useEffect(()=>{
     const checkUser=async()=>{
       try{
-        const res=await fetch('http://localhost:3000/api/user',{
+        const res=await fetch(`${backendURL}/user`,{
           method:'GET',
           credentials:'include'
         });
@@ -43,7 +43,7 @@ const DefaultPage=()=>{
     if(userId){
       const getUser=async()=>{
         try{
-          const res=await fetch('http://localhost:3000/api/user',{
+          const res=await fetch(`${backendURL}/user`,{
             method:'POST',
             headers:{'Content-Type':'application/json'},
             body:JSON.stringify({id:userId})

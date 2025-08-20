@@ -1,12 +1,16 @@
 import { useContext ,useEffect,useState } from "react";
-import { WindowSizeContext, AuthenticatedContext } from "./App";
+import { GlobalAppContext } from "./App";
 import Title from "./utils/Title";
 import { useNavigate } from "react-router-dom";
 import ButtonClikable from "./utils/ButtonClikable";
 
 const ProfilePage=()=>{
-  const {windowWidth}=useContext(WindowSizeContext);
-  const {setIsAuthenticated , user,setUser,backendURL}=useContext(AuthenticatedContext);
+  const {
+    setIsAuthenticated,
+    user,
+    setUser,
+    backendURL,
+    windowWidth}=useContext(GlobalAppContext);
   const [nameEdited,setNameEdited]=useState(false);
   const [nameInput,setNameInput]=useState('');
   const [famNameInput,setFamNameInput]=useState('');

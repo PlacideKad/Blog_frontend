@@ -1,5 +1,5 @@
 import { useContext, useEffect , useState } from "react";
-import { NavbarContext , AuthenticatedContext } from "./App";
+import {GlobalAppContext } from "./App";
 import { Routes , Route , useLocation } from "react-router-dom";
 
 import LandingPage from "./LandingPage";
@@ -14,8 +14,14 @@ import ReadArticlePage from "./ReadArticlePage";
 
 const DefaultPage=()=>{
   const location=useLocation();
-  const {setShowSidebar,showSidebar,setShowNavbar,showNavbar}=useContext(NavbarContext);
-  const {setIsAuthenticated,setUser,backendURL}=useContext(AuthenticatedContext);
+  const {
+    setShowSidebar,
+    showSidebar,
+    setShowNavbar
+    ,showNavbar,
+    setIsAuthenticated,
+    setUser,
+    backendURL}=useContext(GlobalAppContext);
   const [userId,setUserId]=useState(null);
 
   useEffect(()=>{

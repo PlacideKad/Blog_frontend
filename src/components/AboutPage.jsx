@@ -1,8 +1,8 @@
 import { useEffect , useContext } from "react";
-import { NavbarContext } from "./App";
+import { GlobalAppContext } from "./App";
 
 const AboutPage=()=>{
-  const {handleButtonActive, setButtons}=useContext(NavbarContext);
+  const {handleButtonActive, setButtons}=useContext(GlobalAppContext);
   useEffect(()=>{
     setButtons((prev)=>handleButtonActive(prev,2));
   },[])

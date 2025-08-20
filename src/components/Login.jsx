@@ -3,11 +3,10 @@ import xImg from '../img/loginPage/icons8-x.svg';
 import ButtonClikable from './utils/ButtonClikable';
 import Title from './utils/Title';
 import { useContext } from 'react';
-import { WindowSizeContext , AuthenticatedContext } from './App';
+import { GlobalAppContext } from './App';
 
 const Login=()=>{
-  const {windowWidth}=useContext(WindowSizeContext);
-  const {backendURL}=useContext(AuthenticatedContext);
+  const {windowWidth,backendURL}=useContext(GlobalAppContext);
   const handleAuth=async (namesocial)=>{
     window.location.href=`${backendURL}/auth/${namesocial}`;
   }

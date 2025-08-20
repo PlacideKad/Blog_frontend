@@ -1,5 +1,5 @@
 import { useEffect, useContext, useState } from "react";
-import { NavbarContext, WindowSizeContext } from "./App";
+import { GlobalAppContext} from "./App";
 
 import contestWomen1 from "../img/landingPage/svg/Women's Day protest-cuate.svg";
 import contestWomen2 from "../img/landingPage/svg/Women's Day protest-rafiki.svg";
@@ -23,8 +23,7 @@ const LandingPage=()=>{
   ];
   const fillArray = () => [...feminists, ...feminists, ...feminists];
 
-  const {handleButtonActive, setButtons}=useContext(NavbarContext);
-  const {windowWidth}=useContext(WindowSizeContext);
+  const {handleButtonActive, setButtons,windowWidth}=useContext(GlobalAppContext);
   const [indexFocus,setIndexFocus]=useState(5);
   const [counter,setCounter]=useState(0);
   const [isCarousselMoving,setIsCarousselMoving]=useState(true);

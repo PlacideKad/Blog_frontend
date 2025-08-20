@@ -1,5 +1,5 @@
 import { useEffect , useContext , useState } from "react";
-import { NavbarContext ,AuthenticatedContext } from "./App";
+import { GlobalAppContext } from "./App";
 import { useNavigate } from "react-router-dom";
 import '../../index.css';
 
@@ -7,8 +7,7 @@ const ArticlesPage=()=>{
   const [articles ,setArticles]=useState([]);
   const navigate=useNavigate();
   // const [pageNumber,setPageNumber]=useState(1); sera utile pour la pagination
-  const {handleButtonActive, setButtons}=useContext(NavbarContext);
-  const {backendURL}=useContext(AuthenticatedContext);
+  const {handleButtonActive, setButtons,backendURL}=useContext(GlobalAppContext);
   
   useEffect(()=>{
     setButtons((prev)=>handleButtonActive(prev,0));

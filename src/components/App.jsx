@@ -42,10 +42,7 @@ const navbar_buttons=[{
   icon:'info',
   active:false}
 ];
-
-const NavbarContext=createContext();
-const AuthenticatedContext=createContext();
-const WindowSizeContext=createContext();
+const GlobalAppContext=createContext();
 const App=()=>{
   const backendURL='http://localhost:3000/api';
   const [buttons,setButtons]=useState(navbar_buttons);
@@ -63,16 +60,25 @@ const App=()=>{
   },[]);
   return(
     <Router>
-      <AuthenticatedContext.Provider value={{isAuthenticated,setIsAuthenticated,user,setUser,backendURL}}>
-        <WindowSizeContext.Provider value={{windowWidth}}>
-          <NavbarContext.Provider value={{buttons,setButtons,handleButtonActive,showSidebar,setShowSidebar,setShowNavbar,showNavbar}}>
-            {showNavbar && <Navbar/>}
-            <DefaultPage/>
-          </NavbarContext.Provider>
-        </WindowSizeContext.Provider>
-      </AuthenticatedContext.Provider>
+      <GlobalAppContext.Provider value={{
+        isAuthenticated,
+        setIsAuthenticated,
+        user,
+        setUser,
+        backendURL,
+        windowWidth,
+        buttons,
+        setButtons,
+        handleButtonActive,
+        showSidebar,
+        setShowSidebar,
+        setShowNavbar,
+        showNavbar}}>
+          {showNavbar && <Navbar/>}
+          <DefaultPage/>
+      </GlobalAppContext.Provider>
     </Router>
   );
 }
 export default App;
-export {NavbarContext,AuthenticatedContext,WindowSizeContext};
+export {GlobalAppContext};

@@ -1,5 +1,5 @@
 import { useEffect, useRef , useState ,useContext} from "react";
-import { AuthenticatedContext } from "./App";
+import { GlobalAppContext } from "./App";
 import "quill/dist/quill.snow.css";
 import Quill from "quill";
 
@@ -10,7 +10,7 @@ const AdminCreateArticlePage=()=>{
   const [subtitle,setSubtitle]=useState('');
   const [isReadyToSubmit,setIsReadyToSubmit]=useState(false);
   const [isPressed,setIsPressed]=useState(false);
-  const {backendURL}=useContext(AuthenticatedContext);
+  const {backendURL}=useContext(GlobalAppContext);
   useEffect(()=>{
     const options={
       modules:{

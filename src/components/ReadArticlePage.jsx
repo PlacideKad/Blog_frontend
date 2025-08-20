@@ -1,6 +1,6 @@
 import { useLocation , useNavigate} from "react-router-dom";
 import { useEffect , useState , useRef , useContext} from "react";
-import {AuthenticatedContext} from './App';
+import {GlobalAppContext} from './App';
 import "quill/dist/quill.snow.css";
 import Quill from "quill";
 
@@ -14,7 +14,7 @@ const ReadArticlePage=()=>{
   const [likes,setLikes]=useState([]);
   const [isLiked,setIsLiked]=useState(false);//when we fetch article from the data base, we must verify if the user has liked this article or not and accordingly setIsLiked inside the useEffect
   const [isPressed,setIsPressed]=useState(false);
-  const {isAuthenticated,user,backendURL}=useContext(AuthenticatedContext);
+  const {isAuthenticated,user,backendURL}=useContext(GlobalAppContext);
   const [isAnimated,setIsAnimated]=useState(false);
   const [triggerComments,setTriggerComments]=useState(false);
 

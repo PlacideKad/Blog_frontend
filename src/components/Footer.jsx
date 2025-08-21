@@ -1,8 +1,26 @@
 import xIcon from '../img/footer/icons8-x.svg';
 import instaIcon from '../img/footer/instagram-svgrepo-com.svg';
 import tiktokIcon from '../img/footer/tiktok-svgrepo-com.svg';
+import { useEffect , useState , useContext } from 'react';
+import { GlobalAppContext } from './App';
+import { Link } from 'react-router-dom';
 
 const Footer=()=>{
+  const [recentTitles,setRecentTitles]=useState([]);
+  const {backendURL}=useContext(GlobalAppContext);
+  useEffect(()=>{
+    const getRecentTitles=async()=>{
+      try{
+        const res=await fetch(`${backendURL}/articles/titles`);
+        if(!res.ok) throw new Error('Error occured when fetching articles titles');
+        const resJson=await res.json();
+        setRecentTitles(resJson.titles);
+      }catch(err){
+        console.log(err);
+      }
+    }
+    (async()=>{await getRecentTitles()})();
+  },[])
   return (
     <footer className="bg-fuchsia-900 text-gray-300 py-10 mt-12">
       <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -10,23 +28,20 @@ const Footer=()=>{
         {/* Section 1 : Derniers articles */}
         <div>
           <h3 className="text-lg font-semibold text-white mb-4">Derniers articles</h3>
-          <ul className="space-y-2 text-sm">
-            <li>
-              <a href="#" className="hover:text-pink-400 transition">
-                Voyager seule en Italie
-              </a>
-            </li>
-            <li>
-              <a href="#" className="hover:text-pink-400 transition">
-                Secrets d’un pain croustillant
-              </a>
-            </li>
-            <li>
-              <a href="#" className="hover:text-pink-400 transition">
-                10 livres qui m’ont marquée
-              </a>
-            </li>
-          </ul>
+          {
+            recentTitles.length>0&&
+            <ul className="space-y-2 text-sm">
+            {
+              recentTitles.map((title,key)=>(
+              <li key={key}>
+                <Link to={`/articles/${title._id}`} className="hover:text-pink-400 transition">
+                  {title.title}
+                </Link>
+              </li>
+              ))
+            }
+            </ul>
+          }
         </div>
 
         {/* Section 2 : Réseaux sociaux */}

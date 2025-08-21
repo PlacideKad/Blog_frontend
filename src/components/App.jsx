@@ -2,6 +2,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { useState , createContext , useEffect} from "react";
 import DefaultPage from "./DefaultPage";
 import Navbar from "./Navbar";
+import ScrollToTop from "./utils/ScrollToTop";
 
 const handleButtonActive=(buttons_list,index=null)=>{
   `
@@ -60,6 +61,7 @@ const App=()=>{
   },[]);
   return(
     <Router>
+      <ScrollToTop/>
       <GlobalAppContext.Provider value={{
         isAuthenticated,
         setIsAuthenticated,

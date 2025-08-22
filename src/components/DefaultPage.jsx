@@ -8,9 +8,11 @@ import ArticlesPage from "./ArticlesPage";
 import AboutPage from "./AboutPage";
 import ProfilePage from "./ProfilePage";
 import AdminDashboard from "./AdminDashboard";
+import AdminEditArticle from "./utils/AdminEditArticle";
 import Login from "./Login";
 import Footer from "./Footer";
 import ReadArticlePage from "./ReadArticlePage";
+
 
 const DefaultPage=()=>{
   const location=useLocation();
@@ -41,7 +43,7 @@ const DefaultPage=()=>{
       }
     }
     (async()=>{await checkUser()})()
-    setShowNavbar(!['login','profile','dashboard'].includes(location.pathname.split('/')[1]));
+    setShowNavbar(!['login','profile','dashboard','edit'].includes(location.pathname.split('/')[1]));
     setShowSidebar(false);
   },[location]);
 
@@ -84,6 +86,7 @@ const DefaultPage=()=>{
         <Route path="/about" element={<AboutPage/>}></Route>
         <Route path="/login" element={<Login/>}></Route>
         <Route path="/profile" element={<ProfilePage/>}></Route>
+        <Route path="/edit/:id" element={<AdminEditArticle/>}></Route>
       </Routes>
       {showNavbar && <Footer/> }
     </div>

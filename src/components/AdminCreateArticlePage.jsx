@@ -10,6 +10,7 @@ const AdminCreateArticlePage=()=>{
   const [subtitle,setSubtitle]=useState('');
   const [isReadyToSubmit,setIsReadyToSubmit]=useState(false);
   const [isPressed,setIsPressed]=useState(false);
+  const [isSavePressed,setIsSavePressed]=useState(false);
   const {backendURL}=useContext(GlobalAppContext);
   useEffect(()=>{
     const options={
@@ -51,8 +52,7 @@ const AdminCreateArticlePage=()=>{
     }
   }
   return(
-    <div className="min-h-full w-full md:px-16 lg:px-24 pt-8">
-
+    <div className="h-full w-full">
       {/* nota */}
       <section className="text-neutral-400 text-[.8rem]">
         Les champs marqués de ( <span className="text-red-500">*</span> ) sont obligatoires.
@@ -110,13 +110,27 @@ const AdminCreateArticlePage=()=>{
           ref={editorRef}>
           </div>
         </div>
-        <button 
-        onMouseDown={()=>{setIsPressed(true)}}
-        onMouseUp={()=>{setIsPressed(false)}}
-        onTouchStart={()=>{setIsPressed(true)}}
-        onTouchEnd={()=>{setIsPressed(false)}}
-        className={`bg-linear-to-r from-fuchsia-400 to-purple-400 text-gray-50 px-8 py-2 rounded-lg ${!isReadyToSubmit?'opacity-30':isPressed?'scale-97 opacity-100':'shadow-lg opacity-100'}`}
-        type="submit">Publier</button>
+        <div className="flex flex-col md: md:flex-row md:justify-evenly space-y-2 items-center justify-evenly w-2/5 md:mb-15 mb-6">
+          <button 
+          onMouseDown={()=>{setIsPressed(true)}}
+          onMouseUp={()=>{setIsPressed(false)}}
+          onTouchStart={()=>{setIsPressed(true)}}
+          onTouchEnd={()=>{setIsPressed(false)}}
+          className={`bg-linear-to-r  flex items-center justify-evenly from-fuchsia-400 to-purple-400 text-gray-50 px-8 py-2 rounded-lg ${!isReadyToSubmit?'opacity-30':isPressed?'scale-97 cursor-pointer opacity-100':'shadow-lg cursor-pointer opacity-100'}`}
+          type="submit">
+            <span>Publier</span>
+            <span className="material-symbols-outlined">ios_share</span>
+          </button>
+          <div 
+          onMouseDown={()=>{setIsSavePressed(true)}}
+          onMouseUp={()=>{setIsSavePressed(false)}}
+          onTouchStart={()=>{setIsSavePressed(true)}}
+          onTouchEnd={()=>{setIsSavePressed(false)}}
+          className={`px-4 py-2 flex items-center justify-evenly rounded-lg ring-2 ring-purple-400 ${!isReadyToSubmit?'opacity-30':isSavePressed?'scale-97 cursor-pointer opacity-100':'shadow-lg cursor-pointer opacity-100'}`}>
+            <span>Enregistrer</span>
+            <span className="material-symbols-outlined">archive</span>
+          </div>
+        </div>
       </form>
     </div>
   )

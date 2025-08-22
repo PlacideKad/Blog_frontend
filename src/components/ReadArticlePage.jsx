@@ -54,28 +54,34 @@ const ReadArticlePage=()=>{
       if(article.content) quill.setContents(JSON.parse(article.content))
     }
   },[article]);
-
+  useEffect(()=>{
+    if(comments.length>0){
+      console.log(comments);
+    }
+  },[comments])
   useEffect(()=>{
     if(likes.includes(user._id)) setIsLiked(true);
   },[likes,user]);
 
   const handleNewComment=async (formData)=>{
-    const content_=formData.get('newComment');
-    const content=content_.trim();
-    if(content){
-      const author_id=user._id;
-      const parent_id=id;
-      const parentModel='article';
-      const data={content,author_id,parent_id,parentModel};
-      try{
-        const res=await fetch(`${backendURL}/comment`,{
-          method:'POST',
-          headers:{'Content-Type':'application/json'},
-          body:JSON.stringify(data)
-        });
-        setTriggerComments(prev=>!prev);
-      }catch(err){
-        console.log(err);
+    if(isAuthenticated){
+      const content_=formData.get('newComment');
+      const content=content_.trim();
+      if(content){
+        const author_id=user._id;
+        const parent_id=id;
+        const parentModel='article';
+        const data={content,author_id,parent_id,parentModel};
+        try{
+          const res=await fetch(`${backendURL}/comment`,{
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify(data)
+          });
+          setTriggerComments(prev=>!prev);
+        }catch(err){
+          console.log(err);
+        }
       }
     }
   }
@@ -115,10 +121,10 @@ const ReadArticlePage=()=>{
       </section>
 
       {/* comment section */}
-      <section className="w-full mt-2 p-1 border-t-2 border-fuchsia-400">
+      <section className="w-full mt-2 p-1 border-t-2 border-fuchsia-400 relative">
         {/* Check if the user is authenticated */}
         {!isAuthenticated&&
-        <div onAnimationEnd={()=>{setIsAnimated(false)}} className={`mb-2 italic text-sm w-full h-20 rounded-xl flex items-center bg-linear-45 from-purple-400 to-fuchsia-400 text-neutral-100 justify-center p-2 color-animation ${isAnimated&&'shake-div'} shadow shadow-neutral-400`}> Connectez-vous à votre compte pour pouvoir liker et commenter</div>}
+        <div onAnimationEnd={()=>{setIsAnimated(false)}} className={`mb-2 italic text-sm w-full md:w-5/10 h-20 rounded-xl flex items-center bg-linear-45 from-purple-400 to-fuchsia-400 text-neutral-100 justify-center p-2 color-animation ${isAnimated&&'shake-div'} shadow shadow-neutral-400`}> Connectez-vous à votre compte pour pouvoir liker et commenter</div>}
         {/* likes & comments */}
         <div className="flex items-center space-x-2">
           {/* likes number */}
@@ -146,12 +152,16 @@ const ReadArticlePage=()=>{
         <div className="p-2 w-full flex flex-col items-start justify-start space-y-4">
         {
           comments.map((comment,index)=>(
-            <div className="w-9/10 flex flex-col" key={index}>
-              <div className="w-full min-h-15 max-h-40 h-auto flex items-start justify-evenly">
-                <img className="w-1/10 [aspect-ratio:1/1] rounded-full" src={comment.picture} alt="author_profile_picture" />
-                <span className="w-8/10 h-full py-1 px-2 bg-purple-100 rounded-lg">{comment.content}</span>
+            <div className="comment-container min-h-[60px] w-9/10 md:w-6/10" key={index}>
+              <div className="name-zone text-[.7rem] text-neutral-400 italic">{comment.author_infos?.given_name} {comment.author_infos?.family_name}</div>
+              <div className=" profile-picture-zone flex flex-col items-center justify-start py-2 ">
+                <img className="w-full [aspect-ratio:1/1] rounded-full" src={comment.author_infos?.picture} alt="author_profile_picture" />
               </div>
-              <div className="w-95/100 flex items-center space-x-2 justify-end">
+              <div className="comment-zone bg-fuchsia-100 px-2 py-1 rounded-lg flex flex-col">{comment.content?.split('\n').map(
+                (line,n_line)=>(<span key={n_line}>{line?line:<div className="h-2 w-full"></div>}</span>)
+              )}
+              </div>
+              <div className="like-zone flex items-center justify-end md:justify-start gap-5">
                 <div className="flex items-center">
                   <span className="font-bold text-[.9rem]">0</span>
                   <span className="material-symbols-outlined !text-[1rem] !text-purple-400">favorite</span>
@@ -168,10 +178,16 @@ const ReadArticlePage=()=>{
       </section>
 
       {/* Laisser un commentaire */}
-      <section className={`w-full px-2 ${isAuthenticated?'opacity-100':'opacity-30'}`}>
+      <section className={`w-full md:w-6/10 !h-50 px-2 ${isAuthenticated?'opacity-100':'opacity-30'}`}>
         <form action={handleNewComment} className="flex flex-col items-center space-y-2">
           <textarea 
-          className="w-full h-30 px-2 py-1 rounded-2xl outline-none ring-1 ring-fuchsia-900 focus:ring-fuchsia-400 focus:ring-3 transition-all ease duration-200" 
+
+          className="w-full !h-30 px-2 py-1 rounded-2xl outline-none ring-1 ring-fuchsia-900 focus:ring-fuchsia-400 focus:ring-3 transition-all ease duration-200
+          [&::-webkit-scrollbar]:w-2
+        [&::-webkit-scrollbar-track]:bg-fuchsia-100
+          [&::-webkit-scrollbar-track]:rounded-full
+          [&::-webkit-scrollbar-thumb]:rounded-full 
+        [&::-webkit-scrollbar-thumb]:bg-purple-400" 
           name="newComment" id="newComment" 
           placeholder="Ajouter un commentaire..." disabled={isAuthenticated?false:true}></textarea>
           <button className={`px-4 py-2 bg-linear-to-r from-fuchsia-400 to-purple-500 text-white rounded-lg ${isAuthenticated&& `${isPressed?'scale-97':'shadow-md shadow-neutral-700'}`} transition-all ease duration-200 flex items-center space-x-1`}

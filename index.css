@@ -41,3 +41,17 @@
   animation-direction: normal;
   animation-iteration-count: 1;
 }
+.comment-container{
+  display: grid;
+  grid-template-rows:25px auto clamp(25px,2vh,60px);
+  grid-template-columns: clamp(10px,14vw,60px) auto;
+  grid-template-areas:"profile name"
+                      "profile comment"
+                      "profile like";
+ row-gap:1px;
+ column-gap: 15px;
+}
+.profile-picture-zone{grid-area: profile;}
+.comment-zone{grid-area:comment;}
+.like-zone{grid-area:like}
+.name-zone{grid-area:name}

@@ -37,7 +37,7 @@ const Navbar=()=>{
 
   return(
     <nav 
-      className={`w-full ${windowWidth<640?'h-1/10':'h-15/100 min-h-[40px] max-h-[150px]'} 
+      className={`w-full ${windowWidth<640?'h-1/10':'h-fit p-4 min-h-[40px] max-h-[150px]'} 
       relative
       flex items-center justify-between
       bg-fuchsia-100

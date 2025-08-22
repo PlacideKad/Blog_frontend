@@ -26,7 +26,9 @@ const AdminCreateArticlePage=()=>{
     }
   },[]);
   useEffect(()=>{
-    if(title.trim() && subtitle.trim()) setIsReadyToSubmit(true);
+    if(
+    title.trim()?.length>=3 &&
+    subtitle.trim()?.length>=3) setIsReadyToSubmit(true);
   },[title,subtitle]);
 
   const handleSubmit=async (formData)=>{

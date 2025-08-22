@@ -8,7 +8,7 @@ import ArticlesPage from "./ArticlesPage";
 import AboutPage from "./AboutPage";
 import ProfilePage from "./ProfilePage";
 import AdminDashboard from "./AdminDashboard";
-import AdminEditArticle from "./utils/AdminEditArticle";
+import AdminEditArticle from "./AdminEditArticle";
 import Login from "./Login";
 import Footer from "./Footer";
 import ReadArticlePage from "./ReadArticlePage";

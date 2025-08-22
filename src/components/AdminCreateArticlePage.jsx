@@ -11,6 +11,7 @@ const AdminCreateArticlePage=()=>{
   const [isReadyToSubmit,setIsReadyToSubmit]=useState(false);
   const [isPressed,setIsPressed]=useState(false);
   const [isSavePressed,setIsSavePressed]=useState(false);
+  const [saveArticle,setSaveArticle]=useState(false);
   const {backendURL}=useContext(GlobalAppContext);
   useEffect(()=>{
     const options={
@@ -37,17 +38,32 @@ const AdminCreateArticlePage=()=>{
       if(title && title.trim()) data.title=title.trim();
       if(subtitle && subtitle.trim()) data.summary=subtitle.trim();
       data.content=JSON.stringify(delta);
-      try{
-        const res=await fetch(`${backendURL}/admin/article`,{
-          method:'POST',
-          headers:{'Content-Type':'application/json'},
-          body:JSON.stringify(data)
-        });
-        if(!res.ok) throw new Error('Error when publishing the article');
-        const resJson=await res.json();
-        if(resJson.success) window.location.reload();
-      }catch(err){
-        console.log(err);
+      if(!saveArticle){
+        try{
+          const res=await fetch(`${backendURL}/admin/article`,{
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify(data)
+          });
+          if(!res.ok) throw new Error('Error when publishing the article');
+          const resJson=await res.json();
+          if(resJson.success) window.location.reload();
+        }catch(err){
+          console.log(err);
+        }
+      }else{
+        try{
+          const res=await fetch(`${backendURL}/admin/stash`,{
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify(data)
+          });
+          if(!res.ok) throw new Error('Error when saving the article');
+          const resJson=await res.json();
+          if(resJson.success) window.location.reload();
+        }catch(err){
+          console.log(err);
+        }
       }
     }
   }
@@ -121,15 +137,19 @@ const AdminCreateArticlePage=()=>{
             <span>Publier</span>
             <span className="material-symbols-outlined">ios_share</span>
           </button>
-          <div 
+          <button 
           onMouseDown={()=>{setIsSavePressed(true)}}
           onMouseUp={()=>{setIsSavePressed(false)}}
           onTouchStart={()=>{setIsSavePressed(true)}}
           onTouchEnd={()=>{setIsSavePressed(false)}}
+          onClick={()=>{
+            setSaveArticle(true);
+            handleSubmit()
+          }}
           className={`px-4 py-2 flex items-center justify-evenly rounded-lg ring-2 ring-purple-400 ${!isReadyToSubmit?'opacity-30':isSavePressed?'scale-97 cursor-pointer opacity-100':'shadow-lg cursor-pointer opacity-100'}`}>
             <span>Enregistrer</span>
             <span className="material-symbols-outlined">archive</span>
-          </div>
+          </button>
         </div>
       </form>
     </div>

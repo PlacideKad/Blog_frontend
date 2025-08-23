@@ -29,14 +29,14 @@ const AdminDashboard=()=>{
       <div className="fixed left-1/2 top-[8vh] transform -translate-x-1/2 w-1/2 h-10">
         <section className="floating-bar relative bg-transparent flex items-center justify-evenly h-full w-full rounded-md shadow-sm shadow-neutral-400 overflow-hidden">
           {buttons.map((button,index)=>(
-            <div key={index}  className={`[&>span]:!text-[2rem] cursor-pointer [&>span]:!text-purple-900 h-full w-1/3 flex items-center justify-center ${button.selected?'bg-[rgb(237,165,255,.3)]':'bg-transparent'} transition-all ease duration-300`} onClick={()=>handleChangeAdminPage(index)}>
+            <div key={index}  className={`[&>span]:!text-[2rem] cursor-pointer [&>span]:!text-purple-900 h-full w-1/3 flex items-center justify-center ${button.selected?'bg-[rgb(237,165,255,1)]':'bg-transparent'} transition-all ease duration-300`} onClick={()=>handleChangeAdminPage(index)}>
               <span
               className="material-symbols-outlined">{button.name}</span>
             </div>
           ))}
         </section>
       </div>
-      <div className="min-h-full w-full md:px-16 lg:px-24 mt-[10vh] pt-8 flex flex-col items-start justify-start">
+      <div className="min-h-full w-full md:px-16 lg:px-24 mt-[10vh] pt-8 flex flex-col items-start justify-start -z-1 relative">
         <section>
           <h1 className="text-3xl font-extrabold mb-5 text-purple-400 [text-transform:upperCase]">Tableau de bord Admins</h1>
         </section>

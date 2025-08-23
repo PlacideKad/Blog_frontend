@@ -46,9 +46,9 @@ const AdminEditStashPage=()=>{
   },[]);
 
   useEffect(()=>{
-    if(
+    setIsReadyToSubmit(
     title.trim()?.length>=3 &&
-    subtitle.trim()?.length>=3) setIsReadyToSubmit(true);
+    subtitle.trim()?.length>=3) ;
   },[title,subtitle]);
 
   const handleSubmit=async (formData)=>{
@@ -152,13 +152,13 @@ const AdminEditStashPage=()=>{
             ref={editorRef}>
             </div>
           </div>
-          <div className="flex flex-col md: md:flex-row md:justify-evenly space-y-2 items-center justify-evenly w-2/5 md:mb-15 mb-6">
+          <div className="flex flex-col md: md:flex-row md:justify-evenly space-y-2 items-center justify-evenly w-full md:mb-15 mb-6">
             <button 
             onMouseDown={()=>{setIsPressed(true)}}
             onMouseUp={()=>{setIsPressed(false)}}
             onTouchStart={()=>{setIsPressed(true)}}
             onTouchEnd={()=>{setIsPressed(false)}}
-            className={`bg-linear-to-r  flex items-center justify-evenly from-fuchsia-400 to-purple-400 text-gray-50 px-8 py-2 rounded-lg ${!isReadyToSubmit?'opacity-30':isPressed?'scale-97 cursor-pointer opacity-100':'shadow-lg cursor-pointer opacity-100'}`}
+            className={`bg-linear-to-r transition-all ease duration-200  flex items-center justify-evenly from-fuchsia-400 to-purple-400 text-gray-50 px-8 py-2 rounded-lg ${!isReadyToSubmit?'opacity-30':isPressed?'scale-97 cursor-pointer opacity-100':'shadow-lg cursor-pointer opacity-100'}`}
             type="submit">
               <span>Publier</span>
               <span className="material-symbols-outlined">ios_share</span>
@@ -172,7 +172,7 @@ const AdminEditStashPage=()=>{
               setSaveArticle(true);
               handleSubmit()
             }}
-            className={`px-4 py-2 flex items-center justify-evenly rounded-lg ring-2 ring-purple-400 ${isSavePressed?'scale-97 cursor-pointer opacity-100':'shadow-lg cursor-pointer opacity-100'}`}>
+            className={`px-4 py-2 flex transition-all ease duration-200 items-center justify-evenly rounded-lg ring-2 ring-purple-400 ${isSavePressed?'scale-97 cursor-pointer opacity-100':'shadow-lg cursor-pointer opacity-100'}`}>
               <span>Enregistrer</span>
               <span className="material-symbols-outlined">archive</span>
             </button>

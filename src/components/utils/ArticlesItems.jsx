@@ -6,7 +6,7 @@ const ArticlesItem=({articlesList,readOnClick,stash})=>{
       {articlesList.map((article) => (
         <div
           key={article._id}
-          onClick={()=>{navigate(`${readOnClick?`/articles/${article._id}`:`/edit/${article._id}`}`)}}
+          onClick={()=>{navigate(`${readOnClick?`/articles/${article._id}`:stash?`/edit/stash/${article._id}`:`/edit/article/${article._id}`}`)}}
           className="bg-white rounded-2xl shadow-md hover:shadow-xl transition overflow-hidden flex flex-col"
         >
           <img

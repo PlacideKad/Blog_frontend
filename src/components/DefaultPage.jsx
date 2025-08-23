@@ -8,7 +8,8 @@ import ArticlesPage from "./ArticlesPage";
 import AboutPage from "./AboutPage";
 import ProfilePage from "./ProfilePage";
 import AdminDashboard from "./AdminDashboard";
-import AdminEditArticle from "./AdminEditArticle";
+import AdminEditStashPage from "./AdminEditStashPage";
+import AdminEditArticlePage from "./AdminEditArticlePage";
 import Login from "./Login";
 import Footer from "./Footer";
 import ReadArticlePage from "./ReadArticlePage";
@@ -86,7 +87,8 @@ const DefaultPage=()=>{
         <Route path="/about" element={<AboutPage/>}></Route>
         <Route path="/login" element={<Login/>}></Route>
         <Route path="/profile" element={<ProfilePage/>}></Route>
-        <Route path="/edit/:id" element={<AdminEditArticle/>}></Route>
+        <Route path="/edit/stash/:id" element={<AdminEditStashPage/>}></Route>
+        <Route path="/edit/article/:id" element={<AdminEditArticlePage/>}></Route>
       </Routes>
       {showNavbar && <Footer/> }
     </div>

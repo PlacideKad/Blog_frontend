@@ -32,7 +32,7 @@ const ArticlesItem=({articlesList,readOnClick,stash})=>{
               {article.summary}
             </p>
             <button className="mt-3 text-fuchsia-400 font-semibold hover:underline">
-              {stash?'Poursuivre':'Modifier'} →
+              {stash?'Poursuivre':readOnClick?'Lire':'Modifier'} →
             </button>
           </div>
         </div>

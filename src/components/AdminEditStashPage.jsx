@@ -1,5 +1,5 @@
 import { useEffect, useRef , useState ,useContext} from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation ,useNavigate } from "react-router-dom";
 import { GlobalAppContext } from "./App";
 import "quill/dist/quill.snow.css";
 import Quill from "quill";
@@ -16,6 +16,7 @@ const AdminEditStashPage=()=>{
   const [saveArticle,setSaveArticle]=useState(false);
   const {backendURL}=useContext(GlobalAppContext);
   const id=useLocation().pathname.split('/')[3];
+  const navigate=useNavigate();
 
   useEffect(()=>{
     const options={
@@ -25,9 +26,10 @@ const AdminEditStashPage=()=>{
       placeholder:'Redigez votre article ici...',
       theme:'snow'
     };
+
     const getStashContent=async ()=>{
       try{
-        const res=await fetch(`${backendURL}/stashes/${id}`);// here is the bug!!!!!!
+        const res=await fetch(`${backendURL}/admin/stashes/${id}`);
         if(!res.ok) throw new Error('Error occured when fetching the stashed data');
         const {stash}=await res.json();
         setTitle(stash.title);
@@ -41,9 +43,8 @@ const AdminEditStashPage=()=>{
       }
     }
     (async()=>{await getStashContent()})();
-
-
   },[]);
+
   useEffect(()=>{
     if(
     title.trim()?.length>=3 &&
@@ -54,7 +55,7 @@ const AdminEditStashPage=()=>{
     const title=formData.get('title');
     const subtitle=formData.get('subtitle');
     const delta=quillInstance.current.getContents();
-    let data={};
+    let data={stash_id:id};
     if(title && title.trim()) data.title=title.trim();
     if(subtitle && subtitle.trim()) data.summary=subtitle.trim();
     data.content=JSON.stringify(delta);
@@ -68,7 +69,7 @@ const AdminEditStashPage=()=>{
           });
           if(!res.ok) throw new Error('Error when publishing the article');
           const resJson=await res.json();
-          if(resJson.success) window.location.reload();
+          if(resJson.success) navigate('/dashboard');
         }catch(err){
           console.log(err);
         }
@@ -82,7 +83,7 @@ const AdminEditStashPage=()=>{
         });
         if(!res.ok) throw new Error('Error when saving the article');
         const resJson=await res.json();
-        if(resJson.success) window.location.reload();
+        if(resJson.success) navigate('/dashboard');
       }catch(err){
         console.log(err);
       }

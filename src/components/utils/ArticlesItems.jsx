@@ -24,11 +24,13 @@ const ArticlesItem=({articlesList,readOnClick,stash,refresh})=>{
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {articlesList.map((article) => (
         <div key={article._id} className="relative">
-          <div 
-          onClick={()=>{handleDeleteItem(stash,article._id)}}
-          className="absolute h-16 w-16 -top-3 -right-3 rounded-full bg-[#ff6f6fd1] flex items-center justify-center">
-            <span className="material-symbols-outlined !text-[2.5rem] !text-white">delete</span>
-          </div>
+          {!readOnClick && 
+            <div 
+            onClick={()=>{handleDeleteItem(stash,article._id)}}
+            className="absolute h-10 md:h-13 [aspect-ratio:1/1] -top-3 -right-0 md:-right-3 rounded-full bg-[#ff6f6fd1] flex items-center justify-center">
+              <span className="material-symbols-outlined !text-[1.5rem] !md:text-[2rem] !text-white">delete</span>
+            </div>
+          }
           <div
             onClick={()=>{navigate(`${readOnClick?`/articles/${article._id}`:stash?`/edit/stash/${article._id}`:`/edit/article/${article._id}`}`)}}
             className="bg-white rounded-2xl shadow-md hover:shadow-xl transition overflow-hidden flex flex-col"

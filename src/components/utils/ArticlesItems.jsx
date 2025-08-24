@@ -27,7 +27,7 @@ const ArticlesItem=({articlesList,readOnClick,stash,refresh})=>{
           {!readOnClick && 
             <div 
             onClick={()=>{handleDeleteItem(stash,article._id)}}
-            className="absolute h-10 md:h-13 [aspect-ratio:1/1] -top-3 -right-0 md:-right-3 rounded-full bg-[#ff6f6fd1] flex items-center justify-center">
+            className="absolute cursor-pointer h-10 md:h-13 [aspect-ratio:1/1] -top-3 -right-0 md:-right-3 rounded-full bg-[#ff6f6fd1] flex items-center justify-center">
               <span className="material-symbols-outlined !text-[1.5rem] !md:text-[2rem] !text-white">delete</span>
             </div>
           }

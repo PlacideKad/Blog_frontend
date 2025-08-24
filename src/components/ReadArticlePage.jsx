@@ -64,7 +64,7 @@ const ReadArticlePage=()=>{
   },[likes,user]);
 
   const handleNewComment=async (formData)=>{
-    if(isAuthenticated){
+    if(isAuthenticated && !user.blocked){
       const content_=formData.get('newComment');
       const content=content_.trim();
       if(content){
@@ -87,7 +87,7 @@ const ReadArticlePage=()=>{
   }
   
   const handleNewLike=async ()=>{
-    if(isAuthenticated){
+    if(isAuthenticated && !user.blocked){
       try{
         const res=await fetch(`${backendURL}/articles/${id}/like`,{
           method:'POST',
@@ -123,8 +123,10 @@ const ReadArticlePage=()=>{
       {/* comment section */}
       <section className="w-full mt-2 p-1 border-t-2 border-fuchsia-400 relative">
         {/* Check if the user is authenticated */}
-        {!isAuthenticated&&
-        <div onAnimationEnd={()=>{setIsAnimated(false)}} className={`mb-2 italic text-sm w-full md:w-5/10 h-20 rounded-xl flex items-center bg-linear-45 from-purple-400 to-fuchsia-400 text-neutral-100 justify-center p-2 color-animation ${isAnimated&&'shake-div'} shadow shadow-neutral-400`}> Connectez-vous à votre compte pour pouvoir liker et commenter</div>}
+        {(!isAuthenticated || user.blocked)&&
+        <div onAnimationEnd={()=>{setIsAnimated(false)}} className={`mb-2 italic text-sm w-full md:w-5/10 h-20 rounded-xl flex items-center ${user.blocked?'from-red-400 to-pink-600':'from-purple-400 to-fuchsia-400'} bg-linear-45  text-neutral-100 justify-center p-2 color-animation ${isAnimated&&'shake-div'} shadow shadow-neutral-400`}> 
+          {user.blocked?'Vous avez été bloqué par les administrateurs. Vous ne pouvez plus ni commenter , ni liker les articles':'Connectez-vous à votre compte pour pouvoir liker et commenter'}
+        </div>}
         {/* likes & comments */}
         <div className="flex items-center space-x-2">
           {/* likes number */}
@@ -178,7 +180,7 @@ const ReadArticlePage=()=>{
       </section>
 
       {/* Laisser un commentaire */}
-      <section className={`w-full md:w-6/10 !h-50 px-2 ${isAuthenticated?'opacity-100':'opacity-30'}`}>
+      <section className={`w-full md:w-6/10 !h-50 px-2 ${(isAuthenticated && !user.blocked)?'opacity-100':'opacity-30'}`}>
         <form action={handleNewComment} className="flex flex-col items-center space-y-2">
           <textarea 
 
@@ -189,8 +191,8 @@ const ReadArticlePage=()=>{
           [&::-webkit-scrollbar-thumb]:rounded-full 
         [&::-webkit-scrollbar-thumb]:bg-purple-400" 
           name="newComment" id="newComment" 
-          placeholder="Ajouter un commentaire..." disabled={isAuthenticated?false:true}></textarea>
-          <button className={`px-4 py-2 bg-linear-to-r from-fuchsia-400 to-purple-500 text-white rounded-lg ${isAuthenticated&& `${isPressed?'scale-97':'shadow-md shadow-neutral-700'}`} transition-all ease duration-200 flex items-center space-x-1`}
+          placeholder="Ajouter un commentaire..." disabled={(isAuthenticated && !user.blocked)?false:true}></textarea>
+          <button className={`px-4 py-2 bg-linear-to-r from-fuchsia-400 to-purple-500 text-white rounded-lg ${(isAuthenticated && !user.blocked)&& `${isPressed?'scale-97':'shadow-md shadow-neutral-700'}`} transition-all ease duration-200 flex items-center space-x-1`}
           onMouseUp={()=>{setIsPressed(false)}}
           onMouseDown={()=>{setIsPressed(true)}}
           onTouchStart={()=>{setIsPressed(true)}}

@@ -1,10 +1,10 @@
 import { useEffect , useContext , useState } from "react";
+import { useLocation , useNavigate } from "react-router-dom";
 import { GlobalAppContext } from "./App";
 import { getArticles } from "./utils/getArticles";
 import EmptyItemList from "./utils/EmptyItemList";
 import ArticlesItem from "./utils/ArticlesItems";
-import '../../index.css';
-import { useLocation , useNavigate } from "react-router-dom";
+import SearchBar from "./utils/SearchBar";
 
 
 const ArticlesPage=()=>{
@@ -26,17 +26,21 @@ const ArticlesPage=()=>{
   },[page]);
 
   useEffect(()=>{
-    if(!pagesList && totalPages){
+    if(totalPages){
       let list=[];
       for(let i=0;i<totalPages;i++){
         list.push(i+1);
       }
       setPagesList(list);
     }
-  },[pagesList,totalPages])
-
+  },[totalPages]);
   return(
-    <div className="min-h-screen w-full bg-gray-50 p-6 flex flex-col items-center justify-start space-y-8">
+    <div className="min-h-screen w-full bg-gray-50 p-6 flex flex-col items-start justify-start space-y-8">
+      <SearchBar
+        placeholder_="Entrer un titre d'article ou un mot clé"
+        setItems_={setArticles}
+        table_='articles'
+        setTotalPages_={setTotalPages}/>
       {articles.length===0?
         <EmptyItemList text='Aucun Article Publié' style="h-screen flex flex-col items-center justify-center"/>:
         <ArticlesItem articlesList={articles} readOnClick={true} bottomText="Lire"/>
@@ -54,7 +58,7 @@ const ArticlesPage=()=>{
               <div className="w-fit h-fit" onClick={()=>{
                 navigate(nb_page!==page?`/articles/${nb_page}`:null)
               }}>
-                <span className={`mx-2 ${nb_page===page?'text-fuchsia-400 text-[1.4rem]':'text-purple-800 underline'}`}>
+                <span className={`mx-2 cursor-pointer ${nb_page===page?'text-fuchsia-400 text-[1.4rem]':'text-purple-800 underline'}`}>
                   {nb_page}
                 </span>
               </div>))

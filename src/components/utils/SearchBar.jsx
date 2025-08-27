@@ -1,19 +1,23 @@
 import { useState , useContext, useEffect } from "react";
 import { GlobalAppContext } from "../App";
+import { getArticles } from "./getArticles";
 
-const SearchBar=({placeholder_,setItems_,table_,resetResearchFunction_})=>{
+const SearchBar=({placeholder_,setItems_,table_,page_=1,setTotalPages_=null})=>{
   const [inputText,setInputText]=useState('');
   const {backendURL}=useContext(GlobalAppContext);
   const handleResearch=async (fromData)=>{
-    const searchKey=fromData.get('search-input')
-    console.log(searchKey);
-    try{
-      const res=await fetch(`${backendURL}/${table_}${searchKey.trim()?`/?search=${searchKey.trim()}`:null}`)
-      if(!res.ok) throw new Error('Error while researching');
-      const resJson=await res.json();
-      setItems_(resJson.data)
-    }catch(err){
-      console.log(err);
+
+    const search_input=fromData.get('search-input');
+    if(search_input.trim()){
+      try{
+        const res=await fetch(`${backendURL}/${table_}${search_input.trim()?`/?search=${search_input.trim()}`:'/'}`)
+        if(!res.ok) throw new Error('Error while researching');
+        const resJson=await res.json();
+        setItems_(resJson.data);
+        setTotalPages_&& setTotalPages_(null);
+      }catch(err){
+        console.log(err);
+      }
     }
   };
 
@@ -31,7 +35,9 @@ const SearchBar=({placeholder_,setItems_,table_,resetResearchFunction_})=>{
         placeholder={placeholder_}  />
         <button 
         onClick={()=>{
-          if(!inputText) resetResearchFunction_(setItems_,backendURL);
+          if(!inputText){
+            (async()=>{await getArticles(setItems_,backendURL,true,6,page_,setTotalPages_)})(); 
+          } 
         }}
         className="w-2/10 h-full cursor-pointer flex items-center justify-center rounded-r-full bg-fuchsia-400">
           <span className="material-symbols-outlined !text-white !text-[2rem]">

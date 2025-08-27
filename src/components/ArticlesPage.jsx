@@ -35,7 +35,7 @@ const ArticlesPage=()=>{
     }
   },[totalPages]);
   return(
-    <div className="min-h-screen w-full bg-gray-50 p-6 flex flex-col items-start justify-start space-y-8">
+    <div className="min-h-screen w-full bg-gray-50 p-6 flex flex-col items-start justify-start space-y-8 relative z-0">
       <SearchBar
         placeholder_="Entrer un titre d'article ou un mot clé"
         setItems_={setArticles}
@@ -58,7 +58,7 @@ const ArticlesPage=()=>{
               <div className="w-fit h-fit" onClick={()=>{
                 navigate(nb_page!==page?`/articles/${nb_page}`:null)
               }}>
-                <span className={`mx-2 cursor-pointer ${nb_page===page?'text-fuchsia-400 text-[1.4rem]':'text-purple-800 underline'}`}>
+                <span className={`mx-2 cursor-pointer ${nb_page===page?'text-fuchsia-400 text-[1.3rem]':'text-purple-800 underline'}`}>
                   {nb_page}
                 </span>
               </div>))

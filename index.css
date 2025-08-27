@@ -55,3 +55,8 @@
 .comment-zone{grid-area:comment;}
 .like-zone{grid-area:like}
 .name-zone{grid-area:name}
+
+.rotated{
+  transform: rotate(180deg);
+  transition: transform ease 200ms;
+}

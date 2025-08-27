@@ -36,11 +36,13 @@ const AdminDashboard=()=>{
           ))}
         </section>
       </div>
-      <div className={`min-h-full w-full md:px-16 ${buttons.find(button=>button.selected).key===1?'lg:px-14':'lg:px-24'} mt-[10vh] pt-8 flex flex-col items-start justify-start -z-1 relative`}>
+      <div className={`min-h-full w-full md:px-16 ${buttons.find(button=>button.selected).key===1?'lg:px-14':'lg:px-24'} mt-[10vh] pt-8 flex flex-col items-center justify-start -z-1 relative`}>
         <section>
           <h1 className="text-3xl font-extrabold mb-5 text-purple-400 [text-transform:upperCase]">Tableau de bord Admins</h1>
         </section>
-        {buttons.find(button=> button.selected).element}
+        <div className="relative w-full">
+          {buttons.find(button=> button.selected).element}
+        </div>
       </div>
     </div>
   );

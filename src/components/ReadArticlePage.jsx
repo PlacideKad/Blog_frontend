@@ -8,7 +8,7 @@ const ReadArticlePage=()=>{
   const editorRef=useRef(null);
   const location=useLocation();
   const navigate=useNavigate();
-  const id=location.pathname.split('/')[2];
+  const id=location.pathname.split('/')[3];
   const [article,setArticle]=useState({});
   const [comments,setComments]=useState([]);
   const [likes,setLikes]=useState([]);

@@ -21,7 +21,7 @@ const ArticlesItem=({articlesList,readOnClick,stash,refresh})=>{
     }
   }
   return(
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {articlesList.map((article) => (
         <div key={article._id} className="relative">
           {!readOnClick && 
@@ -32,7 +32,7 @@ const ArticlesItem=({articlesList,readOnClick,stash,refresh})=>{
             </div>
           }
           <div
-            onClick={()=>{navigate(`${readOnClick?`/articles/${article._id}`:stash?`/edit/stash/${article._id}`:`/edit/article/${article._id}`}`)}}
+            onClick={()=>{navigate(`${readOnClick?`/articles/read/${article._id}`:stash?`/edit/stash/${article._id}`:`/edit/article/${article._id}`}`)}}
             className="bg-white rounded-2xl shadow-md hover:shadow-xl transition overflow-hidden flex flex-col"
           >
             <img

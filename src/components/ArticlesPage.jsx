@@ -10,7 +10,9 @@ const ArticlesPage=()=>{
   const [articles ,setArticles]=useState([]);
   const [totalPages,setTotalPages]=useState(null);
   const [pagesList,setPagesList]=useState(null);
-  const [emptyMessage,setEmptyMessage]=useState('Aucun Article Publié');
+  const [sortBy,setSortBy]=useState('createdAt');
+  const [orderState,setOrderState]=useState(1);
+  
   const page=parseInt(useLocation().pathname.split('/')[2]) || 1;
   const navigate=useNavigate();
 
@@ -22,7 +24,7 @@ const ArticlesPage=()=>{
   },[]);
 
   useEffect(()=>{
-    (async()=>{await getArticles(setArticles,backendURL,true,6,page,setTotalPages)})();
+    (async()=>{await getArticles(setArticles,backendURL,true,6,page,setTotalPages,null,false,sortBy,orderState)})();
   },[page]);
 
   useEffect(()=>{
@@ -42,9 +44,12 @@ const ArticlesPage=()=>{
         setItems_={setArticles}
         table_='articles'
         setTotalPages_={setTotalPages}
-        setEmptyMessage_={setEmptyMessage}/>
+        sortBy_={sortBy}
+        setSortBy_={setSortBy}
+        orderState_={orderState}
+        setOrderState_={setOrderState}/>
       {articles.length===0?
-        <EmptyItemList text={emptyMessage} style="h-screen w-full flex flex-col items-center justify-center"/>:
+        <EmptyItemList text="Aucun Résultat" style="h-screen w-full flex flex-col items-center justify-center"/>:
         <ArticlesItem articlesList={articles} readOnClick={true} bottomText="Lire"/>
       }
       <div className="w-full flex items-center justify-center">
@@ -56,8 +61,8 @@ const ArticlesPage=()=>{
               arrow_left
             </span>
 
-            {pagesList.map((nb_page)=>(
-              <div className="w-fit h-fit" onClick={()=>{
+            {pagesList.map((nb_page,index)=>(
+              <div key={index} className="w-fit h-fit" onClick={()=>{
                 navigate(nb_page!==page?`/articles/${nb_page}`:null)
               }}>
                 <span className={`mx-2 cursor-pointer ${nb_page===page?'text-fuchsia-400 text-[1.3rem]':'text-purple-800 underline'}`}>

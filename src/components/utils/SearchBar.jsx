@@ -2,31 +2,24 @@ import { useState , useContext ,useEffect } from "react";
 import { GlobalAppContext } from "../App";
 import { getArticles } from "./getArticles";
 
-const SearchBar=({placeholder_,setItems_,table_,page_=1,setTotalPages_=null,setEmptyMessage_=null})=>{
+const SearchBar=({placeholder_,setItems_,orderState_,setOrderState_,sortBy_,setSortBy_,page_=1,setTotalPages_=null})=>{
   const [inputText,setInputText]=useState('');
   const {backendURL}=useContext(GlobalAppContext);
   const [showMore,setShowMore]=useState(false);
   const [isExactSearch,setIsExactSearch]=useState(false);
+
   const handleResearch=async (event)=>{
     event.preventDefault();
     const formData=new FormData(event.target);
     const search_input=formData.get('search-input');
     const exact=formData.get('exact-match')==="on";
-    if(search_input.trim()){
-      try{
-        const res=await fetch(`${backendURL}/${table_}${search_input.trim()?`/?search=${search_input.trim()}&exact=${exact?1:0}`:'/'}`)
-        if(!res.ok) throw new Error('Error while researching');
-        const resJson=await res.json();
-        if(resJson.success) setItems_(resJson.data);
-        else{
-          setItems_([]);
-          setEmptyMessage_('Aucun Article trouvé')
-        }
-        setTotalPages_&& setTotalPages_(null);
-        setShowMore(false);
-      }catch(err){
-        console.log(err);
-      }
+    const sort_by=formData.get('sort_by');
+    const order=formData.get('order');
+    try{
+      await getArticles(setItems_,backendURL,true,6,1,setTotalPages_,search_input,exact,sort_by,order);
+      setShowMore(false);
+    }catch(err){
+      console.log(err);
     }
   };
   return(
@@ -44,7 +37,7 @@ const SearchBar=({placeholder_,setItems_,table_,page_=1,setTotalPages_=null,setE
         <button 
         onClick={()=>{
           if(!inputText){
-            (async()=>{await getArticles(setItems_,backendURL,true,6,page_,setTotalPages_)})(); 
+            (async()=>{await getArticles(setItems_,backendURL,true,6,page_,setTotalPages_,)})(); 
           } 
         }}
         className="w-2/10 h-full cursor-pointer flex items-center justify-center rounded-r-full bg-fuchsia-400">
@@ -78,37 +71,37 @@ const SearchBar=({placeholder_,setItems_,table_,page_=1,setTotalPages_=null,setE
           </div>
           {showMore &&
             <fieldset className="border-purple-300 rounded-2xl border-1 px-4 py-2 [&>div]:space-x-1 [&>div]:text-gray-50" disabled={isExactSearch}>
-              <legend className="text-gray-50">Filtre</legend>
+              <legend className="text-gray-50">Ranger Selon</legend>
               <div>
-                <input name="filter" id="title" type="radio" className="accent-fuchsia-300" />
+                <input name="sort_by" id="title" type="radio" value="title" checked={sortBy_==='title'} onChange={(event)=>setSortBy_(event.target.value)} className="accent-fuchsia-300" />
                 <label htmlFor="title">Titre</label>
               </div>
               <div>
-                <input type="radio" name="filter" id="likes" className="accent-fuchsia-300" />
+                <input type="radio" name="sort_by" id="likes" value="likes" checked={sortBy_==='likes'} onChange={(event)=>setSortBy_(event.target.value)} className="accent-fuchsia-300" />
                 <label htmlFor="likes">Likes</label>
               </div>
               <div>
-                <input type="radio" name="filter" id="comments" className="accent-fuchsia-300" />
+                <input type="radio" name="sort_by" id="comments" value="comments" checked={sortBy_==='comments'} onChange={(event)=>setSortBy_(event.target.value)} className="accent-fuchsia-300" />
                 <label htmlFor="comments">Commentaires</label>
               </div>
               <div>
-                <input type="radio" name="filter" id="views" className="accent-fuchsia-300" />
+                <input type="radio" name="sort_by" id="views" value="lectures" checked={sortBy_==='lectures'} onChange={(event)=>setSortBy_(event.target.value)} className="accent-fuchsia-300" />
                 <label htmlFor="views">Lectures</label>
               </div>
               <div>
-                <input type="radio" name="filter" id="date" className="accent-fuchsia-300" />
-                <label htmlFor="date">Date de publication</label>
+                <input type="radio" name="sort_by" id="createdAt" value="createdAt" checked={sortBy_==='createdAt'} onChange={(event)=>setSortBy_(event.target.value)} className="accent-fuchsia-300" />
+                <label htmlFor="createdAt">Date de publication</label>
               </div>
             </fieldset>
           }{showMore &&
             <fieldset className="border-purple-300 rounded-2xl border-1 px-4 py-2 [&>div]:space-x-1 [&>div]:text-gray-50" disabled={isExactSearch}>
               <legend className="text-gray-50">Order</legend>
               <div>
-                <input type="radio" name="order" id="ascendant" className="accent-fuchsia-300" />
+                <input type="radio" name="order" id="ascendant" value={1} checked={orderState_===1} onChange={(event)=>setOrderState_(parseInt(event.target.value))} className="accent-fuchsia-300" defaultChecked={true} />
                 <label htmlFor="ascendant">Croissant</label>
               </div>
               <div>
-                <input type="radio" name="order" id="descendant" className="accent-fuchsia-300" />
+                <input type="radio" name="order" id="descendant" value={-1} checked={orderState_===-1} onChange={(event)=>setOrderState_(parseInt(event.target.value))} className="accent-fuchsia-300" />
                 <label htmlFor="descendant">Déroissant</label>
               </div>
             </fieldset>
@@ -129,7 +122,6 @@ const SearchBar=({placeholder_,setItems_,table_,page_=1,setTotalPages_=null,setE
 export default SearchBar
 
 {/**
-  We must now add the logic and the interaction with the database
   We must next genralize the search bar for users too. To do so, we must pass a data set with all the necessary informations to render
-  a good filter section.
+  a good sort_by section.
 */}

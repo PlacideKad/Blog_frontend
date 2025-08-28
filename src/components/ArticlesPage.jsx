@@ -6,11 +6,11 @@ import EmptyItemList from "./utils/EmptyItemList";
 import ArticlesItem from "./utils/ArticlesItems";
 import SearchBar from "./utils/SearchBar";
 
-
 const ArticlesPage=()=>{
   const [articles ,setArticles]=useState([]);
   const [totalPages,setTotalPages]=useState(null);
   const [pagesList,setPagesList]=useState(null);
+  const [emptyMessage,setEmptyMessage]=useState('Aucun Article Publié');
   const page=parseInt(useLocation().pathname.split('/')[2]) || 1;
   const navigate=useNavigate();
 
@@ -36,13 +36,15 @@ const ArticlesPage=()=>{
   },[totalPages]);
   return(
     <div className="min-h-screen w-full bg-gray-50 p-6 flex flex-col items-start justify-start space-y-8 relative z-0">
+
       <SearchBar
         placeholder_="Entrer un titre d'article ou un mot clé"
         setItems_={setArticles}
         table_='articles'
-        setTotalPages_={setTotalPages}/>
+        setTotalPages_={setTotalPages}
+        setEmptyMessage_={setEmptyMessage}/>
       {articles.length===0?
-        <EmptyItemList text='Aucun Article Publié' style="h-screen flex flex-col items-center justify-center"/>:
+        <EmptyItemList text={emptyMessage} style="h-screen w-full flex flex-col items-center justify-center"/>:
         <ArticlesItem articlesList={articles} readOnClick={true} bottomText="Lire"/>
       }
       <div className="w-full flex items-center justify-center">

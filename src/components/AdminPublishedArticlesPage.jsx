@@ -3,16 +3,22 @@ import { GlobalAppContext } from "./App";
 import { getArticles } from "./utils/getArticles";
 import ArticlesItem from "./utils/ArticlesItems";
 import EmptyItemList from "./utils/EmptyItemList";
+import { Link } from "react-router-dom";
 
 const AdminPublishedArticlesPage=()=>{
   const {backendURL}=useContext(GlobalAppContext);
   const [articles,setArticles]=useState([]);
   const [stashes,setStashes]=useState([]);
+  const setTotalPages=()=>{}
   const [refreshPublish,setRefreshPublish]=useState(true);
   const refresh=()=>{setRefreshPublish(prev=>!prev)};
   useEffect(()=>{
-    (async()=>{await getArticles(setStashes,backendURL,false)})();
-    (async()=>{await getArticles(setArticles,backendURL)})();
+    try{
+      (async()=>{await getArticles(setStashes,backendURL,false,6,1,setTotalPages,null,false,'createdAt',-1)})();
+      (async()=>{await getArticles(setArticles,backendURL,true,6,1,setTotalPages,null,false,'createdAt',-1)})();
+    }catch(err){
+      console.log(err);
+    }
   },[refreshPublish]);
   return(
     <div className="h-full w-full mb-5 md:mb-15">
@@ -23,6 +29,14 @@ const AdminPublishedArticlesPage=()=>{
           <EmptyItemList text="Aucun article en cours" style="flex flex-col items-center justify-center"/>:
           <ArticlesItem stash={true} articlesList={stashes} readOnClick={false} refresh={refresh}/>
         }
+        {stashes.length>6&&
+          <div className="w-full my-2 flex items-center justify-center">
+            <Link className="text-purple-400 font-extrabold">
+              Voir plus →
+            </Link>
+          </div>
+        }
+
       </section>
       {/* publies */}
       <section className="my-2">
@@ -30,6 +44,13 @@ const AdminPublishedArticlesPage=()=>{
         {articles.length===0?
           <EmptyItemList text="Aucun article publié" style="flex flex-col items-center justify-center"/>:
           <ArticlesItem stash={false} articlesList={articles} readOnClick={false} refresh={refresh}/>
+        }
+        {articles.length>6&&
+          <div className="w-full my-2 flex items-center justify-center">
+            <Link className="text-purple-400 font-extrabold">
+              Voir plus →
+            </Link>
+          </div>
         }
       </section>
     </div>

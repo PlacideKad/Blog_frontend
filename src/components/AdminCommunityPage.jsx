@@ -2,14 +2,59 @@ import { useEffect , useState , useContext } from "react";
 import {GlobalAppContext} from "./App";
 import SearchBar from "./utils/SearchBar";
 import { getUsers } from "./utils/getUsers";
+import EmptyItemList from "./utils/EmptyItemList";
 
 const AdminCommunityPage=()=>{
   const [users,setUsers]=useState([]);
   const [refresh,setRefresh]=useState(false);
   const {backendURL}=useContext(GlobalAppContext);
+  const [sortBy,setSortBy]=useState('createdAt');
+  const [orderState,setOrderState]=useState(-1);
 
+  const searchOptions={
+    sortBy:[
+      {
+        label:"Prénom",
+        name:"sort_by",
+        id:"given_name",
+        value:'given_name'
+      },
+      {
+        label:"Nom",
+        name:"sort_by",
+        id:"family_name",
+        value:'family_name'
+      },
+      {
+        label:"E-mail",
+        name:"sort_by",
+        id:"email",
+        value:'email'
+      },
+      {
+        label:"Date d'inscription",
+        name:"sort_by",
+        id:"createdAt",
+        value:'createdAt'
+      },
+    ],
+    order:[
+      {
+        label:"Croissant",
+        name:"order",
+        id:"ascendant",
+        value:1
+      },
+      {
+        label:"Décroissant",
+        name:"order",
+        id:"descendant",
+        value:-1
+      },
+    ]
+  }
   useEffect(()=>{
-    (async()=>{await getUsers(setUsers,backendURL)})();
+    (async()=>{await getUsers(setUsers,backendURL,null,false)})();
   },[refresh]);
   const handleBlockUser=async (user_id,isBlocked)=>{
     try{
@@ -30,8 +75,14 @@ const AdminCommunityPage=()=>{
       <SearchBar 
         placeholder_="Entrer un nom ou une adresse mail"
         setItems_={setUsers}
-        resetResearchFunction_={getUsers}
-        table_='admin/users'/>
+        setTotalPages_={()=>{}}
+        table_='admin/users'
+        sortBy_={sortBy}
+        setSortBy_={setSortBy}
+        orderState_={orderState}
+        setOrderState_={setOrderState}
+        searchOptions_={searchOptions}
+        searchArticle={false}/>
       {
         users.length!==0 ? 
         <div className="w-full h-fit grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 px-2 py-1 space-x-2 space-y-4">
@@ -67,9 +118,9 @@ const AdminCommunityPage=()=>{
             </div>))
           }
         </div>:
-        <div className="w-full h-[60vh] flex items-center justify-center">
-          No user found
-        </div>
+        <EmptyItemList 
+        text="Aucun utlisateur"
+        style="w-full h-[60vh] flex flex-col items-center justify-center"/>
       }
     </div>
   );

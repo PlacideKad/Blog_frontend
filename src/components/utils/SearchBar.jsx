@@ -1,8 +1,9 @@
 import { useState , useContext ,useEffect } from "react";
 import { GlobalAppContext } from "../App";
 import { getArticles } from "./getArticles";
+import { getUsers } from "./getUsers";
 
-const SearchBar=({placeholder_,setItems_,orderState_,setOrderState_,sortBy_,setSortBy_,page_=1,setTotalPages_=null})=>{
+const SearchBar=({placeholder_,setItems_,orderState_,setOrderState_,sortBy_,setSortBy_,searchOptions_,searchArticle,page_=1,setTotalPages_=null})=>{
   const [inputText,setInputText]=useState('');
   const {backendURL}=useContext(GlobalAppContext);
   const [showMore,setShowMore]=useState(false);
@@ -16,7 +17,11 @@ const SearchBar=({placeholder_,setItems_,orderState_,setOrderState_,sortBy_,setS
     const sort_by=formData.get('sort_by');
     const order=formData.get('order');
     try{
-      await getArticles(setItems_,backendURL,true,6,1,setTotalPages_,search_input,exact,sort_by,order);
+      if(searchArticle){
+        console.log({search_input,exact,sort_by,order});
+        await getArticles(setItems_,backendURL,true,6,1,setTotalPages_,search_input,exact,sort_by||sortBy_,order||orderState_);
+      } 
+      else{await getUsers(setItems_,backendURL,search_input,sort_by||sortBy_,order||orderState_,exact)}
       setShowMore(false);
     }catch(err){
       console.log(err);
@@ -36,8 +41,8 @@ const SearchBar=({placeholder_,setItems_,orderState_,setOrderState_,sortBy_,setS
         placeholder={placeholder_}  />
         <button 
         onClick={()=>{
-          if(!inputText){
-            (async()=>{await getArticles(setItems_,backendURL,true,6,page_,setTotalPages_,)})(); 
+          if(!inputText && searchArticle){
+            (async()=>{await getArticles(setItems_,backendURL,true,6,page_,setTotalPages_,null,false,sortBy_,orderState_)})(); 
           } 
         }}
         className="w-2/10 h-full cursor-pointer flex items-center justify-center rounded-r-full bg-fuchsia-400">
@@ -72,34 +77,26 @@ const SearchBar=({placeholder_,setItems_,orderState_,setOrderState_,sortBy_,setS
           {showMore &&
             <fieldset className="border-purple-300 rounded-2xl border-1 px-4 py-2 [&>div]:space-x-1 [&>div]:text-gray-50" disabled={isExactSearch}>
               <legend className="text-gray-50">Ranger Selon</legend>
-              <div>
-                <input name="sort_by" id="title" type="radio" value="title" checked={sortBy_==='title'} onChange={(event)=>setSortBy_(event.target.value)} className="accent-fuchsia-300" />
-                <label htmlFor="title">Titre</label>
-              </div>
-              <div>
-                <input type="radio" name="sort_by" id="likes" value="likes" checked={sortBy_==='likes'} onChange={(event)=>setSortBy_(event.target.value)} className="accent-fuchsia-300" />
-                <label htmlFor="likes">Likes</label>
-              </div>
-              <div>
-                <input type="radio" name="sort_by" id="read" value="read" checked={sortBy_==='read'} onChange={(event)=>setSortBy_(event.target.value)} className="accent-fuchsia-300" />
-                <label htmlFor="read">Lectures</label>
-              </div>
-              <div>
-                <input type="radio" name="sort_by" id="createdAt" value="createdAt" checked={sortBy_==='createdAt'} onChange={(event)=>setSortBy_(event.target.value)} className="accent-fuchsia-300" />
-                <label htmlFor="createdAt">Date de publication</label>
-              </div>
+              {
+                searchOptions_.sortBy?.map((option,index)=>(
+                  <div key={index}>
+                    <input type="radio" name={option.name} id={option.id} value={option.value} checked={sortBy_===option.value} onChange={(event)=>setSortBy_(event.target.value)} className="accent-fuchsia-300" />
+                    <label htmlFor={option.id}>{option.label}</label>
+                  </div>
+                ))
+              }
             </fieldset>
           }{showMore &&
             <fieldset className="border-purple-300 rounded-2xl border-1 px-4 py-2 [&>div]:space-x-1 [&>div]:text-gray-50" disabled={isExactSearch}>
               <legend className="text-gray-50">Order</legend>
-              <div>
-                <input type="radio" name="order" id="ascendant" value={1} checked={orderState_===1} onChange={(event)=>setOrderState_(parseInt(event.target.value))} className="accent-fuchsia-300" />
-                <label htmlFor="ascendant">Croissant</label>
-              </div>
-              <div>
-                <input type="radio" name="order" id="descendant" value={-1} checked={orderState_===-1} onChange={(event)=>setOrderState_(parseInt(event.target.value))} className="accent-fuchsia-300" />
-                <label htmlFor="descendant">Déroissant</label>
-              </div>
+              {
+                searchOptions_.order?.map((option,index)=>(
+                  <div key={index}>
+                    <input type="radio" name={option.name} id={option.id} value={option.value} checked={orderState_===option.value} onChange={(event)=>setOrderState_(parseInt(event.target.value))} className="accent-fuchsia-300" />
+                    <label htmlFor={option.id}>{option.label}</label>
+                  </div>
+                ))
+              }
             </fieldset>
           }
           {

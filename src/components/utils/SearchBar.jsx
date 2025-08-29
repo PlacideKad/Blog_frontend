@@ -81,12 +81,8 @@ const SearchBar=({placeholder_,setItems_,orderState_,setOrderState_,sortBy_,setS
                 <label htmlFor="likes">Likes</label>
               </div>
               <div>
-                <input type="radio" name="sort_by" id="comments" value="comments" checked={sortBy_==='comments'} onChange={(event)=>setSortBy_(event.target.value)} className="accent-fuchsia-300" />
-                <label htmlFor="comments">Commentaires</label>
-              </div>
-              <div>
-                <input type="radio" name="sort_by" id="views" value="lectures" checked={sortBy_==='lectures'} onChange={(event)=>setSortBy_(event.target.value)} className="accent-fuchsia-300" />
-                <label htmlFor="views">Lectures</label>
+                <input type="radio" name="sort_by" id="read" value="read" checked={sortBy_==='read'} onChange={(event)=>setSortBy_(event.target.value)} className="accent-fuchsia-300" />
+                <label htmlFor="read">Lectures</label>
               </div>
               <div>
                 <input type="radio" name="sort_by" id="createdAt" value="createdAt" checked={sortBy_==='createdAt'} onChange={(event)=>setSortBy_(event.target.value)} className="accent-fuchsia-300" />
@@ -97,7 +93,7 @@ const SearchBar=({placeholder_,setItems_,orderState_,setOrderState_,sortBy_,setS
             <fieldset className="border-purple-300 rounded-2xl border-1 px-4 py-2 [&>div]:space-x-1 [&>div]:text-gray-50" disabled={isExactSearch}>
               <legend className="text-gray-50">Order</legend>
               <div>
-                <input type="radio" name="order" id="ascendant" value={1} checked={orderState_===1} onChange={(event)=>setOrderState_(parseInt(event.target.value))} className="accent-fuchsia-300" defaultChecked={true} />
+                <input type="radio" name="order" id="ascendant" value={1} checked={orderState_===1} onChange={(event)=>setOrderState_(parseInt(event.target.value))} className="accent-fuchsia-300" />
                 <label htmlFor="ascendant">Croissant</label>
               </div>
               <div>

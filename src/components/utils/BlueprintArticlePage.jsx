@@ -17,9 +17,8 @@ const BlueprintArticlePage=({isPublished_,isAdmin_,limit_})=>{
   const page=parseInt(useLocation().pathname.split('/')[isAdmin_?3:2]) || 1;
   const navigate=useNavigate();
 
-  // const [pageNumber,setPageNumber]=useState(1); sera utile pour la pagination
   const {handleButtonActive, setButtons,backendURL}=useContext(GlobalAppContext);
-  const searchOptions={
+  const searchOptions=isPublished_?{
     sortBy:[
       {
         label:"Titre",
@@ -38,6 +37,35 @@ const BlueprintArticlePage=({isPublished_,isAdmin_,limit_})=>{
         name:"sort_by",
         id:"read",
         value:'read'
+      },
+      {
+        label:"Date de publication",
+        name:"sort_by",
+        id:"createdAt",
+        value:'createdAt'
+      }
+    ],
+    order:[
+      {
+        label:"Croissant",
+        name:"order",
+        id:"ascendant",
+        value:1
+      },
+      {
+        label:"Décroissant",
+        name:"order",
+        id:"descendant",
+        value:-1
+      },
+    ]
+  }:{
+    sortBy:[
+      {
+        label:"Titre",
+        name:"sort_by",
+        id:"title",
+        value:'title'
       },
       {
         label:"Date de publication",
@@ -97,7 +125,8 @@ const BlueprintArticlePage=({isPublished_,isAdmin_,limit_})=>{
           setSortBy_={setSortBy}
           orderState_={orderState}
           setOrderState_={setOrderState}
-          searchArticle={true}
+          searchArticle_={true}
+          isPublished_={isPublished_}
           searchOptions_={searchOptions}
           limit_={limit_}/>
         {articles.length===0?

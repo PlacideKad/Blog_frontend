@@ -5,7 +5,7 @@ export const getArticles=async(setFunction, backendURL, isPublished=true,limit=6
     if(!res.ok) throw new Error(`Error when fetching the ${isPublished?'articles':'stashes'}`);
     const resJson=await res.json();
     if(!resJson.success) setFunction([]);
-    isPublished?search_input?.trim()?setFunction(resJson.foundData):setFunction(resJson.articles):setFunction(resJson);
+    search_input?.trim()?setFunction(resJson.foundData):isPublished?setFunction(resJson.articles):setFunction(resJson.stashes);
     (setTotalPages&&!search_input?.trim())?setTotalPages(resJson.nb_pages):setTotalPages(null);
   }catch(err){
     console.log(err);

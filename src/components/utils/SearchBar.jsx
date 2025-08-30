@@ -3,7 +3,7 @@ import { GlobalAppContext } from "../App";
 import { getArticles } from "./getArticles";
 import { getUsers } from "./getUsers";
 
-const SearchBar=({placeholder_,setItems_,orderState_,setOrderState_,sortBy_,setSortBy_,searchOptions_,limit_,searchArticle,page_=1,setTotalPages_=null})=>{
+const SearchBar=({placeholder_,setItems_,orderState_,setOrderState_,sortBy_,setSortBy_,searchOptions_,limit_,searchArticle_,isPublished_,page_=1,setTotalPages_=null})=>{
   const [inputText,setInputText]=useState('');
   const {backendURL}=useContext(GlobalAppContext);
   const [showMore,setShowMore]=useState(false);
@@ -17,8 +17,8 @@ const SearchBar=({placeholder_,setItems_,orderState_,setOrderState_,sortBy_,setS
     const sort_by=formData.get('sort_by');
     const order=formData.get('order');
     try{
-      if(searchArticle){
-        await getArticles(setItems_,backendURL,true,limit_,1,setTotalPages_,search_input,exact,sort_by||sortBy_,order||orderState_);
+      if(searchArticle_){
+        await getArticles(setItems_,backendURL,isPublished_,limit_,1,setTotalPages_,search_input,exact,sort_by||sortBy_,order||orderState_);
       } 
       else{await getUsers(setItems_,backendURL,search_input,sort_by||sortBy_,order||orderState_,exact)}
       setShowMore(false);
@@ -40,8 +40,8 @@ const SearchBar=({placeholder_,setItems_,orderState_,setOrderState_,sortBy_,setS
         placeholder={placeholder_}  />
         <button 
         onClick={()=>{
-          if(!inputText && searchArticle){
-            (async()=>{await getArticles(setItems_,backendURL,true,limit_,page_,setTotalPages_,null,false,sortBy_,orderState_)})(); 
+          if(!inputText && searchArticle_){
+            (async()=>{await getArticles(setItems_,backendURL,isPublished_,limit_,page_,setTotalPages_,null,false,sortBy_,orderState_,)})(); 
           } 
         }}
         className="w-2/10 h-full cursor-pointer flex items-center justify-center rounded-r-full bg-fuchsia-400">
@@ -62,7 +62,7 @@ const SearchBar=({placeholder_,setItems_,orderState_,setOrderState_,sortBy_,setS
             keyboard_arrow_down
           </span>
         </div>
-        <div className={`bg-gradient-to-tr from-purple-400 to-fuchsia-600 rounded-2xl w-full ${showMore?'h-90 px-4 py-2 shadow-md':'h-0'} transition-all ease duration-300 flex flex-col space-y-1`}>
+        <div className={`bg-gradient-to-tr from-purple-400 to-fuchsia-600 rounded-2xl w-full ${showMore?`${!searchArticle_?'h-82':isPublished_?'h-82':'h-70'} px-4 py-2 shadow-md`:'h-0'} transition-all ease duration-300 flex flex-col space-y-1`}>
           <div className="w-full flex items-center justify-start space-x-2">
             <input 
             className={`${!showMore&&'h-0'} transition-all ease duration-300 accent-fuchsia-600`} 

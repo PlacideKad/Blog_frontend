@@ -9,6 +9,8 @@ import AboutPage from "./AboutPage";
 import ProfilePage from "./ProfilePage";
 import AdminDashboard from "./AdminDashboard";
 import AdminEditStashPage from "./AdminEditStashPage";
+import AdminArticlePage from "./AdminArticlePage";
+import AdminStashPage from "./AdminStashPage";
 import AdminEditArticlePage from "./AdminEditArticlePage";
 import Login from "./Login";
 import Footer from "./Footer";
@@ -44,7 +46,7 @@ const DefaultPage=()=>{
       }
     }
     (async()=>{await checkUser()})()
-    setShowNavbar(!['login','profile','dashboard','edit'].includes(location.pathname.split('/')[1]));
+    setShowNavbar(!['login','profile','dashboard','edit','admin'].includes(location.pathname.split('/')[1]));
     setShowSidebar(false);
   },[location]);
 
@@ -82,7 +84,9 @@ const DefaultPage=()=>{
         <Route path="/" element={<LandingPage/>}></Route>
         <Route path="/home" element={<LandingPage/>}></Route>
         <Route path="/articles" element={<ArticlesPage/>}></Route>
-        <Route path="/articles/:id" element={<ArticlesPage/>}></Route>
+        <Route path="/articles/:page" element={<ArticlesPage/>}></Route>
+        <Route path="/admin/articles/:page" element={<AdminArticlePage/>}></Route>
+        <Route path="/admin/stashes/:page" element={<AdminStashPage/>}></Route>
         <Route path="/articles/read/:id" element={<ReadArticlePage/>}></Route>
         <Route path="/dashboard" element={<AdminDashboard/>}></Route>
         <Route path="/about" element={<AboutPage/>}></Route>

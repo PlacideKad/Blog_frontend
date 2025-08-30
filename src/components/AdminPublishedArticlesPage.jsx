@@ -9,13 +9,14 @@ const AdminPublishedArticlesPage=()=>{
   const {backendURL}=useContext(GlobalAppContext);
   const [articles,setArticles]=useState([]);
   const [stashes,setStashes]=useState([]);
-  const setTotalPages=()=>{}
+  const [totalArticlePages,setTotalArticlePages]=useState(1);
+  const [totalStashPages,setTotalStashPages]=useState(1);
   const [refreshPublish,setRefreshPublish]=useState(true);
   const refresh=()=>{setRefreshPublish(prev=>!prev)};
   useEffect(()=>{
     try{
-      (async()=>{await getArticles(setStashes,backendURL,false,6,1,setTotalPages,null,false,'createdAt',-1)})();
-      (async()=>{await getArticles(setArticles,backendURL,true,6,1,setTotalPages,null,false,'createdAt',-1)})();
+      (async()=>{await getArticles(setStashes,backendURL,false,3,1,setTotalStashPages,null,false,'createdAt',-1)})();
+      (async()=>{await getArticles(setArticles,backendURL,true,3,1,setTotalArticlePages,null,false,'createdAt',-1)})();
     }catch(err){
       console.log(err);
     }
@@ -29,9 +30,9 @@ const AdminPublishedArticlesPage=()=>{
           <EmptyItemList text="Aucun article en cours" style="flex flex-col items-center justify-center"/>:
           <ArticlesItem stash={true} articlesList={stashes} readOnClick={false} refresh={refresh}/>
         }
-        {stashes.length>6&&
+        {totalStashPages>1&&
           <div className="w-full my-2 flex items-center justify-center">
-            <Link className="text-purple-400 font-extrabold">
+            <Link to='/admin/stashes/1' className="text-purple-400 font-extrabold">
               Voir plus →
             </Link>
           </div>
@@ -45,9 +46,9 @@ const AdminPublishedArticlesPage=()=>{
           <EmptyItemList text="Aucun article publié" style="flex flex-col items-center justify-center"/>:
           <ArticlesItem stash={false} articlesList={articles} readOnClick={false} refresh={refresh}/>
         }
-        {articles.length>6&&
+        {totalArticlePages>1&&
           <div className="w-full my-2 flex items-center justify-center">
-            <Link className="text-purple-400 font-extrabold">
+            <Link to='/admin/articles/1' className="text-purple-400 font-extrabold">
               Voir plus →
             </Link>
           </div>

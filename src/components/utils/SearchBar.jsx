@@ -3,7 +3,7 @@ import { GlobalAppContext } from "../App";
 import { getArticles } from "./getArticles";
 import { getUsers } from "./getUsers";
 
-const SearchBar=({placeholder_,setItems_,orderState_,setOrderState_,sortBy_,setSortBy_,searchOptions_,searchArticle,page_=1,setTotalPages_=null})=>{
+const SearchBar=({placeholder_,setItems_,orderState_,setOrderState_,sortBy_,setSortBy_,searchOptions_,limit_,searchArticle,page_=1,setTotalPages_=null})=>{
   const [inputText,setInputText]=useState('');
   const {backendURL}=useContext(GlobalAppContext);
   const [showMore,setShowMore]=useState(false);
@@ -18,8 +18,7 @@ const SearchBar=({placeholder_,setItems_,orderState_,setOrderState_,sortBy_,setS
     const order=formData.get('order');
     try{
       if(searchArticle){
-        console.log({search_input,exact,sort_by,order});
-        await getArticles(setItems_,backendURL,true,6,1,setTotalPages_,search_input,exact,sort_by||sortBy_,order||orderState_);
+        await getArticles(setItems_,backendURL,true,limit_,1,setTotalPages_,search_input,exact,sort_by||sortBy_,order||orderState_);
       } 
       else{await getUsers(setItems_,backendURL,search_input,sort_by||sortBy_,order||orderState_,exact)}
       setShowMore(false);
@@ -42,7 +41,7 @@ const SearchBar=({placeholder_,setItems_,orderState_,setOrderState_,sortBy_,setS
         <button 
         onClick={()=>{
           if(!inputText && searchArticle){
-            (async()=>{await getArticles(setItems_,backendURL,true,6,page_,setTotalPages_,null,false,sortBy_,orderState_)})(); 
+            (async()=>{await getArticles(setItems_,backendURL,true,limit_,page_,setTotalPages_,null,false,sortBy_,orderState_)})(); 
           } 
         }}
         className="w-2/10 h-full cursor-pointer flex items-center justify-center rounded-r-full bg-fuchsia-400">

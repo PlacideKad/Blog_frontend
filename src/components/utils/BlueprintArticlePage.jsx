@@ -108,7 +108,7 @@ const BlueprintArticlePage=({isPublished_,isAdmin_,limit_})=>{
           {totalPages && pagesList && totalPages>1 &&
             <div className="w-8/10 space-x-2 flex items-center justify-center">
               <span 
-              onClick={()=>{page-1>0?navigate(`${isAdmin_?'/admin':''}/${isPublished_?'articles':'stashes'}/${page+1}`):null}}
+              onClick={()=>{page-1>0?navigate(`${isAdmin_?'/admin':''}/${isPublished_?'articles':'stashes'}/${page-1}`):null}}
               className={`material-symbols-outlined box-content w-fit h-fit cursor-pointer ${page-1>0?'text-fuchsia-400':'text-neutral-400'}`}>
                 arrow_left
               </span>

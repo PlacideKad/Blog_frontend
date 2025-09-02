@@ -1,25 +1,20 @@
 import { useEffect, useContext, useState } from "react";
 import { GlobalAppContext} from "./App";
-
+import { getCloudinaryLink } from "./utils/getCloudinaryLink";
 import contestWomen1 from "../img/landingPage/svg/Women's Day protest-cuate.svg";
 import contestWomen2 from "../img/landingPage/svg/Women's Day protest-rafiki.svg";
 import readingWoman from "../img/landingPage/svg/Book lover-bro.svg";
 import speachWoman from '../img/landingPage/svg/Conference speaker-bro.svg';
 import tree1 from '../img/landingPage/svg/cherry tree-amico.svg';
 import tree2 from '../img/landingPage/svg/cherry tree-pana.svg';
-import audrelorde from '../img/landingPage/people/AudreLorde.jpg';
-import malala from '../img/landingPage/people/Malala.jpg';
-import michelleobama from '../img/landingPage/people/MichelleObama.jpg';
-import simone from '../img/landingPage/people/simoneDeBeauvoir.jpg';
-import oprah from '../img/landingPage/people/Opra.jpg';
 
 const LandingPage=()=>{
   const feminists=[
-    { img: audrelorde, name: "Audre Lorde" },
-    { img: malala, name: "Malala Yousafzai" },
-    { img: michelleobama, name: "Michelle Obama" },
-    { img: simone, name: "Simone de Beauvoir" },
-    { img: oprah, name: "Oprah Winfrey" }
+    { link: getCloudinaryLink('AudreLorde_xq9ceo'), name: "Audre Lorde" },
+    { link: getCloudinaryLink('Malala_ayfxco'), name: "Malala Yousafzai" },
+    { link: getCloudinaryLink('MichelleObama_crocns'), name: "Michelle Obama" },
+    { link: getCloudinaryLink('simoneDeBeauvoir_s1mjw3'), name: "Simone de Beauvoir" },
+    { link: getCloudinaryLink('Opra_q8nrwg'), name: "Oprah Winfrey" }
   ];
   const fillArray = () => [...feminists, ...feminists, ...feminists];
 
@@ -106,7 +101,7 @@ const LandingPage=()=>{
                 transition:'scale ease 400ms'
               }}
               className="h-9/10 w-1/15 flex flex-col items-center justify-start z-0">
-                <img src={item.img} alt={item.name} className={`h-9/10 w-9/10 [object-fit:cover] rounded-2xl transition-all ease duration-300`} />
+                <img src={item.link} alt={item.name} className={`h-9/10 w-9/10 [object-fit:cover] rounded-2xl transition-all ease duration-300`} />
                 <span className="text-[.7rem] md:text-[1rem]">{item.name}</span>
               </div>
             ))}

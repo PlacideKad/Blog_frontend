@@ -55,7 +55,7 @@ const Footer=()=>{
             <div 
             href="https://instagram.com" target="_blank" rel="noreferrer" 
             className="hover:text-pink-400 transition flex items-center justify-evenly space-x-1">
-              <span>Instagram</span> 
+              <span className='cursor-pointer'>Instagram</span> 
               <img 
               className='w-6 h-6'
               src={instaIcon} 
@@ -65,7 +65,7 @@ const Footer=()=>{
             <div 
             href="https://tiktok.com" target="_blank" rel="noreferrer" 
             className="hover:text-pink-400 transition flex items-center justify-evenly space-x-1">
-              <span>TikTok</span> 
+              <span className='cursor-pointer'>TikTok</span> 
               <img 
               className='w-6 h-6'
               src={tiktokIcon} 
@@ -75,7 +75,7 @@ const Footer=()=>{
             <div 
             href="https://X.com" target="_blank" rel="noreferrer" 
             className="hover:text-pink-400 transition flex items-center justify-evenly space-x-1">
-              <span>X</span> 
+              <span className='cursor-pointer'>X</span> 
               <img 
               className='w-6 h-6 bg-white rounded-sm'
               src={xIcon} 

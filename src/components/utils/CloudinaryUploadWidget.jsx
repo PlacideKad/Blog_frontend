@@ -1,6 +1,6 @@
 import { useEffect , useRef } from "react";
 
-const CloudinaryUploadWidget=(className_)=>{
+const CloudinaryUploadWidget=({className_,child_})=>{
   const cloudinaryRef=useRef();
   const widgetRef=useRef();
   useEffect(()=>{
@@ -13,9 +13,9 @@ const CloudinaryUploadWidget=(className_)=>{
     });
   },[]);
   return(
-    <button className={className_} onClick={()=>widgetRef.current.open()}>
-      hello
-    </button>
+    <div className={className_} onClick={()=>widgetRef.current.open()}>
+      {child_}
+    </div>
   )
 }
 export default CloudinaryUploadWidget;

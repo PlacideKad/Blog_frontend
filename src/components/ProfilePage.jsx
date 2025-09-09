@@ -3,6 +3,7 @@ import { GlobalAppContext } from "./App";
 import Title from "./utils/Title";
 import { useNavigate } from "react-router-dom";
 import ButtonClikable from "./utils/ButtonClikable";
+import CloudinaryUploadWidget from "./utils/CloudinaryUploadWidget";
 
 const ProfilePage=()=>{
   const {
@@ -77,16 +78,19 @@ const ProfilePage=()=>{
       <div className="w-full !max-w-[1400px] h-6/10 lg:h-8/10 lg:flex-row flex flex-col items-center justify-evenly lg:justify-center lg:gap-8">
         <div 
         id="profile-picture" 
-        className="w-2/5 min-w-[150px] max-w-[270px] [aspect-ratio:1/1] rounded-full sm:rounded-4xl bg-fuchsia-400 flex items-center justify-center">
+        className="w-2/5 min-w-[150px] max-w-[270px] [aspect-ratio:1/1] rounded-full sm:rounded-4xl bg-fuchsia-400 flex items-center justify-center relative">
           <img
-            className="w-9/10 sm:w-95/100 [aspect-ratio:1/1] rounded-full sm:rounded-4xl object-cover"
+            className="w-9/10 sm:w-95/100 [aspect-ratio:1/1] rounded-full sm:rounded-4xl object-cover "
             src={user.picture && `${backendURL}/user/avatar/?url=${user.picture}`}
             alt="profile picture"
           />
+          <CloudinaryUploadWidget
+          className_="[width:clamp(10px,21%,40px)] [aspect-ratio:1/1] bg-linear-to-r from-fuchsia-400 to-purple-400 flex items-center justify-center rounded-full absolute bottom-0 right-0 text-white cursor-pointer shadow-md shadow-neutral-900"
+          child_={<span className="material-symbols-outlined !text-[1.1rem]">edit</span>}/>
         </div>
         <form 
         action={handleSubmitEdits}
-        className="w-9/10 lg:w-1/3 lg:h-1/3 sm:w-6/10 sm:text-xl [aspect-ratio:2/1] flex flex-col items-center justify-start gap-4"
+        className="w-9/10 lg:w-1/3 lg:h-1/3 sm:w-6/10 sm:text-xl [aspect-ratio:2/1] flex flex-col items-center justify-center gap-4"
         >
           <span className="text-sm sm:text-lg text-neutral-400 w-full">
             Créé le {new Date(user.createdAt).toLocaleDateString('fr-FR',{year:'numeric',month:'short',day:'numeric'})}
@@ -124,7 +128,6 @@ const ProfilePage=()=>{
             </div>
           </div>
 
-
           <div className="w-full flex items-center justify-between">
             <label 
             className="text-sm sm:text-lg text-neutral-400 w-3/10"
@@ -150,11 +153,9 @@ const ProfilePage=()=>{
                 return !prev})}}
               p_style="w-15/100 [aspect-ratio:1/1] flex items-center justify-center rounded-md"
               content={<span className="material-symbols-outlined">{famNameEdited?'close':'edit'}</span>}
-              color={famNameEdited && 'bg-red-400'}
-              />
+              color={famNameEdited && 'bg-red-400'}/>
             </div>
           </div>
-
 
           <input type="submit" 
           onMouseUp={handleMouseUp}

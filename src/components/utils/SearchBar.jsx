@@ -1,4 +1,4 @@
-import { useState , useContext ,useEffect } from "react";
+import { useState , useContext  } from "react";
 import { GlobalAppContext } from "../App";
 import { getArticles } from "./getArticles";
 import { getUsers } from "./getUsers";

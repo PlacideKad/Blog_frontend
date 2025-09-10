@@ -26,6 +26,7 @@ const DefaultPage=()=>{
     ,showNavbar,
     setIsAuthenticated,
     setUser,
+    displayChangedCloudinaryRefresh,
     backendURL}=useContext(GlobalAppContext);
   const [userId,setUserId]=useState(null);
 
@@ -68,7 +69,7 @@ const DefaultPage=()=>{
       }
       (async()=>{await getUser()})()
     }
-  },[userId]);
+  },[userId,displayChangedCloudinaryRefresh]);
   return(
     <div id="default-page" className={`h-85/100 grow-1 bg-gray-50 w-full overflow-y-auto overflow-x-hidden relative 
       ${showSidebar&&'[filter:blur(1px)]'}

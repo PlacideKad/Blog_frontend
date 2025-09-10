@@ -58,7 +58,7 @@ const ProfilePage=()=>{
         const res=await fetch(`${backendURL}/user/updateinfos`,{
           method:'PATCH',
           headers:{'Content-Type':'application/json'},
-          body:JSON.stringify({...data,id:user.id})
+          body:JSON.stringify({...data,id:user._id})
         });
         if(!res.ok) throw new Error('Error on update');
         const resJson=await res.json();
@@ -85,6 +85,7 @@ const ProfilePage=()=>{
             alt="profile picture"
           />
           <CloudinaryUploadWidget
+          user_id={user._id}
           className_="[width:clamp(10px,21%,40px)] [aspect-ratio:1/1] bg-linear-to-r from-fuchsia-400 to-purple-400 flex items-center justify-center rounded-full absolute bottom-0 right-0 text-white cursor-pointer shadow-md shadow-neutral-900"
           child_={<span className="material-symbols-outlined !text-[1.1rem]">edit</span>}/>
         </div>
@@ -170,7 +171,6 @@ const ProfilePage=()=>{
         Please Login to your account
       </div>
       }
-
 
       <div className="absolute sm:text-xl top-0 left-0 w-full flex items-center justify-between ">
         <Title windowWidth={windowWidth}/>

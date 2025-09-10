@@ -52,6 +52,7 @@ const App=()=>{
   const [isAuthenticated,setIsAuthenticated]=useState(false);
   const [windowWidth,setWindowWidth]=useState(window.innerWidth);
   const [user,setUser]=useState({});
+  const [displayChangedCloudinaryRefresh,setDisplayChangedCloudinaryRefresh]=useState(false);
   useEffect(()=>{
     const watchWindowWidth=()=>{
       setWindowWidth(window.innerWidth);
@@ -75,7 +76,9 @@ const App=()=>{
         showSidebar,
         setShowSidebar,
         setShowNavbar,
-        showNavbar}}>
+        showNavbar,
+        displayChangedCloudinaryRefresh,
+        setDisplayChangedCloudinaryRefresh}}>
           {showNavbar && <Navbar/>}
           <DefaultPage/>
       </GlobalAppContext.Provider>

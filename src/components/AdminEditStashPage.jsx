@@ -4,17 +4,21 @@ import { GlobalAppContext } from "./App";
 import "quill/dist/quill.snow.css";
 import Quill from "quill";
 import Title from "./utils/Title";
-
+import CloudinaryUploadWidget from "./utils/CloudinaryUploadWidget";
+import ButtonClikable from "./utils/ButtonClikable";
 const AdminEditStashPage=()=>{
   const editorRef = useRef(null);
   const quillInstance = useRef(null);
   const [title,setTitle]=useState('');
   const [subtitle,setSubtitle]=useState('');
+  const [coverLink,setCoverLink]=useState(null);
+  const [attachedFiles,setAttachedFiles]=useState([]);
+  const [content, setContent]=useState(null);
   const [isReadyToSubmit,setIsReadyToSubmit]=useState(false);
   const [isPressed,setIsPressed]=useState(false);
   const [isSavePressed,setIsSavePressed]=useState(false);
   const [saveArticle,setSaveArticle]=useState(false);
-  const {backendURL}=useContext(GlobalAppContext);
+  const {backendURL,defaultCover}=useContext(GlobalAppContext);
   const id=useLocation().pathname.split('/')[3];
   const navigate=useNavigate();
 
@@ -34,6 +38,7 @@ const AdminEditStashPage=()=>{
         const {stash}=await res.json();
         setTitle(stash.title);
         setSubtitle(stash.summary);
+        setCoverLink(stash.cover.link);
         if(!quillInstance.current && editorRef.current){
           quillInstance.current=new Quill(editorRef.current,options);
           quillInstance.current.setContents(JSON.parse(stash.content));
@@ -47,9 +52,14 @@ const AdminEditStashPage=()=>{
 
   useEffect(()=>{
     setIsReadyToSubmit(
-    title.trim()?.length>=3 &&
-    subtitle.trim()?.length>=3) ;
+    title?.trim()?.length>=3 &&
+    subtitle?.trim()?.length>=3) ;
   },[title,subtitle]);
+
+  const handleGetContent=()=>{
+    const delta=quillInstance.current.getContents();
+    setContent(JSON.stringify(delta));
+  }
 
   const handleSubmit=async (formData)=>{
     const title=formData.get('title');
@@ -58,6 +68,7 @@ const AdminEditStashPage=()=>{
     let data={stash_id:id};
     if(title && title.trim()) data.title=title.trim();
     if(subtitle && subtitle.trim()) data.summary=subtitle.trim();
+    if(coverLink) data.cover={link:coverLink};
     data.content=JSON.stringify(delta);
     if(!saveArticle){
       if(isReadyToSubmit){
@@ -136,10 +147,55 @@ const AdminEditStashPage=()=>{
             placeholder="" />
           </div>
 
-          {/* pieces jointes */}
-          <div>
-
+        {/* couverture */}
+        <div className="w-full flex items-center justify-between space-x-2">
+          <span className="w-min font-extrabold text-xl text-nowrap">
+            Couverture
+          </span>
+          <div className="grow-1 max-w-7/10 flex items-center justify-start space-x-2">
+            <img 
+            className="w-8/10 max-w-60 [aspect-ratio:30/12] rounded-xl" 
+            style={{objectFit:'cover'}}
+            src={coverLink} 
+            alt="" />
+            <CloudinaryUploadWidget
+            onClick_={handleGetContent}
+            className_={`w-3/100 min-w-8 [aspect-ratio:1/1] flex items-center justify-center rounded-md cursor-pointer bg-linear-to-r from-fuchsia-400 to-purple-400  text-white shadow shadow-neutral-600`}
+            child_={<span className="material-symbols-outlined">edit</span>}
+            setCover_={setCoverLink}
+            removeFromCloudinary_={coverLink!==defaultCover}
+            data_={{title,summary:subtitle,content,stash_id:id}}/>
           </div>
+        </div>
+        {/* pieces jointes */}
+        <div className="w-full flex items-center justify-between space-x-2">
+          <span className="w-min font-extrabold text-xl text-nowrap">
+            Pièces jointes
+          </span>
+          <div className="grow-1 max-w-7/10 flex items-center justify-start space-x-4">
+          {
+            attachedFiles.length>0 &&
+            <div className="py-1 w-8/10 max-w-100 space-y-3">
+            {
+              attachedFiles.map(file=>(
+                <div className="py-2 relative bg-neutral-100 rounded-2xl shadow shadow-neutral-300">
+                  <div className="w-full h-full flex items-center justify-evenly">
+                    <span className="h-full w-8/10 italic !text-sm">{file.title}</span>  
+                    <div className={`w-fit [aspect-ratio:1/1] p-1 flex items-center justify-center ${getFileInfos(file.title).color} text-white font-semibold !text-[.5rem]`}>{getFileInfos(file.title).extension}</div>            
+                  </div>
+                  <div className="absolute -top-2 -right-2 w-5  [aspect-ratio:1/1] rounded-full shadow shadow-neutral-600 bg-neutral-500 flex items-center justify-center">
+                    <span className="material-symbols-outlined !text-white !text-[.8rem]">close</span>
+                  </div>
+                </div>
+              ))
+            }
+            </div>
+          }
+            <ButtonClikable 
+            p_style="w-5/100 min-w-8 [aspect-ratio:1/1] flex items-center justify-center rounded-md"
+            content={<span className="material-symbols-outlined">add</span>}/>
+          </div>
+        </div>
 
           {/* Article content */}
           <div 

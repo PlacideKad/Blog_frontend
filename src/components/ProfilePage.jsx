@@ -87,7 +87,8 @@ const ProfilePage=()=>{
           <CloudinaryUploadWidget
           user_id={user._id}
           className_="[width:clamp(10px,21%,40px)] [aspect-ratio:1/1] bg-linear-to-r from-fuchsia-400 to-purple-400 flex items-center justify-center rounded-full absolute bottom-0 right-0 text-white cursor-pointer shadow-md shadow-neutral-900"
-          child_={<span className="material-symbols-outlined !text-[1.1rem]">edit</span>}/>
+          child_={<span className="material-symbols-outlined !text-[1.1rem]">edit</span>}
+          upDateUserPicture_={true}/>
         </div>
         <form 
         action={handleSubmitEdits}

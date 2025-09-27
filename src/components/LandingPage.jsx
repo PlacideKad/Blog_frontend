@@ -14,7 +14,7 @@ const LandingPage=()=>{
     { link: getCloudinaryLink('Malala_ayfxco'), name: "Malala Yousafzai" },
     { link: getCloudinaryLink('MichelleObama_crocns'), name: "Michelle Obama" },
     { link: getCloudinaryLink('simoneDeBeauvoir_s1mjw3'), name: "Simone de Beauvoir" },
-    { link: getCloudinaryLink('Opra_q8nrwg'), name: "Oprah Winfrey" }
+    { link: getCloudinaryLink('Opra_zbdqac'), name: "Oprah Winfrey" }
   ];
   const fillArray = () => [...feminists, ...feminists, ...feminists];
 
@@ -101,7 +101,7 @@ const LandingPage=()=>{
                 transition:'scale ease 400ms'
               }}
               className="h-9/10 w-1/15 flex flex-col items-center justify-start z-0">
-                <img src={item.link} alt={item.name} className={`h-9/10 w-9/10 [object-fit:cover] rounded-2xl transition-all ease duration-300`} />
+                <img src={item.link} alt={item.name} className={`h-9/10 w-9/10 [object-fit:cover] rounded-2xl md:rounded-4xl transition-all ease duration-300`} />
                 <span className="text-[.7rem] md:text-[1rem]">{item.name}</span>
               </div>
             ))}

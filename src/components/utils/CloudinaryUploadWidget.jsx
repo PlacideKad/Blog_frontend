@@ -2,7 +2,7 @@ import { useEffect , useRef , useContext } from "react";
 import { GlobalAppContext } from "../App";
 import { getCloudinaryLink , getDisplayNameFromCloudinaryLink } from "./cloudinaryLink";
 import { useNavigate } from "react-router-dom";
-import { removeFromCloudinary } from "./removeCloudinaryLink";
+import {removeFromCloudinary} from "./removeCloudinaryLink";
 
 const CloudinaryUploadWidget=({className_,child_,user_id,upDateUserPicture_,setCover_,setAttachedFiles,data_,onClick_,removeFromCloudinary_})=>{
   const navigate=useNavigate();
@@ -29,7 +29,7 @@ const CloudinaryUploadWidget=({className_,child_,user_id,upDateUserPicture_,setC
             if(!res.ok) throw new Error('Error while updating the user profile picture');
             const resJson=await res.json();
             if(!resJson.updated) throw new Error(resJson.message);
-            removeFromCloudinary(getDisplayNameFromCloudinaryLink(user?.picture));
+            await removeFromCloudinary(getDisplayNameFromCloudinaryLink(user?.picture));
             setUser(resJson.user);
           }catch(err){
             console.log(err);

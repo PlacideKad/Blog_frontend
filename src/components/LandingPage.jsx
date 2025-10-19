@@ -5,7 +5,7 @@ import contestWomen1 from "../img/landingPage/svg/Women's Day protest-cuate.svg"
 import contestWomen2 from "../img/landingPage/svg/Women's Day protest-rafiki.svg";
 import readingWoman from "../img/landingPage/svg/Book lover-bro.svg";
 import speachWoman from '../img/landingPage/svg/Conference speaker-bro.svg';
-import tree1 from '../img/landingPage/svg/cherry tree-amico.svg';
+import tree1 from '../img/landingPage/svg/magic tree-rafiki.svg';
 import tree2 from '../img/landingPage/svg/cherry tree-pana.svg';
 
 const LandingPage=()=>{

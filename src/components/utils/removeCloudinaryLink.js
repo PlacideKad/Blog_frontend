@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { GlobalAppContext } from "../App";
 
-export default removeFromCloudinary=async(publicId)=>{
+export const removeFromCloudinary=async(publicId)=>{
   const {backendURL}=useContext(GlobalAppContext);
   try{
     const res=await fetch(`${backendURL}/removeCloudinary`,{

@@ -1,6 +1,6 @@
 import { useEffect, useContext, useState } from "react";
 import { GlobalAppContext} from "./App";
-import { getCloudinaryLink } from "./utils/getCloudinaryLink";
+import { getCloudinaryLink } from "./utils/cloudinaryLink";
 import contestWomen1 from "../img/landingPage/svg/Women's Day protest-cuate.svg";
 import contestWomen2 from "../img/landingPage/svg/Women's Day protest-rafiki.svg";
 import readingWoman from "../img/landingPage/svg/Book lover-bro.svg";

@@ -1,14 +1,14 @@
 import { useEffect , useRef , useContext } from "react";
 import { GlobalAppContext } from "../App";
-import { getCloudinaryLink } from "./getCloudinaryLink";
+import { getCloudinaryLink , getDisplayNameFromCloudinaryLink } from "./cloudinaryLink";
 import { useNavigate } from "react-router-dom";
-import removeCloudinaryLink from "./removeCloudinaryLink";
+import { removeFromCloudinary } from "./removeCloudinaryLink";
 
 const CloudinaryUploadWidget=({className_,child_,user_id,upDateUserPicture_,setCover_,setAttachedFiles,data_,onClick_,removeFromCloudinary_})=>{
   const navigate=useNavigate();
   const cloudinaryRef=useRef();
   const widgetRef=useRef();
-  const {setDisplayChangedCloudinaryRefresh , backendURL , setUser}=useContext(GlobalAppContext);
+  const {setDisplayChangedCloudinaryRefresh , backendURL , setUser , user}=useContext(GlobalAppContext);
   useEffect(()=>{
     cloudinaryRef.current=window.cloudinary;
     widgetRef.current=cloudinaryRef.current.createUploadWidget({
@@ -18,6 +18,7 @@ const CloudinaryUploadWidget=({className_,child_,user_id,upDateUserPicture_,setC
       if(result.event==='success'){
         const link=getCloudinaryLink(result?.info?.display_name,{fill:'c_fill',height:'h_500',width:'w_500'});//`https://res.cloudinary.com/dmipesfyo/image/upload/c_fill,h_550,w_550/${result?.info?.display_name}`;
         const data={picture:link};
+
         if(user_id && upDateUserPicture_){
           try{
             const res=await fetch(`${backendURL}/user/updateinfos`,{
@@ -28,8 +29,8 @@ const CloudinaryUploadWidget=({className_,child_,user_id,upDateUserPicture_,setC
             if(!res.ok) throw new Error('Error while updating the user profile picture');
             const resJson=await res.json();
             if(!resJson.updated) throw new Error(resJson.message);
+            removeFromCloudinary(getDisplayNameFromCloudinaryLink(user?.picture));
             setUser(resJson.user);
-            removeCloudinaryLink()
           }catch(err){
             console.log(err);
           }

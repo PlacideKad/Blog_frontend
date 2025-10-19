@@ -22,6 +22,11 @@ const Navbar=()=>{
   const handleMenuClick=()=>{
     setShowSidebar(prev=>!prev);
   };
+  
+  const handleAuth=async (namesocial)=>{
+    window.location.href=`${backendURL}/auth/${namesocial}`;
+  };
+
   const sidebarRef=useRef(null);
   const menubtnRef=useRef(null);
   const clickOutside=(event)=>{
@@ -94,13 +99,12 @@ const Navbar=()=>{
               />
             </div>
           </Link>:
-          <Link to='/login'>
             <ButtonClikable
               type=''
               content='Se Connecter'
               p_style="rounded-md p-2"
+              onclick={()=>{handleAuth('google')}}
             />
-          </Link>
         }
       </div>
       {windowWidth<640 &&

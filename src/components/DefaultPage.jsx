@@ -12,7 +12,7 @@ import AdminEditStashPage from "./AdminEditStashPage";
 import AdminArticlePage from "./AdminArticlePage";
 import AdminStashPage from "./AdminStashPage";
 import AdminEditArticlePage from "./AdminEditArticlePage";
-import Login from "./Login";
+// import Login from "./Login";
 import Footer from "./Footer";
 import ReadArticlePage from "./ReadArticlePage";
 
@@ -91,7 +91,7 @@ const DefaultPage=()=>{
         <Route path="/articles/read/:id" element={<ReadArticlePage/>}></Route>
         <Route path="/dashboard" element={<AdminDashboard/>}></Route>
         <Route path="/about" element={<AboutPage/>}></Route>
-        <Route path="/login" element={<Login/>}></Route>
+        {/* <Route path="/login" element={<Login/>}></Route> */}
         <Route path="/profile" element={<ProfilePage/>}></Route>
         <Route path="/edit/stash/:id" element={<AdminEditStashPage/>}></Route>
         <Route path="/edit/article/:id" element={<AdminEditArticlePage/>}></Route>

@@ -103,7 +103,7 @@ const AdminCommunityPage=()=>{
                 <div className={`w-2/5 [aspect-ratio:1/1] rounded-full ${user.blocked?'from-red-400 to-pink-600':'from-fuchsia-400 to-purple-400'} bg-linear-45 transition-all ease duration-200 absolute top-1/3 -translate-y-1/2 left-1/2 -translate-x-1/2 flex items-center justify-center`}>
                   <img 
                   className="h-95/100 w-95/100 [object-fit:cover] rounded-full"
-                  src={user.picture && `${backendURL}/user/avatar/?url=${user.picture}`}
+                  src={user.picture }//&& `${backendURL}/user/avatar/?url=${user.picture}`
                   alt={`${user.given_name}'s profile picture`} />
                 </div>
 

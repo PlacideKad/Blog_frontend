@@ -81,7 +81,7 @@ const ProfilePage=()=>{
         className="w-2/5 min-w-[150px] max-w-[270px] [aspect-ratio:1/1] rounded-full sm:rounded-4xl bg-fuchsia-400 flex items-center justify-center relative">
           <img
             className="w-9/10 sm:w-95/100 [aspect-ratio:1/1] rounded-full sm:rounded-4xl object-cover "
-            src={user.picture && `${backendURL}/user/avatar/?url=${user.picture}`}
+            src={user.picture} //&& `${backendURL}/user/avatar/?url=${user.picture}`
             alt="profile picture"
           />
           <CloudinaryUploadWidget

@@ -6,6 +6,8 @@ import Quill from "quill";
 import Title from "./utils/Title";
 import CloudinaryUploadWidget from "./utils/CloudinaryUploadWidget";
 import ButtonClikable from "./utils/ButtonClikable";
+import { getDisplayNameFromCloudinaryLink } from "./utils/cloudinaryLink";
+
 const AdminEditStashPage=()=>{
   const editorRef = useRef(null);
   const quillInstance = useRef(null);
@@ -17,7 +19,7 @@ const AdminEditStashPage=()=>{
   const [isReadyToSubmit,setIsReadyToSubmit]=useState(false);
   const [isPressed,setIsPressed]=useState(false);
   const [isSavePressed,setIsSavePressed]=useState(false);
-  const [saveArticle,setSaveArticle]=useState(false);
+  const [coversArray,setCoversArray]=useState([]);
   const {backendURL,defaultCover}=useContext(GlobalAppContext);
   const id=useLocation().pathname.split('/')[3];
   const navigate=useNavigate();
@@ -56,12 +58,16 @@ const AdminEditStashPage=()=>{
     subtitle?.trim()?.length>=3) ;
   },[title,subtitle]);
 
+  useEffect(()=>{
+    if(coverLink && coverLink!==defaultCover) setCoversArray(prev=>[...prev,getDisplayNameFromCloudinaryLink(coverLink)])
+  },[coverLink]);
+
   const handleGetContent=()=>{
     const delta=quillInstance.current.getContents();
     setContent(JSON.stringify(delta));
   }
 
-  const handleSubmit=async (formData)=>{
+  const handleSubmit=async (formData, saveArticle=false)=>{
     const title=formData.get('title');
     const subtitle=formData.get('subtitle');
     const delta=quillInstance.current.getContents();
@@ -69,6 +75,7 @@ const AdminEditStashPage=()=>{
     if(title && title.trim()) data.title=title.trim();
     if(subtitle && subtitle.trim()) data.summary=subtitle.trim();
     if(coverLink) data.cover={link:coverLink};
+    if(coversArray.length>0) data.coversArray=coversArray;
     data.content=JSON.stringify(delta);
     if(!saveArticle){
       if(isReadyToSubmit){
@@ -112,7 +119,14 @@ const AdminEditStashPage=()=>{
         </section>
 
         {/* formulaire */}
-        <form action={handleSubmit}
+        <form
+        onSubmit={async (e)=>{
+          e.preventDefault();
+          const formData=new FormData(e.target);
+          const clickedButton=e.nativeEvent.submitter;
+          const isSave=clickedButton?.name==='save';
+          await handleSubmit(formData, isSave);
+        }}
         className="w-full min-h-full flex flex-col items-center justify-start space-y-4 mt-2">
 
           {/* titre */}
@@ -215,7 +229,8 @@ const AdminEditStashPage=()=>{
             onTouchStart={()=>{setIsPressed(true)}}
             onTouchEnd={()=>{setIsPressed(false)}}
             className={`bg-linear-to-r transition-all ease duration-200  flex items-center justify-evenly from-fuchsia-400 to-purple-400 text-gray-50 px-8 py-2 rounded-lg ${!isReadyToSubmit?'opacity-30':isPressed?'scale-97 cursor-pointer opacity-100':'shadow-lg cursor-pointer opacity-100'}`}
-            type="submit">
+            type="submit"
+            name="publish">
               <span>Publier</span>
               <span className="material-symbols-outlined">ios_share</span>
             </button>
@@ -224,10 +239,8 @@ const AdminEditStashPage=()=>{
             onMouseUp={()=>{setIsSavePressed(false)}}
             onTouchStart={()=>{setIsSavePressed(true)}}
             onTouchEnd={()=>{setIsSavePressed(false)}}
-            onClick={()=>{
-              setSaveArticle(true);
-              handleSubmit()
-            }}
+            type="submit"
+            name="save"
             className={`px-4 py-2 flex transition-all ease duration-200 items-center justify-evenly rounded-lg ring-2 ring-purple-400 ${isSavePressed?'scale-97 cursor-pointer opacity-100':'shadow-lg cursor-pointer opacity-100'}`}>
               <span>Enregistrer</span>
               <span className="material-symbols-outlined">archive</span>

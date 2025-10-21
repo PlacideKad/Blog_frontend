@@ -4,7 +4,7 @@ import { getCloudinaryLink , getDisplayNameFromCloudinaryLink } from "./cloudina
 import { useNavigate } from "react-router-dom";
 import {removeFromCloudinary} from "./removeCloudinaryLink";
 
-const CloudinaryUploadWidget=({className_,child_,user_id,upDateUserPicture_,setCover_,setAttachedFiles,data_,onClick_,removeFromCloudinary_})=>{
+const CloudinaryUploadWidget=({className_,child_,user_id,upDateUserPicture_,setCover_,setAttachedFiles,data_,onClick_})=>{
   const navigate=useNavigate();
   const cloudinaryRef=useRef();
   const widgetRef=useRef();
@@ -53,7 +53,7 @@ const CloudinaryUploadWidget=({className_,child_,user_id,upDateUserPicture_,setC
           }
         }
       }
-      if(result.event==="display-changed" && result.info==='hidden')console.log('refresh') //setDisplayChangedCloudinaryRefresh(prev=>!prev)
+      if(result.event==="display-changed" && result.info==='hidden') setDisplayChangedCloudinaryRefresh(prev=>!prev)
     });
   },[]);
   return(

@@ -2,8 +2,8 @@ import { useEffect, useRef , useState ,useContext} from "react";
 import { GlobalAppContext } from "./App";
 import "quill/dist/quill.snow.css";
 import Quill from "quill";
-import ButtonClikable from "./utils/ButtonClikable";
 import CloudinaryUploadWidget from "./utils/CloudinaryUploadWidget";
+import AttachedFiles from "./utils/AttachedFiles";
 
 const AdminCreateArticlePage=()=>{
   const editorRef = useRef(null);
@@ -13,8 +13,6 @@ const AdminCreateArticlePage=()=>{
   const [isReadyToSubmit,setIsReadyToSubmit]=useState(false);
   const [isPressed,setIsPressed]=useState(false);
   const [isSavePressed,setIsSavePressed]=useState(false);
-  const [saveArticle,setSaveArticle]=useState(false);
-  const [attachedFiles, setAttachedFiles]=useState([]);
   const {backendURL,defaultCover}=useContext(GlobalAppContext);
   const [coverLink,setCoverLink]=useState(null);
   const [content,setContent]=useState(null);
@@ -35,20 +33,11 @@ const AdminCreateArticlePage=()=>{
     title.trim()?.length>=3 &&
     subtitle.trim()?.length>=3) ;
   },[title,subtitle]);
-  const getFileInfos=(filename)=>{
-    const extensions=['pdf','txt','docx','xlsx']
-    if(extensions.includes(filename.split('.')[1])){
-      if(/.(.pdf)$/.test(filename)) return{extension:'PDF',color:'bg-red-700'}
-      if(/.(.txt)$/.test(filename)) return{extension:'TXT',color:'bg-gray-600'}
-      if(/.(.docx)$/.test(filename)) return{extension:'DOCX',color:'bg-blue-700'}
-      if(/.(.xlsx)$/.test(filename)) return{extension:'XLSX',color:'bg-green-700'}
-    }else return{extension:'File',color:'bg-neutral-600'}
-  };
   const handleGetContent=()=>{
     const delta=quillInstance.current.getContents();
     setContent(JSON.stringify(delta));
   }
-  const handleSubmit=async (formData)=>{
+  const handleSubmit=async (formData, saveArticle=false)=>{
     const title=formData.get('title');
     const subtitle=formData.get('subtitle');
     const delta=quillInstance.current.getContents();
@@ -93,7 +82,14 @@ const AdminCreateArticlePage=()=>{
       </section>
 
       {/* formulaire */}
-      <form action={handleSubmit}
+      <form 
+      onSubmit={async(e)=>{
+        e.preventDefault();
+        const formData=new FormData(e.target);
+        const clickedButton=e.nativeEvent.submitter;
+        const isSave=clickedButton?.name==='save';
+        await handleSubmit(formData,isSave);
+      }}
       className="w-full min-h-full flex flex-col items-center justify-start space-y-4 mt-2">
 
         {/* titre */}
@@ -148,35 +144,7 @@ const AdminCreateArticlePage=()=>{
           </div>
         </div>
         {/* pieces jointes */}
-        <div className="w-full flex items-center justify-between space-x-2">
-          <span className="w-min font-extrabold text-xl text-nowrap">
-            Pièces jointes
-          </span>
-          <div className="grow-1 max-w-7/10 flex items-center justify-start space-x-4">
-          {
-            attachedFiles.length>0 &&
-            <div className="py-1 w-8/10 max-w-100 space-y-3">
-            {
-              attachedFiles.map(file=>(
-                <div className="py-2 relative bg-neutral-100 rounded-2xl shadow shadow-neutral-300">
-                  <div className="w-full h-full flex items-center justify-evenly">
-                    <span className="h-full w-8/10 italic !text-sm">{file.title}</span>  
-                    <div className={`w-fit [aspect-ratio:1/1] p-1 flex items-center justify-center ${getFileInfos(file.title).color} text-white font-semibold !text-[.5rem]`}>{getFileInfos(file.title).extension}</div>            
-                  </div>
-                  <div className="absolute -top-2 -right-2 w-5  [aspect-ratio:1/1] rounded-full shadow shadow-neutral-600 bg-neutral-500 flex items-center justify-center">
-                    <span className="material-symbols-outlined !text-white !text-[.8rem]">close</span>
-                  </div>
-                </div>
-              ))
-            }
-            </div>
-          }
-            <ButtonClikable 
-            p_style="w-5/100 min-w-8 [aspect-ratio:1/1] flex items-center justify-center rounded-md"
-            content={<span className="material-symbols-outlined">add</span>}/>
-          </div>
-        </div>
-
+        <AttachedFiles/>
         {/* Article content */}
         <div 
         className="flex flex-col w-full min-h-[70vh]">
@@ -195,7 +163,8 @@ const AdminCreateArticlePage=()=>{
           onTouchStart={()=>{setIsPressed(true)}}
           onTouchEnd={()=>{setIsPressed(false)}}
           className={`bg-linear-to-r transition-all ease duration-200  flex items-center justify-evenly from-fuchsia-400 to-purple-400 text-gray-50 px-8 py-2 rounded-lg ${!isReadyToSubmit?'opacity-30':isPressed?'scale-97 cursor-pointer opacity-100':'shadow-lg cursor-pointer opacity-100'}`}
-          type="submit">
+          type="submit"
+          name="publish">
             <span>Publier</span>
             <span className="material-symbols-outlined">ios_share</span>
           </button>
@@ -204,10 +173,8 @@ const AdminCreateArticlePage=()=>{
           onMouseUp={()=>{setIsSavePressed(false)}}
           onTouchStart={()=>{setIsSavePressed(true)}}
           onTouchEnd={()=>{setIsSavePressed(false)}}
-          onClick={()=>{
-            setSaveArticle(true);
-            handleSubmit()
-          }}
+          type="submit"
+          name="save"
           className={`px-4 py-2 transition-all ease duration-200 flex items-center justify-evenly rounded-lg ring-2 ring-purple-400 ${isSavePressed?'scale-97 cursor-pointer':'shadow-lg cursor-pointer'} opacity-100`}>
             <span>Enregistrer</span>
             <span className="material-symbols-outlined">archive</span>

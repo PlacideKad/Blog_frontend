@@ -15,7 +15,7 @@ const AdminEditStashPage=()=>{
   const [subtitle,setSubtitle]=useState('');
   const [coverLink,setCoverLink]=useState(null);
   const [attachedFiles,setAttachedFiles]=useState([]);
-  const [content, setContent]=useState(null);
+  // const [content, setContent]=useState(null);
   const [isReadyToSubmit,setIsReadyToSubmit]=useState(false);
   const [isPressed,setIsPressed]=useState(false);
   const [isSavePressed,setIsSavePressed]=useState(false);
@@ -41,6 +41,7 @@ const AdminEditStashPage=()=>{
         setTitle(stash.title);
         setSubtitle(stash.summary);
         setCoverLink(stash.cover.link);
+        setAttachedFiles(stash.related_files || []);
         if(!quillInstance.current && editorRef.current){
           quillInstance.current=new Quill(editorRef.current,options);
           quillInstance.current.setContents(JSON.parse(stash.content));
@@ -62,6 +63,8 @@ const AdminEditStashPage=()=>{
     if(coverLink && coverLink!==defaultCover) setCoversArray(prev=>[...prev,getDisplayNameFromCloudinaryLink(coverLink)])
   },[coverLink]);
 
+  useEffect(()=>console.log(attachedFiles),[attachedFiles]);
+
 
   const handleSubmit=async (formData, saveArticle=false)=>{
     const title=formData.get('title');
@@ -72,6 +75,7 @@ const AdminEditStashPage=()=>{
     if(subtitle && subtitle.trim()) data.summary=subtitle.trim();
     if(coverLink) data.cover={link:coverLink};
     if(coversArray.length>0) data.coversArray=coversArray;
+    if(attachedFiles.length>0) data.related_files=attachedFiles;
     data.content=JSON.stringify(delta);
     if(!saveArticle){
       if(isReadyToSubmit){
@@ -174,8 +178,12 @@ const AdminEditStashPage=()=>{
             setCover_={setCoverLink}/>
           </div>
         </div>
+
         {/* pieces jointes */}
-        <AttachedFiles/>
+        <AttachedFiles
+        attachedFiles_={attachedFiles}
+        setAttachedFiles_={setAttachedFiles}/>
+
           {/* Article content */}
           <div 
           className="flex flex-col w-full min-h-[70vh]">

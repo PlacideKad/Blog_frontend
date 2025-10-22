@@ -4,6 +4,7 @@ import { GlobalAppContext } from "./App";
 import "quill/dist/quill.snow.css";
 import Quill from "quill";
 import Title from "./utils/Title";
+import AttachedFiles from "./utils/AttachedFiles";
 
 const AdminEditArticlePage=()=>{
   const editorRef = useRef(null);
@@ -14,6 +15,7 @@ const AdminEditArticlePage=()=>{
   const [isPressed,setIsPressed]=useState(false);
   const [isSavePressed,setIsSavePressed]=useState(false);
   const [saveArticle,setSaveArticle]=useState(false);
+  const [attachedFiles,setAttachedFiles]=useState([]);
   const {backendURL}=useContext(GlobalAppContext);
   const id=useLocation().pathname.split('/')[3];
   const navigate=useNavigate();
@@ -137,10 +139,10 @@ const AdminEditArticlePage=()=>{
           </div>
 
           {/* pieces jointes */}
-          <div>
-
-          </div>
-
+          <AttachedFiles
+          attachedFiles_={attachedFiles}
+          setAttachedFiles_={setAttachedFiles}
+          />
           {/* Article content */}
           <div 
           className="flex flex-col w-full min-h-[70vh]">

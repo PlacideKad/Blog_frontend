@@ -15,7 +15,8 @@ const AdminCreateArticlePage=()=>{
   const [isSavePressed,setIsSavePressed]=useState(false);
   const {backendURL,defaultCover}=useContext(GlobalAppContext);
   const [coverLink,setCoverLink]=useState(null);
-  const [content,setContent]=useState(null);
+  const [attachedFiles,setAttachedFiles]=useState([]);
+  // const [content,setContent]=useState(null);
   useEffect(()=>{
     const options={
       modules:{
@@ -139,7 +140,10 @@ const AdminCreateArticlePage=()=>{
           </div>
         </div>
         {/* pieces jointes */}
-        <AttachedFiles/>
+        <AttachedFiles
+        attachedFiles_={attachedFiles}
+        setAttachedFiles_={setAttachedFiles}
+        />
         {/* Article content */}
         <div 
         className="flex flex-col w-full min-h-[70vh]">

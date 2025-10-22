@@ -62,10 +62,6 @@ const AdminEditStashPage=()=>{
     if(coverLink && coverLink!==defaultCover) setCoversArray(prev=>[...prev,getDisplayNameFromCloudinaryLink(coverLink)])
   },[coverLink]);
 
-  const handleGetContent=()=>{
-    const delta=quillInstance.current.getContents();
-    setContent(JSON.stringify(delta));
-  }
 
   const handleSubmit=async (formData, saveArticle=false)=>{
     const title=formData.get('title');
@@ -173,12 +169,9 @@ const AdminEditStashPage=()=>{
             src={coverLink} 
             alt="" />
             <CloudinaryUploadWidget
-            onClick_={handleGetContent}
             className_={`w-3/100 min-w-8 [aspect-ratio:1/1] flex items-center justify-center rounded-md cursor-pointer bg-linear-to-r from-fuchsia-400 to-purple-400  text-white shadow shadow-neutral-600`}
             child_={<span className="material-symbols-outlined">edit</span>}
-            setCover_={setCoverLink}
-            removeFromCloudinary_={coverLink!==defaultCover}
-            data_={{title,summary:subtitle,content,stash_id:id}}/>
+            setCover_={setCoverLink}/>
           </div>
         </div>
         {/* pieces jointes */}

@@ -1,11 +1,10 @@
 import { useEffect , useRef , useContext } from "react";
 import { GlobalAppContext } from "../App";
 import { getCloudinaryLink , getDisplayNameFromCloudinaryLink } from "./cloudinaryLink";
-import { useNavigate } from "react-router-dom";
 import {removeFromCloudinary} from "./removeCloudinaryLink";
+import { format } from "@cloudinary/url-gen/actions/delivery";
 
-const CloudinaryUploadWidget=({className_,child_,user_id,upDateUserPicture_,setCover_,setAttachedFiles,data_,onClick_})=>{
-  const navigate=useNavigate();
+const CloudinaryUploadWidget=({className_,child_,user_id,upDateUserPicture_,setCover_,setAttachedFiles_,onClick_})=>{
   const cloudinaryRef=useRef();
   const widgetRef=useRef();
   const {setDisplayChangedCloudinaryRefresh , backendURL , setUser , user}=useContext(GlobalAppContext);
@@ -37,20 +36,8 @@ const CloudinaryUploadWidget=({className_,child_,user_id,upDateUserPicture_,setC
         }else if(setCover_){
           // we must authenticate the user before setting the cover, think about adding an admin authentication middleware and an admin field to all the users
           setCover_(getCloudinaryLink(result?.info?.display_name));
-          try{
-            const res=await fetch(`${backendURL}/admin/stash`,{
-              method:'POST',
-              headers:{'Content-Type':'application/json'},
-              body:JSON.stringify({...data_,cover:{link:getCloudinaryLink(result?.info?.display_name)}})
-            });
-            if(!res.ok) throw new Error ('Error occured when creating a temporary stash');
-            const resJson=await res.json();
-            if(resJson.success){
-              navigate(`/edit/stash/${resJson.stash_id}`);
-            }
-          }catch(err){
-            console.log(err);
-          }
+        }else if(setAttachedFiles_){
+          setAttachedFiles_(prev=>[...prev,{title:result?.info?.original_filename,link:getCloudinaryLink(result?.info?.display_name), display_name:result?.info?.display_name, format: result?.info?.format} ]);
         }
       }
       if(result.event==="display-changed" && result.info==='hidden') setDisplayChangedCloudinaryRefresh(prev=>!prev)

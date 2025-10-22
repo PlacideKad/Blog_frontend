@@ -1,6 +1,7 @@
 import ButtonClikable from "./ButtonClikable";
 import { useState } from "react";
-import { getFileInfos } from "./getFileInfo";
+import { getFileColor } from "./getFileColor";
+import CloudinaryUploadWidget from "./CloudinaryUploadWidget";
 
 const AttachedFiles=()=>{
   const [attachedFiles, setAttachedFiles]=useState([]);
@@ -18,7 +19,7 @@ const AttachedFiles=()=>{
                 <div className="py-2 relative bg-neutral-100 rounded-2xl shadow shadow-neutral-300">
                   <div className="w-full h-full flex items-center justify-evenly">
                     <span className="h-full w-8/10 italic !text-sm">{file.title}</span>  
-                    <div className={`w-fit [aspect-ratio:1/1] p-1 flex items-center justify-center ${getFileInfos(file.title).color} text-white font-semibold !text-[.5rem]`}>{getFileInfos(file.title).extension}</div>            
+                    <div className={`w-fit [aspect-ratio:1/1] p-1 flex items-center justify-center ${getFileColor(file.format).color} text-white font-semibold !text-[.5rem] uppercase`}>{file.format}</div>            
                   </div>
                   <div className="absolute -top-2 -right-2 w-5  [aspect-ratio:1/1] rounded-full shadow shadow-neutral-600 bg-neutral-500 flex items-center justify-center">
                     <span className="material-symbols-outlined !text-white !text-[.8rem]">close</span>
@@ -28,9 +29,10 @@ const AttachedFiles=()=>{
             }
             </div>
           }
-            <ButtonClikable 
-            p_style="w-5/100 min-w-8 [aspect-ratio:1/1] flex items-center justify-center rounded-md"
-            content={<span className="material-symbols-outlined">add</span>}/>
+            <CloudinaryUploadWidget
+            className_="w-5/100 min-w-8 [aspect-ratio:1/1] shadow shadow-sm shadow-neutral-900 flex items-center justify-center rounded-md cursor-pointer bg-linear-to-r from-fuchsia-400 to-purple-400  text-white"
+            child_={<span className="material-symbols-outlined">add</span>}
+            setAttachedFiles_={setAttachedFiles}/>
           </div>
         </div>
     );

@@ -33,10 +33,6 @@ const AdminCreateArticlePage=()=>{
     title.trim()?.length>=3 &&
     subtitle.trim()?.length>=3) ;
   },[title,subtitle]);
-  const handleGetContent=()=>{
-    const delta=quillInstance.current.getContents();
-    setContent(JSON.stringify(delta));
-  }
   const handleSubmit=async (formData, saveArticle=false)=>{
     const title=formData.get('title');
     const subtitle=formData.get('subtitle');
@@ -44,6 +40,7 @@ const AdminCreateArticlePage=()=>{
     let data={};
     if(title && title.trim()) data.title=title.trim();
     if(subtitle && subtitle.trim()) data.summary=subtitle.trim();
+    if(coverLink) data.cover={link:coverLink};
     data.content=JSON.stringify(delta);
     if(!saveArticle){
       if(isReadyToSubmit)try{
@@ -136,11 +133,9 @@ const AdminCreateArticlePage=()=>{
             src={coverLink || defaultCover} 
             alt="" />
             <CloudinaryUploadWidget
-            onClick_={handleGetContent}
             className_={`w-3/100 min-w-8 [aspect-ratio:1/1] flex items-center justify-center rounded-md cursor-pointer bg-linear-to-r from-fuchsia-400 to-purple-400  text-white shadow shadow-neutral-600`}
             child_={<span className="material-symbols-outlined">edit</span>}
-            setCover_={setCoverLink}
-            data_={{title,summary:subtitle,content}}/>
+            setCover_={setCoverLink}/>
           </div>
         </div>
         {/* pieces jointes */}

@@ -63,9 +63,6 @@ const AdminEditStashPage=()=>{
     if(coverLink && coverLink!==defaultCover) setCoversArray(prev=>[...prev,getDisplayNameFromCloudinaryLink(coverLink)])
   },[coverLink]);
 
-  useEffect(()=>console.log(attachedFiles),[attachedFiles]);
-
-
   const handleSubmit=async (formData, saveArticle=false)=>{
     const title=formData.get('title');
     const subtitle=formData.get('subtitle');
@@ -182,7 +179,10 @@ const AdminEditStashPage=()=>{
         {/* pieces jointes */}
         <AttachedFiles
         attachedFiles_={attachedFiles}
-        setAttachedFiles_={setAttachedFiles}/>
+        setAttachedFiles_={setAttachedFiles}
+        pageId_={id}
+        fromStash_={true}
+        fromEdit_={true}/>
 
           {/* Article content */}
           <div 

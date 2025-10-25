@@ -7,6 +7,7 @@ import Title from "./utils/Title";
 import CloudinaryUploadWidget from "./utils/CloudinaryUploadWidget";
 import { getDisplayNameFromCloudinaryLink } from "./utils/cloudinaryLink";
 import AttachedFiles from "./utils/AttachedFiles";
+import Cover from "./utils/Cover";
 
 const AdminEditStashPage=()=>{
   const editorRef = useRef(null);
@@ -59,9 +60,6 @@ const AdminEditStashPage=()=>{
     subtitle?.trim()?.length>=3) ;
   },[title,subtitle]);
 
-  useEffect(()=>{
-    if(coverLink && coverLink!==defaultCover) setCoversArray(prev=>[...prev,getDisplayNameFromCloudinaryLink(coverLink)])
-  },[coverLink]);
 
   const handleSubmit=async (formData, saveArticle=false)=>{
     const title=formData.get('title');
@@ -159,22 +157,11 @@ const AdminEditStashPage=()=>{
           </div>
 
         {/* couverture */}
-        <div className="w-full flex items-center justify-between space-x-2">
-          <span className="w-min font-extrabold text-xl text-nowrap">
-            Couverture
-          </span>
-          <div className="grow-1 max-w-7/10 flex items-center justify-start space-x-2">
-            <img 
-            className="w-8/10 max-w-60 [aspect-ratio:30/12] rounded-xl" 
-            style={{objectFit:'cover'}}
-            src={coverLink} 
-            alt="" />
-            <CloudinaryUploadWidget
-            className_={`w-3/100 min-w-8 [aspect-ratio:1/1] flex items-center justify-center rounded-md cursor-pointer bg-linear-to-r from-fuchsia-400 to-purple-400  text-white shadow shadow-neutral-600`}
-            child_={<span className="material-symbols-outlined">edit</span>}
-            setCover_={setCoverLink}/>
-          </div>
-        </div>
+        <Cover
+        coverLink_={coverLink}
+        setCoverLink_={setCoverLink}
+        defaultCover_={defaultCover}
+        setCoversArray_={setCoversArray}/>
 
         {/* pieces jointes */}
         <AttachedFiles

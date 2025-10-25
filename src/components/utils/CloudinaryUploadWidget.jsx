@@ -37,7 +37,8 @@ const CloudinaryUploadWidget=({className_,child_,user_id,upDateUserPicture_,setC
           // we must authenticate the user before setting the cover, think about adding an admin authentication middleware and an admin field to all the users
           setCover_(getCloudinaryLink(result?.info?.display_name));
         }else if(setAttachedFiles_){
-          setAttachedFiles_(prev=>[...prev,{title:result?.info?.original_filename,file:{link:getCloudinaryLink(result?.info?.display_name)}, display_name:result?.info?.display_name, format: result?.info?.format} ]);
+          console.log({result});
+          setAttachedFiles_(prev=>[...prev,{title:result?.info?.original_filename,file:{link:getCloudinaryLink(result?.info?.display_name)}, display_name:result?.info?.display_name, format: result?.info?.format, resource_type:result?.info?.resource_type} ]);
         }
       }
       if(result.event==="display-changed" && result.info==='hidden') setDisplayChangedCloudinaryRefresh(prev=>!prev)

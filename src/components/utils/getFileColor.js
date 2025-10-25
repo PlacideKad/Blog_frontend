@@ -1,5 +1,6 @@
-  export const getFileColor=(format)=>{
-    switch(format.toLowerCase()){
+  export const getFileColor=(format,display_name)=>{
+    const extension=format?format:display_name.split('.').pop();
+    switch(extension.toLowerCase()){
       case 'pdf':
         return {extension:'PDF',color:'bg-red-700'};
       case 'txt':

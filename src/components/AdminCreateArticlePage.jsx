@@ -2,8 +2,8 @@ import { useEffect, useRef , useState ,useContext} from "react";
 import { GlobalAppContext } from "./App";
 import "quill/dist/quill.snow.css";
 import Quill from "quill";
-import CloudinaryUploadWidget from "./utils/CloudinaryUploadWidget";
 import AttachedFiles from "./utils/AttachedFiles";
+import Cover from './utils/Cover';
 
 const AdminCreateArticlePage=()=>{
   const editorRef = useRef(null);
@@ -16,7 +16,7 @@ const AdminCreateArticlePage=()=>{
   const {backendURL,defaultCover}=useContext(GlobalAppContext);
   const [coverLink,setCoverLink]=useState(null);
   const [attachedFiles,setAttachedFiles]=useState([]);
-  // const [content,setContent]=useState(null);
+  const [coversArray,setCoversArray]=useState([]);
   useEffect(()=>{
     const options={
       modules:{
@@ -42,6 +42,8 @@ const AdminCreateArticlePage=()=>{
     if(title && title.trim()) data.title=title.trim();
     if(subtitle && subtitle.trim()) data.summary=subtitle.trim();
     if(coverLink) data.cover={link:coverLink};
+    if(coversArray.length>0) data.coversArray=coversArray;
+    if(attachedFiles.length>0) data.related_files=attachedFiles;
     data.content=JSON.stringify(delta);
     if(!saveArticle){
       if(isReadyToSubmit)try{
@@ -123,27 +125,18 @@ const AdminCreateArticlePage=()=>{
         </div>
 
         {/* couverture */}
-        <div className="w-full flex items-center justify-between space-x-2">
-          <span className="w-min font-extrabold text-xl text-nowrap">
-            Couverture
-          </span>
-          <div className="grow-1 max-w-7/10 flex items-center justify-start space-x-2">
-            <img 
-            className="w-8/10 max-w-60 [aspect-ratio:30/12] rounded-xl" 
-            style={{objectFit:'cover'}}
-            src={coverLink || defaultCover} 
-            alt="" />
-            <CloudinaryUploadWidget
-            className_={`w-3/100 min-w-8 [aspect-ratio:1/1] flex items-center justify-center rounded-md cursor-pointer bg-linear-to-r from-fuchsia-400 to-purple-400  text-white shadow shadow-neutral-600`}
-            child_={<span className="material-symbols-outlined">edit</span>}
-            setCover_={setCoverLink}/>
-          </div>
-        </div>
+        <Cover
+        coverLink_={coverLink || defaultCover}
+        setCoverLink_={setCoverLink}
+        defaultCover_={defaultCover}
+        setCoversArray_={setCoversArray}/>
+
         {/* pieces jointes */}
         <AttachedFiles
         attachedFiles_={attachedFiles}
         setAttachedFiles_={setAttachedFiles}
-        />
+        fromStash_={false}
+        fromEdit_={false}/>
         {/* Article content */}
         <div 
         className="flex flex-col w-full min-h-[70vh]">

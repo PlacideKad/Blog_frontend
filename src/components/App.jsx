@@ -47,6 +47,7 @@ const GlobalAppContext=createContext();
 const App=()=>{
   const backendURL='http://localhost:3000/api';
   const defaultCover="https://images.unsplash.com/photo-1623039405147-547794f92e9e?q=80&w=826&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
+  const defaultStashCover="https://images.unsplash.com/photo-1455390582262-044cdead277a?q=80&w=1973&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
   const [buttons,setButtons]=useState(navbar_buttons);
   const [showSidebar,setShowSidebar]=useState(false);
   const [showNavbar,setShowNavbar]=useState(true);
@@ -71,6 +72,7 @@ const App=()=>{
         setUser,
         backendURL,
         defaultCover,
+        defaultStashCover,
         windowWidth,
         buttons,
         setButtons,

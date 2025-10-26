@@ -33,7 +33,7 @@ const AttachedFiles=({attachedFiles_, setAttachedFiles_,pageId_,fromStash_, from
   return(
       <div className="w-full flex items-center justify-between space-x-2">
         <span className="w-min font-extrabold text-xl text-nowrap">
-          Pièces jointes
+          Joindre PDF
         </span>
         <div className="grow-1 max-w-7/10 flex items-center justify-start space-x-4">
         {
@@ -43,8 +43,8 @@ const AttachedFiles=({attachedFiles_, setAttachedFiles_,pageId_,fromStash_, from
             attachedFiles_.map((file,key)=>(
               <div key={key} className="py-2 relative bg-neutral-100 rounded-2xl shadow shadow-neutral-300">
                 <div className="w-full h-full flex items-center justify-evenly">
-                  <span className="h-full w-8/10 italic !text-sm">{`${file.title}.${getFileColor(file.format, file.display_name).extension.toLowerCase()}`}</span>  
-                  <div className={`w-fit [aspect-ratio:1/1] p-1 flex items-center justify-center ${getFileColor(file.format, file.display_name).color} text-white font-semibold !text-[.5rem] uppercase`}>{getFileColor(file.format,file.display_name).extension}</div>            
+                  <span className="h-full w-8/10 italic !text-sm">{`${file.title}.pdf`}</span>  
+                  <div className={`w-fit [aspect-ratio:1/1] p-1 flex items-center justify-center bg-red-600 text-white font-semibold !text-[.5rem] uppercase`}>pdf</div>            
                 </div>
                 <div className="absolute -top-2 -right-2 w-5  [aspect-ratio:1/1] rounded-full shadow shadow-neutral-600 bg-neutral-500 flex items-center justify-center">
                   <span 

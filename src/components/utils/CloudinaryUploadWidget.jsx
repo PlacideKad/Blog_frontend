@@ -37,8 +37,29 @@ const CloudinaryUploadWidget=({className_,child_,user_id,upDateUserPicture_,setC
           // we must authenticate the user before setting the cover, think about adding an admin authentication middleware and an admin field to all the users
           setCover_(getCloudinaryLink(result?.info?.display_name));
         }else if(setAttachedFiles_){
-          console.log({result});
-          setAttachedFiles_(prev=>[...prev,{title:result?.info?.original_filename,file:{link:getCloudinaryLink(result?.info?.display_name)}, display_name:result?.info?.display_name, format: result?.info?.format, resource_type:result?.info?.resource_type} ]);
+          const newFile={
+            title:result?.info?.original_filename,
+            file:{link:getCloudinaryLink(result?.info?.display_name)}, 
+            display_name:result?.info?.display_name, 
+            format: result?.info?.format, 
+            resource_type:result?.info?.resource_type
+          } 
+          if(result?.info?.resource_type==='raw' || result?.info?.format.toLowerCase()!=='pdf'){
+            //still need to tell the user that this type of file isn't allowed
+            try{
+              const res=await fetch(`${backendURL}/admin/delete/cloudinary/file/0`,{
+                method:'PATCH',
+                headers:{'Content-Type':'application/json'},
+                body:JSON.stringify({file_to_delete:newFile})
+              });
+              if(!res.ok) throw new Error('Error while deleting an attached file');
+              const resJson=await res.json();
+              console.log(resJson.success?'File not allowed':'File not allowed deletion failed');// use a pop up component
+            }catch(err){
+              console.log(err);
+            }
+          }
+          else setAttachedFiles_(prev=>[...prev,newFile]);
         }
       }
       if(result.event==="display-changed" && result.info==='hidden') setDisplayChangedCloudinaryRefresh(prev=>!prev)

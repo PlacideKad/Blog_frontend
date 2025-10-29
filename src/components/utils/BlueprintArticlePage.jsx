@@ -6,6 +6,8 @@ import EmptyItemList from "./EmptyItemList";
 import ArticlesItem from "./ArticlesItems";
 import SearchBar from "./SearchBar";
 import Title from "./Title";
+import Loader from "./Loader";
+import ErrorPopup from "./ErrorPopup";
 
 const BlueprintArticlePage=({isPublished_,isAdmin_,limit_})=>{
   const [articles ,setArticles]=useState([]);
@@ -17,7 +19,13 @@ const BlueprintArticlePage=({isPublished_,isAdmin_,limit_})=>{
   const page=parseInt(useLocation().pathname.split('/')[isAdmin_?3:2]) || 1;
   const navigate=useNavigate();
 
-  const {handleButtonActive, setButtons,backendURL}=useContext(GlobalAppContext);
+  const {handleButtonActive,
+    setButtons,
+    backendURL,
+    isLoading,
+    setIsLoading,
+    errorMessage,
+    setErrorMessage}=useContext(GlobalAppContext);
   const searchOptions=isPublished_?{
     sortBy:[
       {
@@ -94,8 +102,17 @@ const BlueprintArticlePage=({isPublished_,isAdmin_,limit_})=>{
     setButtons((prev)=>handleButtonActive(prev,0));
   },[]);
 
+  const loadingStateCallback=(loadingState)=>{
+    setIsLoading(loadingState);
+  }
+  const errorMessageCallback=(error)=>{
+    setErrorMessage(error)
+  }
   useEffect(()=>{
-    (async()=>{await getArticles(setArticles,backendURL,isPublished_,limit_,page,setTotalPages,null,false,sortBy,orderState,)})();
+    (async()=>{await getArticles(setArticles,backendURL,isPublished_,limit_,page,setTotalPages,null,false,sortBy,orderState,
+      loadingStateCallback,
+      errorMessageCallback
+    )})();
   },[page]);
 
   useEffect(()=>{
@@ -109,6 +126,11 @@ const BlueprintArticlePage=({isPublished_,isAdmin_,limit_})=>{
   },[totalPages]);
   return(
     <div className="min-h-screen h-fit w-full">
+      <ErrorPopup
+      showState_={errorMessage?true:false}
+      onCloseCallback_={()=>{setErrorMessage(null)}}
+      message_={errorMessage? errorMessage.message : ''}
+      />
       {isAdmin_&&
         <section className="absolute top-0 left-0">
           <Title windowWidth={window.innerWidth}/>
@@ -129,7 +151,11 @@ const BlueprintArticlePage=({isPublished_,isAdmin_,limit_})=>{
           isPublished_={isPublished_}
           searchOptions_={searchOptions}
           limit_={limit_}/>
-        {articles.length===0?
+        {isLoading?
+        <Loader
+        message_='We are loading'
+        style_="w-full h-[70vh]"/>:
+        articles.length===0?
           <EmptyItemList text="Aucun Résultat" style="h-screen w-full flex flex-col items-center justify-center"/>:
           <ArticlesItem articlesList={articles} readOnClick={!isAdmin_} bottomText="Lire"/>
         }

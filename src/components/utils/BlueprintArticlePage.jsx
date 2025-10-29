@@ -149,9 +149,9 @@ const BlueprintArticlePage=({isPublished_,isAdmin_,limit_})=>{
         {isLoading?
         <Loader
         message_='We are loading'
-        style_="w-full h-[70vh]"/>:
+        style_="w-full h-[50vh] md:h-[70vh]"/>:
         articles.length===0?
-          <EmptyItemList text="Aucun Résultat" style="h-screen w-full flex flex-col items-center justify-center"/>:
+          <EmptyItemList text="Aucun Résultat" style="h-[70vh] md:h-screen w-full flex flex-col items-center justify-center"/>:
           <ArticlesItem articlesList={articles} readOnClick={!isAdmin_} bottomText="Lire"/>
         }
         <div className="w-full absolute bottom-0 my-4 left-0 flex items-center justify-center">

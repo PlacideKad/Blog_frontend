@@ -4,6 +4,8 @@ import "quill/dist/quill.snow.css";
 import Quill from "quill";
 import AttachedFiles from "./utils/AttachedFiles";
 import Cover from './utils/Cover';
+import ErrorPopup from "./utils/ErrorPopup";
+import Loader from "./utils/Loader";
 
 const AdminCreateArticlePage=()=>{
   const editorRef = useRef(null);
@@ -17,6 +19,9 @@ const AdminCreateArticlePage=()=>{
   const [coverLink,setCoverLink]=useState(null);
   const [attachedFiles,setAttachedFiles]=useState([]);
   const [coversArray,setCoversArray]=useState([]);
+  const [errorMessage,setErrorMessage]=useState(null);
+  const [isLoading, setIsLoading]=useState(false);
+  const [isSaveState,setIsSaveState]=useState(null);
   useEffect(()=>{
     const options={
       modules:{
@@ -35,47 +40,60 @@ const AdminCreateArticlePage=()=>{
     subtitle.trim()?.length>=3) ;
   },[title,subtitle]);
   const handleSubmit=async (formData, saveArticle=false)=>{
-    const title=formData.get('title');
-    const subtitle=formData.get('subtitle');
-    const delta=quillInstance.current.getContents();
-    let data={};
-    if(title && title.trim()) data.title=title.trim();
-    if(subtitle && subtitle.trim()) data.summary=subtitle.trim();
-    if(coverLink) data.cover={link:coverLink};
-    if(coversArray.length>0) data.coversArray=coversArray;
-    if(attachedFiles.length>0) data.related_files=attachedFiles;
-    data.content=JSON.stringify(delta);
-    if(!saveArticle){
-      if(isReadyToSubmit)try{
-        const res=await fetch(`${backendURL}/admin/article`,{
-          method:'POST',
-          headers:{'Content-Type':'application/json'},
-          body:JSON.stringify(data)
-        });
-        if(!res.ok) throw new Error('Error when publishing the article');
-        const resJson=await res.json();
-        if(resJson.success) window.location.reload();
-      }catch(err){
-        console.log(err);
-      }
-    }else{
-      try{
-        const res=await fetch(`${backendURL}/admin/stash`,{
-          method:'POST',
-          headers:{'Content-Type':'application/json'},
-          body:JSON.stringify(data)
-        });
-        if(!res.ok) throw new Error('Error when saving the article');
-        const resJson=await res.json();
-        if(resJson.success) window.location.reload();
-      }catch(err){
-        console.log(err);
+    if(!isLoading){
+      setIsSaveState(saveArticle);
+      const title=formData.get('title');
+      const subtitle=formData.get('subtitle');
+      const delta=quillInstance.current.getContents();
+      let data={};
+      if(title && title.trim()) data.title=title.trim();
+      if(subtitle && subtitle.trim()) data.summary=subtitle.trim();
+      if(coverLink) data.cover={link:coverLink};
+      if(coversArray.length>0) data.coversArray=coversArray;
+      if(attachedFiles.length>0) data.related_files=attachedFiles;
+      data.content=JSON.stringify(delta);
+      setIsLoading(true);
+      if(!saveArticle){
+        if(isReadyToSubmit)try{
+          const res=await fetch(`${backendURL}/admin/article`,{
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify(data)
+          });
+          if(!res.ok) throw new Error('Error when publishing the article');
+          const resJson=await res.json();
+          setTimeout(()=>{setIsLoading(false);},50000)
+          if(resJson.success) window.location.reload();
+        }catch(err){
+          console.log(err);
+          setErrorMessage(err.message);
+          setTimeout(()=>{setIsLoading(false);},50000)
+        }
+      }else{
+        try{
+          const res=await fetch(`${backendURL}/admin/stash`,{
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify(data)
+          });
+          if(!res.ok) throw new Error('Error when saving the article');
+          const resJson=await res.json();
+          setTimeout(()=>{setIsLoading(false);},50000);
+          if(resJson.success) window.location.reload();
+        }catch(err){
+          console.log(err);
+          setErrorMessage(err.message);
+          setTimeout(()=>{setIsLoading(false);},50000);
+        }
       }
     }
-    
   }
   return(
     <div className="h-full w-full">
+      <ErrorPopup
+      message_={errorMessage}
+      showState_={errorMessage?true:false}
+      onCloseCallback_={()=>setErrorMessage(null)}/>
       {/* nota */}
       <section className="text-neutral-400 text-[.8rem]">
         Les champs marqués de ( <span className="text-red-500">*</span> ) sont obligatoires.
@@ -157,8 +175,15 @@ const AdminCreateArticlePage=()=>{
           className={`bg-linear-to-r transition-all ease duration-200  flex items-center justify-evenly from-fuchsia-400 to-purple-400 text-gray-50 px-8 py-2 rounded-lg ${!isReadyToSubmit?'opacity-30':isPressed?'scale-97 cursor-pointer opacity-100':'shadow-lg cursor-pointer opacity-100'}`}
           type="submit"
           name="publish">
-            <span>Publier</span>
-            <span className="material-symbols-outlined">ios_share</span>
+          {(isLoading && !isSaveState)?(
+            <Loader
+            message_=""
+            style_="w-full h-full"/>):
+            <>
+              <span>Publier</span>
+              <span className="material-symbols-outlined">ios_share</span>
+            </>
+          }
           </button>
           <button 
           onMouseDown={()=>{setIsSavePressed(true)}}
@@ -168,8 +193,15 @@ const AdminCreateArticlePage=()=>{
           type="submit"
           name="save"
           className={`px-4 py-2 transition-all ease duration-200 flex items-center justify-evenly rounded-lg ring-2 ring-purple-400 ${isSavePressed?'scale-97 cursor-pointer':'shadow-lg cursor-pointer'} opacity-100`}>
-            <span>Enregistrer</span>
-            <span className="material-symbols-outlined">archive</span>
+          {(isLoading && isSaveState)?(
+            <Loader
+            message_=""
+            style_="w-full h-full"/>):
+            <>
+              <span className="material-symbols-outlined">archive</span>
+              <span>Enregistrer</span>
+            </>
+          }
           </button>
         </div>
       </form>

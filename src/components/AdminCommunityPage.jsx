@@ -96,7 +96,7 @@ const AdminCommunityPage=()=>{
         searchArticle={false}/>
       {isLoading?
       <Loader
-      message_="CHargement des utilisateurs..."
+      message_="Chargement des utilisateurs..."
       style_="w-full h-[50vh]"/>:
         users.length!==0 ? 
         <div className="w-full h-fit grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 px-2 py-1 space-x-2 space-y-4">

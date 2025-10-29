@@ -55,8 +55,6 @@ const App=()=>{
   const [windowWidth,setWindowWidth]=useState(window.innerWidth);
   const [user,setUser]=useState({});
   const [displayChangedCloudinaryRefresh,setDisplayChangedCloudinaryRefresh]=useState(false);
-  const [isLoading, setIsLoading]=useState(true);
-  const [errorMessage,setErrorMessage]=useState(null);
   useEffect(()=>{
     const watchWindowWidth=()=>{
       setWindowWidth(window.innerWidth);
@@ -84,11 +82,7 @@ const App=()=>{
         setShowNavbar,
         showNavbar,
         displayChangedCloudinaryRefresh,
-        setDisplayChangedCloudinaryRefresh,
-        isLoading,
-        setIsLoading,
-        errorMessage,
-        setErrorMessage}}>
+        setDisplayChangedCloudinaryRefresh}}>
           {showNavbar && <Navbar/>}
           <DefaultPage/>
       </GlobalAppContext.Provider>

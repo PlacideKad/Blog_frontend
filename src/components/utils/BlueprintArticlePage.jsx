@@ -15,17 +15,12 @@ const BlueprintArticlePage=({isPublished_,isAdmin_,limit_})=>{
   const [pagesList,setPagesList]=useState(null);
   const [sortBy,setSortBy]=useState('createdAt');
   const [orderState,setOrderState]=useState(-1);
-  
+  const [isLoading, setIsLoading]=useState(true);
+  const [errorMessage,setErrorMessage]=useState(null);  
   const page=parseInt(useLocation().pathname.split('/')[isAdmin_?3:2]) || 1;
   const navigate=useNavigate();
 
-  const {handleButtonActive,
-    setButtons,
-    backendURL,
-    isLoading,
-    setIsLoading,
-    errorMessage,
-    setErrorMessage}=useContext(GlobalAppContext);
+  const {handleButtonActive,setButtons,backendURL}=useContext(GlobalAppContext);
   const searchOptions=isPublished_?{
     sortBy:[
       {

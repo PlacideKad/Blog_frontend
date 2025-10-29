@@ -3,6 +3,8 @@ import {GlobalAppContext} from "./App";
 import SearchBar from "./utils/SearchBar";
 import { getUsers } from "./utils/getUsers";
 import EmptyItemList from "./utils/EmptyItemList";
+import ErrorPopup from "./utils/ErrorPopup";
+import Loader from "./utils/Loader";
 
 const AdminCommunityPage=()=>{
   const [users,setUsers]=useState([]);
@@ -10,6 +12,8 @@ const AdminCommunityPage=()=>{
   const {backendURL}=useContext(GlobalAppContext);
   const [sortBy,setSortBy]=useState('createdAt');
   const [orderState,setOrderState]=useState(-1);
+  const [isLoading, setIsLoading]=useState(true);
+  const [errorMessage,setErrorMessage]=useState(null);
 
   const searchOptions={
     sortBy:[
@@ -54,7 +58,10 @@ const AdminCommunityPage=()=>{
     ]
   }
   useEffect(()=>{
-    (async()=>{await getUsers(setUsers,backendURL,null,false)})();
+    (async()=>{await getUsers(setUsers,backendURL,null,
+      (loadingState)=>{setIsLoading(loadingState)},
+      (err)=>{setErrorMessage(err.message)},
+      false)})();
   },[refresh]);
   const handleBlockUser=async (user_id,isBlocked)=>{
     try{
@@ -72,6 +79,10 @@ const AdminCommunityPage=()=>{
   };
   return (
     <div className="w-full h-fit flex flex-col items-start justify-start" >
+      <ErrorPopup
+      showState_={errorMessage?true:false}
+      message_={errorMessage}
+      onCloseCallback_={()=>setErrorMessage(null)}/>
       <SearchBar 
         placeholder_="Entrer un nom ou une adresse mail"
         setItems_={setUsers}
@@ -83,7 +94,10 @@ const AdminCommunityPage=()=>{
         setOrderState_={setOrderState}
         searchOptions_={searchOptions}
         searchArticle={false}/>
-      {
+      {isLoading?
+      <Loader
+      message_="CHargement des utilisateurs..."
+      style_="w-full h-[50vh]"/>:
         users.length!==0 ? 
         <div className="w-full h-fit grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 px-2 py-1 space-x-2 space-y-4">
           {

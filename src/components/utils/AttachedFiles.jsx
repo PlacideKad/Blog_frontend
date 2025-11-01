@@ -1,4 +1,3 @@
-import { getFileColor } from "./getFileColor";
 import CloudinaryUploadWidget from "./CloudinaryUploadWidget";
 import { GlobalAppContext } from "../App";
 import { useContext } from "react";

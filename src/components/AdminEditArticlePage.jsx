@@ -6,6 +6,8 @@ import Quill from "quill";
 import Title from "./utils/Title";
 import AttachedFiles from "./utils/AttachedFiles";
 import Cover from './utils/Cover';
+import ErrorPopup from "./utils/ErrorPopup";
+import Loader from "./utils/Loader";
 
 const AdminEditArticlePage=()=>{
   const editorRef = useRef(null);
@@ -19,6 +21,10 @@ const AdminEditArticlePage=()=>{
   const [coverLink,setCoverLink]=useState(null);
   const [coversArray,setCoversArray]=useState([]);
   const {backendURL , defaultCover}=useContext(GlobalAppContext);
+  const [errorMessage,setErrorMessage]=useState(null);
+  const [isLoadingOnSubmit, setIsLoadingOnSubmit]=useState(false);
+  const [isLoading, setIsLoading]=useState(true);
+  const [isSaveState,setIsSaveState]=useState(null);
   const id=useLocation().pathname.split('/')[3];
   const navigate=useNavigate();
 
@@ -46,7 +52,8 @@ const AdminEditArticlePage=()=>{
         }
       }catch(err){
         console.log(err);
-      }
+        setErrorMessage(err.message);
+      }finally {setIsLoading(false)};
     }
     (async()=>{await getArticleContent()})();
   },[]);
@@ -58,52 +65,71 @@ const AdminEditArticlePage=()=>{
   },[title,subtitle]);
 
   const handleSubmit=async (formData , saveArticle=false)=>{
-    const title=formData.get('title');
-    const subtitle=formData.get('subtitle');
-    const delta=quillInstance.current.getContents();
-    let data={article_id:id};
-    if(title && title.trim()) data.title=title.trim();
-    if(subtitle && subtitle.trim()) data.summary=subtitle.trim();
-    if(coverLink) data.cover={link:coverLink};
-    if(coversArray.length>0) data.coversArray=coversArray;
-    if(attachedFiles.length>0) data.related_files=attachedFiles;
-    data.content=JSON.stringify(delta);
-    if(!saveArticle){
-      if(isReadyToSubmit){
+    if(!isLoadingOnSubmit){
+      setIsSaveState(saveArticle);
+      const title=formData.get('title');
+      const subtitle=formData.get('subtitle');
+      const delta=quillInstance.current.getContents();
+      let data={article_id:id};
+      if(title && title.trim()) data.title=title.trim();
+      if(subtitle && subtitle.trim()) data.summary=subtitle.trim();
+      if(coverLink) data.cover={link:coverLink};
+      if(coversArray.length>0) data.coversArray=coversArray;
+      if(attachedFiles.length>0) data.related_files=attachedFiles;
+      setIsLoadingOnSubmit(true);
+      data.content=JSON.stringify(delta);
+      if(!saveArticle){
+        if(isReadyToSubmit){
+          try{
+            const res=await fetch(`${backendURL}/admin/article/update`,{
+              method:'POST',
+              headers:{'Content-Type':'application/json'},
+              body:JSON.stringify(data)
+            });
+            if(!res.ok) throw new Error('Error when publishing the article');
+            const resJson=await res.json();
+            setIsLoadingOnSubmit(false);
+            if(resJson.success) navigate('/dashboard');
+          }catch(err){
+            console.log(err);
+            setErrorMessage(errorMessage);
+            setIsLoadingOnSubmit(false);
+          }
+        }
+      }else{
         try{
-          const res=await fetch(`${backendURL}/admin/article/update`,{
+          const res=await fetch(`${backendURL}/admin/stash`,{
             method:'POST',
             headers:{'Content-Type':'application/json'},
             body:JSON.stringify(data)
           });
-          if(!res.ok) throw new Error('Error when publishing the article');
+          if(!res.ok) throw new Error('Error when saving the article');
           const resJson=await res.json();
+          setIsLoadingOnSubmit(false);
           if(resJson.success) navigate('/dashboard');
         }catch(err){
           console.log(err);
+          setErrorMessage(err.message);
+          setIsLoadingOnSubmit(false);
         }
-      }
-    }else{
-      try{
-        const res=await fetch(`${backendURL}/admin/stash`,{
-          method:'POST',
-          headers:{'Content-Type':'application/json'},
-          body:JSON.stringify(data)
-        });
-        if(!res.ok) throw new Error('Error when saving the article');
-        const resJson=await res.json();
-        if(resJson.success) navigate('/dashboard');
-      }catch(err){
-        console.log(err);
       }
     }
   }
   return(
     <div className="h-full w-full flex flex-col items-center justify-start">
+      <ErrorPopup
+      message_={errorMessage}
+      showState_={errorMessage?true:false}
+      onCloseCallback_={()=>setErrorMessage(null)}/>
       {/* * title */}
       <section className="absolute top-0 left-0">
         <Title windowWidth={window.innerWidth}/>
       </section>
+    {isLoading?
+    <Loader
+    message_="Chargement de l'article..."
+    style_="w-full h-[100vh]"/>:
+    <>
       <div className="mt-[15vh] px-4 md:w-8/10">
         <section className="text-neutral-400 text-[.8rem]">
           Les champs marqués de ( <span className="text-red-500">*</span> ) sont obligatoires.
@@ -158,7 +184,8 @@ const AdminEditArticlePage=()=>{
           coverLink_={coverLink}
           setCoverLink_={setCoverLink}
           defaultCover_={defaultCover}
-          setCoversArray_={setCoversArray}/>
+          setCoversArray_={setCoversArray}
+          coversArray_={coversArray}/>
 
           {/* pieces jointes */}
           <AttachedFiles
@@ -186,8 +213,18 @@ const AdminEditArticlePage=()=>{
             className={`bg-linear-to-r transition-all ease duration-200  flex items-center justify-evenly from-fuchsia-400 to-purple-400 text-gray-50 px-8 py-2 rounded-lg ${!isReadyToSubmit?'opacity-30':isPressed?'scale-97 cursor-pointer opacity-100':'shadow-lg cursor-pointer opacity-100'}`}
             type="submit"
             name="publish">
-              <span>Publier</span>
-              <span className="material-symbols-outlined">ios_share</span>
+            {(isLoadingOnSubmit && !isSaveState)?(
+              <Loader
+              message_=""
+              style_=""
+              h_="h-6"
+              w_="w-6"
+              border_="border-2"/>):
+              <>
+                <span>Publier</span>
+                <span className="material-symbols-outlined">ios_share</span>
+              </>
+            }
             </button>
             <button 
             onMouseDown={()=>{setIsSavePressed(true)}}
@@ -197,12 +234,23 @@ const AdminEditArticlePage=()=>{
             type="submit"
             name="save"
             className={`px-4 py-2 flex transition-all ease duration-200 items-center justify-evenly rounded-lg ring-2 ring-purple-400 ${isSavePressed?'scale-97 cursor-pointer opacity-100':'shadow-lg cursor-pointer opacity-100'}`}>
-              <span>Enregistrer</span>
-              <span className="material-symbols-outlined">archive</span>
+            {(isLoadingOnSubmit && isSaveState)?(
+              <Loader
+              message_=""
+              style_=""
+              h_="h-6"
+              w_="w-6"
+              border_="border-2"/>):
+              <>
+                <span className="material-symbols-outlined">archive</span>
+                <span>Enregistrer</span>
+              </>
+            }
             </button>
           </div>
         </form>
       </div>
+    </>}
     </div>
   )
 }

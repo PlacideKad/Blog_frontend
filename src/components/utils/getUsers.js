@@ -7,9 +7,5 @@ export const getUsers=async(setFunction,backendURL,searchInput,loadingStateCallb
   }catch(err){
     console.log(err);
     errorMessageCallback?.(err);
-  }finally{
-    setTimeout(() => {
-      loadingStateCallback?.(false);
-    },1000);
-  }
+  }finally{loadingStateCallback?.(false);}
 }

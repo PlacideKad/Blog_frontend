@@ -11,7 +11,5 @@ export const getArticles=async(setFunction, backendURL, isPublished=true,limit=6
   }catch(err){
     console.log(err);
     errorMessageCallback(err);
-  }finally{
-    setTimeout(()=>loadingStateCallback(false),1000);
-  }
+  }finally{loadingStateCallback(false);}
 };

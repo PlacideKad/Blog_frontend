@@ -62,12 +62,12 @@ const AdminCreateArticlePage=()=>{
           });
           if(!res.ok) throw new Error('Error when publishing the article');
           const resJson=await res.json();
-          setTimeout(()=>{setIsLoading(false);},50000)
+          setIsLoading(false);
           if(resJson.success) window.location.reload();
         }catch(err){
           console.log(err);
           setErrorMessage(err.message);
-          setTimeout(()=>{setIsLoading(false);},50000)
+          setIsLoading(false);
         }
       }else{
         try{
@@ -78,12 +78,12 @@ const AdminCreateArticlePage=()=>{
           });
           if(!res.ok) throw new Error('Error when saving the article');
           const resJson=await res.json();
-          setTimeout(()=>{setIsLoading(false);},50000);
+          setIsLoading(false);
           if(resJson.success) window.location.reload();
         }catch(err){
           console.log(err);
           setErrorMessage(err.message);
-          setTimeout(()=>{setIsLoading(false);},50000);
+          setIsLoading(false);
         }
       }
     }
@@ -178,7 +178,10 @@ const AdminCreateArticlePage=()=>{
           {(isLoading && !isSaveState)?(
             <Loader
             message_=""
-            style_="w-full h-full"/>):
+            style_=""
+            h_="h-6"
+            w_="w-6"
+            border_="border-2"/>):
             <>
               <span>Publier</span>
               <span className="material-symbols-outlined">ios_share</span>
@@ -196,7 +199,10 @@ const AdminCreateArticlePage=()=>{
           {(isLoading && isSaveState)?(
             <Loader
             message_=""
-            style_="w-full h-full"/>):
+            style_=""
+            h_="h-6"
+            w_="w-6"
+            border_="border-2"/>):
             <>
               <span className="material-symbols-outlined">archive</span>
               <span>Enregistrer</span>

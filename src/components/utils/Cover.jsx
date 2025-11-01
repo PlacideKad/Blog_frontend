@@ -2,11 +2,22 @@ import CloudinaryUploadWidget from "./CloudinaryUploadWidget";
 import { useEffect } from "react";
 import { getDisplayNameFromCloudinaryLink } from "./cloudinaryLink";
 
-const Cover=({coverLink_,setCoverLink_,defaultCover_,setCoversArray_})=>{
-  useEffect(()=>{
-    if(coverLink_ && coverLink_!==defaultCover_) setCoversArray_(prev=>[...prev,getDisplayNameFromCloudinaryLink(coverLink_)])
-  },[coverLink_]);
-    
+const Cover=({coverLink_,setCoverLink_,defaultCover_,setCoversArray_,coversArray_})=>{
+useEffect(() => {
+  if (!coverLink_ || coverLink_ === defaultCover_) return;
+
+  // Ref pour stocker la dernière valeur traitée
+  if (!useEffect.lastCover) useEffect.lastCover = null;
+
+  // Empêche les doublons dus au double render
+  if (useEffect.lastCover === coverLink_) return;
+  useEffect.lastCover = coverLink_;
+
+  setCoversArray_(prev => [
+    ...prev,
+    getDisplayNameFromCloudinaryLink(coverLink_)
+  ]);
+}, [coverLink_]);
     return(
         <div className="w-full flex items-center justify-between space-x-2">
             <span className="w-min font-extrabold text-xl text-nowrap">

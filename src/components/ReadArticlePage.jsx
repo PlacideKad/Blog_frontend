@@ -42,8 +42,7 @@ const ReadArticlePage=()=>{
         setErrorMessage(err.message);
         navigate('/404');
       }finally{
-        setTimeout(()=>{setIsPageLoading(false)},500);
-      }
+        setIsPageLoading(false);}
     }
     (async()=>{await fetchArticleData(id)})();
   },[triggerComments]);

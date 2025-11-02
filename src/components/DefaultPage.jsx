@@ -13,6 +13,7 @@ import AdminArticlePage from "./AdminArticlePage";
 import AdminStashPage from "./AdminStashPage";
 import AdminEditArticlePage from "./AdminEditArticlePage";
 // import Login from "./Login";
+import LoginAsAdmin from "./LoginAsAdmin";
 import Footer from "./Footer";
 import ReadArticlePage from "./ReadArticlePage";
 
@@ -47,7 +48,7 @@ const DefaultPage=()=>{
       }
     }
     (async()=>{await checkUser()})()
-    setShowNavbar(!['login','profile','dashboard','edit','admin'].includes(location.pathname.split('/')[1]));
+    setShowNavbar(!['login','profile','dashboard','edit','admin','loginasadmin'].includes(location.pathname.split('/')[1]));
     setShowSidebar(false);
   },[location]);
 
@@ -95,6 +96,7 @@ const DefaultPage=()=>{
         <Route path="/profile" element={<ProfilePage/>}></Route>
         <Route path="/edit/stash/:id" element={<AdminEditStashPage/>}></Route>
         <Route path="/edit/article/:id" element={<AdminEditArticlePage/>}></Route>
+        <Route path="/loginasadmin" element={<LoginAsAdmin/>}></Route>
       </Routes>
       {showNavbar && <Footer/> }
     </div>

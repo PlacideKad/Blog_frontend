@@ -50,6 +50,10 @@ const App=()=>{
   const [windowWidth,setWindowWidth]=useState(window.innerWidth);
   const [user,setUser]=useState({});
   const [displayChangedCloudinaryRefresh,setDisplayChangedCloudinaryRefresh]=useState(false);
+  const handleAuth=async (namesocial)=>{
+    window.location.href=`${backendURL}/auth/${namesocial}`;
+  };
+
   useEffect(()=>{
     const watchWindowWidth=()=>{
       setWindowWidth(window.innerWidth);
@@ -88,6 +92,7 @@ const App=()=>{
         setShowSidebar,
         setShowNavbar,
         showNavbar,
+        handleAuth,
         displayChangedCloudinaryRefresh,
         setDisplayChangedCloudinaryRefresh}}>
           {showNavbar && <Navbar/>}

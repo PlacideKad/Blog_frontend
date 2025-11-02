@@ -11,6 +11,7 @@ const ProfilePage=()=>{
     user,
     setUser,
     backendURL,
+    handleAuth,
     windowWidth}=useContext(GlobalAppContext);
   const [nameEdited,setNameEdited]=useState(false);
   const [nameInput,setNameInput]=useState('');
@@ -168,8 +169,17 @@ const ProfilePage=()=>{
           value='Confirmer'/>
         </form>
       </div>:
-      <div>
-        Please Login to your account
+      <div className="flex flex-row items-center justify-center gap-6">
+        <span className="material-symbols-outlined !text-9xl !text-red-600">gpp_bad</span>
+        <div className="flex flex-col items-start justify-center gap-4">
+          <p className="text-3xl font-bold text-purple-600">Page non disponible</p>
+          <p>Veuillez vous reconnecter a votre compte
+            <span
+            onClick={async()=>{await handleAuth('google')}}
+            className="text-purple-600 cursor-pointer"> Utilisateur
+            </span>
+          </p>
+        </div>
       </div>
       }
 
@@ -183,7 +193,7 @@ const ProfilePage=()=>{
         </div>:
         <ButtonClikable
           content='Se connecter'
-          onclick={()=>{navigate('/login')}}
+          onclick={async()=>{handleAuth('google')}}
           p_style='p-2 mx-1 rounded-md'
         />
         }

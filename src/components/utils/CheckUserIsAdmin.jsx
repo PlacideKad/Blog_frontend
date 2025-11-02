@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { GlobalAppContext } from "../App";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Outlet } from "react-router-dom";
 
 const CheckUserIsAdmin =()=>{
   const {user}=useContext(GlobalAppContext);
@@ -8,6 +8,6 @@ const CheckUserIsAdmin =()=>{
   if(!user || !user.isAdmin){
     navigate('/loginasadmin');
   }
-  return(<></>);
+  return(<Outlet/>);
 }
 export default CheckUserIsAdmin;

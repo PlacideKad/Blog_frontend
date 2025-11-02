@@ -16,7 +16,7 @@ import AdminEditArticlePage from "./AdminEditArticlePage";
 import LoginAsAdmin from "./LoginAsAdmin";
 import Footer from "./Footer";
 import ReadArticlePage from "./ReadArticlePage";
-
+import CheckUserIsAdmin from "./utils/CheckUserIsAdmin";
 
 const DefaultPage=()=>{
   const location=useLocation();
@@ -82,21 +82,26 @@ const DefaultPage=()=>{
 
       transition-all ease 400ms`}>
       <Routes>
+        {/* public */}
         <Route path="*" element={<MissingPage/>}></Route>
         <Route path="/" element={<LandingPage/>}></Route>
         <Route path="/home" element={<LandingPage/>}></Route>
         <Route path="/articles" element={<ArticlesPage/>}></Route>
         <Route path="/articles/:page" element={<ArticlesPage/>}></Route>
-        <Route path="/admin/articles/:page" element={<AdminArticlePage/>}></Route>
-        <Route path="/admin/stashes/:page" element={<AdminStashPage/>}></Route>
         <Route path="/articles/read/:id" element={<ReadArticlePage/>}></Route>
-        <Route path="/dashboard" element={<AdminDashboard/>}></Route>
         <Route path="/about" element={<AboutPage/>}></Route>
         {/* <Route path="/login" element={<Login/>}></Route> */}
-        <Route path="/profile" element={<ProfilePage/>}></Route>
-        <Route path="/edit/stash/:id" element={<AdminEditStashPage/>}></Route>
-        <Route path="/edit/article/:id" element={<AdminEditArticlePage/>}></Route>
         <Route path="/loginasadmin" element={<LoginAsAdmin/>}></Route>
+        <Route path="/profile" element={<ProfilePage/>}></Route>
+
+        {/* admin */}
+        <Route element={<CheckUserIsAdmin/>}>
+          <Route path="/admin/articles/:page" element={<AdminArticlePage/>}></Route>
+          <Route path="/admin/stashes/:page" element={<AdminStashPage/>}></Route>
+          <Route path="/dashboard" element={<AdminDashboard/>}></Route>
+          <Route path="/edit/stash/:id" element={<AdminEditStashPage/>}></Route>
+          <Route path="/edit/article/:id" element={<AdminEditArticlePage/>}></Route>
+        </Route>
       </Routes>
       {showNavbar && <Footer/> }
     </div>

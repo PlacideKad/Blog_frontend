@@ -7,9 +7,6 @@ export const removeFromCloudinary=async(publicId)=>{
       body:JSON.stringify({publicId})
     });
     if(!res.ok) throw new Error('Error when removing orphan pictures from cloudinary');
-    const resJson=await res.json();
-    console.log(resJson);
-    // return resJson.success for test
   }catch(err){
     console.log(err);
   }

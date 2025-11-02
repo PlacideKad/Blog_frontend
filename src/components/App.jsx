@@ -32,11 +32,6 @@ const navbar_buttons=[{
   link:'/articles',
   icon:'article',
   active:false},{
-
-  name:'Admin',
-  icon:'manage_accounts',
-  link:'/dashboard',
-  active:false},{
     
   name:'A Propos',
   link:'/about',
@@ -62,6 +57,18 @@ const App=()=>{
     window.addEventListener('resize',watchWindowWidth);
     return ()=>{window.removeEventListener('resize',watchWindowWidth)}
   },[]);
+
+  useEffect(()=>{
+    const adminButton={
+      name:'Admin',
+      icon:'manage_accounts',
+      link:'/dashboard',
+      active:false
+    }
+    if(isAuthenticated && user.isAdmin){
+      setButtons(prev=>[...prev,adminButton]);
+    }else{setButtons(navbar_buttons)}
+  },[user, isAuthenticated])
   return(
     <Router>
       <ScrollToTop/>

@@ -20,7 +20,7 @@ const AdminEditArticlePage=()=>{
   const [attachedFiles,setAttachedFiles]=useState([]);
   const [coverLink,setCoverLink]=useState(null);
   const [coversArray,setCoversArray]=useState([]);
-  const {backendURL , defaultCover}=useContext(GlobalAppContext);
+  const {backendURL , defaultCover , user}=useContext(GlobalAppContext);
   const [errorMessage,setErrorMessage]=useState(null);
   const [isLoadingOnSubmit, setIsLoadingOnSubmit]=useState(false);
   const [isLoading, setIsLoading]=useState(true);
@@ -39,7 +39,11 @@ const AdminEditArticlePage=()=>{
 
     const getArticleContent=async ()=>{
       try{
-        const res=await fetch(`${backendURL}/admin/articles/${id}`);
+        const res=await fetch(`${backendURL}/admin/articles/${id}`,{
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({admin_id:user._id})
+        });
         if(!res.ok) throw new Error('Error occured when fetching the stashed data');
         const {article}=await res.json();
         setTitle(article.title);
@@ -70,7 +74,7 @@ const AdminEditArticlePage=()=>{
       const title=formData.get('title');
       const subtitle=formData.get('subtitle');
       const delta=quillInstance.current.getContents();
-      let data={article_id:id};
+      let data={article_id:id , admin_id:user._id};
       if(title && title.trim()) data.title=title.trim();
       if(subtitle && subtitle.trim()) data.summary=subtitle.trim();
       if(coverLink) data.cover={link:coverLink};

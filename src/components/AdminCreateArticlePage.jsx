@@ -1,4 +1,5 @@
 import { useEffect, useRef , useState ,useContext} from "react";
+import { useNavigate } from "react-router-dom";
 import { GlobalAppContext } from "./App";
 import "quill/dist/quill.snow.css";
 import Quill from "quill";
@@ -15,13 +16,14 @@ const AdminCreateArticlePage=()=>{
   const [isReadyToSubmit,setIsReadyToSubmit]=useState(false);
   const [isPressed,setIsPressed]=useState(false);
   const [isSavePressed,setIsSavePressed]=useState(false);
-  const {backendURL,defaultCover}=useContext(GlobalAppContext);
+  const {backendURL,defaultCover, user , handleChangeAdminPage}=useContext(GlobalAppContext);
   const [coverLink,setCoverLink]=useState(null);
   const [attachedFiles,setAttachedFiles]=useState([]);
   const [coversArray,setCoversArray]=useState([]);
   const [errorMessage,setErrorMessage]=useState(null);
   const [isLoading, setIsLoading]=useState(false);
   const [isSaveState,setIsSaveState]=useState(null);
+  const navigate=useNavigate();
   useEffect(()=>{
     const options={
       modules:{
@@ -45,7 +47,7 @@ const AdminCreateArticlePage=()=>{
       const title=formData.get('title');
       const subtitle=formData.get('subtitle');
       const delta=quillInstance.current.getContents();
-      let data={};
+      let data={admin_id:user._id};
       if(title && title.trim()) data.title=title.trim();
       if(subtitle && subtitle.trim()) data.summary=subtitle.trim();
       if(coverLink) data.cover={link:coverLink};
@@ -63,7 +65,7 @@ const AdminCreateArticlePage=()=>{
           if(!res.ok) throw new Error('Error when publishing the article');
           const resJson=await res.json();
           setIsLoading(false);
-          if(resJson.success) window.location.reload();
+          handleChangeAdminPage(0);
         }catch(err){
           console.log(err);
           setErrorMessage(err.message);
@@ -79,7 +81,7 @@ const AdminCreateArticlePage=()=>{
           if(!res.ok) throw new Error('Error when saving the article');
           const resJson=await res.json();
           setIsLoading(false);
-          if(resJson.success) window.location.reload();
+          handleChangeAdminPage(0);
         }catch(err){
           console.log(err);
           setErrorMessage(err.message);

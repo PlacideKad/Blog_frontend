@@ -9,7 +9,7 @@ import Loader from "./utils/Loader";
 const AdminCommunityPage=()=>{
   const [users,setUsers]=useState([]);
   const [refresh,setRefresh]=useState(false);
-  const {backendURL}=useContext(GlobalAppContext);
+  const {backendURL , user }=useContext(GlobalAppContext);
   const [sortBy,setSortBy]=useState('createdAt');
   const [orderState,setOrderState]=useState(-1);
   const [isLoading, setIsLoading]=useState(true);
@@ -58,7 +58,7 @@ const AdminCommunityPage=()=>{
     ]
   }
   useEffect(()=>{
-    (async()=>{await getUsers(setUsers,backendURL,null,
+    (async()=>{await getUsers(user._id,setUsers,backendURL,null,
       (loadingState)=>{setIsLoading(loadingState)},
       (err)=>{setErrorMessage(err.message)},
       false)})();
@@ -68,7 +68,7 @@ const AdminCommunityPage=()=>{
       const res=await fetch(`${backendURL}/admin/users/block`,{
         method:'POST',
         headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({user_id,isBlocked})
+        body:JSON.stringify({user_id,isBlocked,admin_id:user._id})
       });
       if(!res.ok) throw new Error('Error while blocking a user');
       const resJson=await res.json();

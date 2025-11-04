@@ -4,14 +4,14 @@ import {GlobalAppContext} from "../App";
 
 const ArticlesItem=({articlesList,readOnClick,stash,refresh})=>{
   const navigate=useNavigate();
-  const {backendURL}=useContext(GlobalAppContext);
+  const {backendURL , user}=useContext(GlobalAppContext);
   const handleDeleteItem=async (isStash,id)=>{
     try{
       const link=`${backendURL}/admin/${isStash?'stashes':'articles'}`;
       const res=await fetch(link,{
         method:'DELETE',
         headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({id})
+        body:JSON.stringify({id, admin_id:user._id})
       });
       if(!res.ok) throw new Error('Error when deleting an item');
       const resJson=await res.json();

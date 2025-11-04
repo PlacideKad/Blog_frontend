@@ -3,6 +3,9 @@ import { useState , createContext , useEffect} from "react";
 import DefaultPage from "./DefaultPage";
 import Navbar from "./Navbar";
 import ScrollToTop from "./utils/ScrollToTop";
+import AdminCommunityPage from "./AdminCommunityPage";
+import AdminCreateArticlePage from "./AdminCreateArticlePage";
+import AdminPublishedArticlesPage from "./AdminPublishedArticlesPage";
 
 const handleButtonActive=(buttons_list,index=null)=>{
   `
@@ -38,6 +41,13 @@ const navbar_buttons=[{
   icon:'info',
   active:false}
 ];
+
+const admin_dashboard_buttons_=[
+  {name:'dynamic_feed',selected:true,element:<AdminPublishedArticlesPage/>,key:0},
+  {name:'groups',selected:false,element:<AdminCommunityPage/>,key:1},
+  {name:'contract_edit',selected:false,element:<AdminCreateArticlePage />,key:2}
+];
+
 const GlobalAppContext=createContext();
 const App=()=>{
   const backendURL='http://localhost:3000/api';
@@ -50,9 +60,20 @@ const App=()=>{
   const [windowWidth,setWindowWidth]=useState(window.innerWidth);
   const [user,setUser]=useState({});
   const [displayChangedCloudinaryRefresh,setDisplayChangedCloudinaryRefresh]=useState(false);
+  const [adminDashboardButtons,setAdminDashboardButtons]=useState(admin_dashboard_buttons_);
+
   const handleAuth=async (namesocial)=>{
     window.location.href=`${backendURL}/auth/${namesocial}`;
   };
+
+  const handleChangeAdminPage=(index)=>{
+    let new_buttons=[];
+    adminDashboardButtons.forEach(button=>{
+      button.key===index?button.selected=true:button.selected=false;
+      new_buttons.push(button);
+    });
+    setAdminDashboardButtons(new_buttons);
+  }
 
   useEffect(()=>{
     const watchWindowWidth=()=>{
@@ -61,7 +82,6 @@ const App=()=>{
     window.addEventListener('resize',watchWindowWidth);
     return ()=>{window.removeEventListener('resize',watchWindowWidth)}
   },[]);
-
   useEffect(()=>{
     const adminButton={
       name:'Admin',
@@ -94,7 +114,9 @@ const App=()=>{
         showNavbar,
         handleAuth,
         displayChangedCloudinaryRefresh,
-        setDisplayChangedCloudinaryRefresh}}>
+        setDisplayChangedCloudinaryRefresh,
+        handleChangeAdminPage,
+        adminDashboardButtons}}>
           {showNavbar && <Navbar/>}
           <DefaultPage/>
       </GlobalAppContext.Provider>

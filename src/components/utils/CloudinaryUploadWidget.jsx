@@ -30,7 +30,7 @@ const CloudinaryUploadWidget=({className_,child_,user_id,upDateUserPicture_,setC
               if(!res.ok) throw new Error('Error while updating the user profile picture');
               const resJson=await res.json();
               if(!resJson.updated) throw new Error(resJson.message);
-              await removeFromCloudinary(getDisplayNameFromCloudinaryLink(user?.picture));
+              await removeFromCloudinary(getDisplayNameFromCloudinaryLink(user?.picture),backendURL);
               setUser(resJson.user);
             }catch(err){
               console.log(err);

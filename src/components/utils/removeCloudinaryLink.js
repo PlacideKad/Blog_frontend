@@ -1,5 +1,4 @@
-export const removeFromCloudinary=async(publicId)=>{
-  const backendURL='http://localhost:3000/api';
+export const removeFromCloudinary=async(publicId,backendURL)=>{
   try{
     const res=await fetch(`${backendURL}/remove_cloudinary`,{
       method:'POST',

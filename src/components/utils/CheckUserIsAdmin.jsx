@@ -6,7 +6,7 @@ const CheckUserIsAdmin =()=>{
   const {user}=useContext(GlobalAppContext);
   const navigate=useNavigate();
   if(!user || !user.isAdmin){
-    navigate('/loginasadmin');
+    navigate('/');
   }
   return(<Outlet/>);
 }

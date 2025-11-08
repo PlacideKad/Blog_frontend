@@ -1,9 +1,7 @@
-import xIcon from '../img/footer/icons8-x.svg';
-import instaIcon from '../img/footer/instagram-svgrepo-com.svg';
-import tiktokIcon from '../img/footer/tiktok-svgrepo-com.svg';
 import { useEffect , useState , useContext } from 'react';
 import { GlobalAppContext } from './App';
 import { Link } from 'react-router-dom';
+import { getCloudinaryLink } from './utils/cloudinaryLink';
 
 const Footer=()=>{
   const [recentTitles,setRecentTitles]=useState([]);
@@ -58,7 +56,7 @@ const Footer=()=>{
               <span className='cursor-pointer'>Instagram</span> 
               <img 
               className='w-6 h-6'
-              src={instaIcon} 
+              src={getCloudinaryLink("instagram-svgrepo-com_k8a1ol")} 
               alt="instagram icon" />
             </div>
 
@@ -68,7 +66,7 @@ const Footer=()=>{
               <span className='cursor-pointer'>TikTok</span> 
               <img 
               className='w-6 h-6'
-              src={tiktokIcon} 
+              src={getCloudinaryLink("tiktok-svgrepo-com_i6nkht")} 
               alt="instagram icon" />
             </div>
 
@@ -78,7 +76,7 @@ const Footer=()=>{
               <span className='cursor-pointer'>X</span> 
               <img 
               className='w-6 h-6 bg-white rounded-sm'
-              src={xIcon} 
+              src={getCloudinaryLink("icons8-x_gtevx3")} 
               alt="instagram icon" />
             </div>
           </div>

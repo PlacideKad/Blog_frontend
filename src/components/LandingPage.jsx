@@ -1,12 +1,6 @@
 import { useEffect, useContext, useState } from "react";
 import { GlobalAppContext} from "./App";
 import { getCloudinaryLink } from "./utils/cloudinaryLink";
-import contestWomen1 from "../img/landingPage/svg/Women's Day protest-cuate.svg";
-import contestWomen2 from "../img/landingPage/svg/Women's Day protest-rafiki.svg";
-import readingWoman from "../img/landingPage/svg/Book lover-bro.svg";
-import speachWoman from '../img/landingPage/svg/Conference speaker-bro.svg';
-import tree1 from '../img/landingPage/svg/magic tree-rafiki.svg';
-import tree2 from '../img/landingPage/svg/cherry tree-pana.svg';
 
 const LandingPage=()=>{
   const feminists=[
@@ -70,8 +64,8 @@ const LandingPage=()=>{
 
       <section id="pics"
       className="w-full lg:flex lg:items-center lg:justify-evenly">
-        <img className="w-full lg:w-1/2 lg:h-auto" src={contestWomen1} alt="contesting women pic 1" />
-        <img className="lg:w-1/2 lg:h-auto" src={contestWomen2} alt="contesting women pic 2" />
+        <img className="w-full lg:w-1/2 lg:h-auto" src={getCloudinaryLink('contestWomen1')} alt="contesting women pic 1" />
+        <img className="lg:w-1/2 lg:h-auto" src={getCloudinaryLink('contestWomen2')} alt="contesting women pic 2" />
       </section>
 
       {/* Texte d'accroche */}
@@ -85,7 +79,7 @@ const LandingPage=()=>{
       {/** Carrousel portraits feministes */}
 
       <section id="gallery" className={`flex flex-col items-center h-[min-content] lg:flex-row lg:justify-center lg:gap-4 `}>
-        <img src={speachWoman} className="h-[20vh]" alt="conference speaker" />
+        <img src={getCloudinaryLink("conference_speaker")} className="h-[20vh]" alt="conference speaker" />
         <div className={`${windowWidth<500?'w-full h-[30vh] max-h-[250px]':'[aspect-ratio:2/1] max-w-[600px] lg:max-w-[900px] w-85/100'} relative z-0 overflow-hidden`}>
           <div 
           style={{
@@ -128,7 +122,7 @@ const LandingPage=()=>{
           </p>
         </div>
         <img
-          src={readingWoman}
+          src={getCloudinaryLink('bookLover')}
           className="md:w-2/3 md:max-h-[90vh] object-contain rounded-lg shadow-lg"
           alt="Reading woman"
         />
@@ -144,8 +138,8 @@ const LandingPage=()=>{
           <span className="[font-style:italic]">certaines</span> arbres tombent en faisant du bruit, d'autres poussent dans le silence...
         </p>
         <div id="trees-text" className="flex items-center justify-between [&>img]:h-15 md:[&>img]:h-60 lg:[&>img]:h-90">
-          <img src={tree1} className="order-1" alt="tree pic 1"/>
-          <img src={tree2} className="order-3" alt="tree pic 2"/>
+          <img src={getCloudinaryLink('tree1')} className="order-1" alt="tree pic 1"/>
+          <img src={getCloudinaryLink('tree2')} className="order-3" alt="tree pic 2"/>
           <span className="order-2 dancing-script-style text-2xl md:text-4xl text-fuchsia-800">...Ici nous écoutons les deux.</span>
         </div>
       </section>

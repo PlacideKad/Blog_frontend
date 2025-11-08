@@ -24,7 +24,7 @@ const AdminEditStashPage=()=>{
   const [isPressed,setIsPressed]=useState(false);
   const [isSavePressed,setIsSavePressed]=useState(false);
   const [coversArray,setCoversArray]=useState([]);
-  const {backendURL,defaultCover}=useContext(GlobalAppContext);
+  const {backendURL , defaultCover, user}=useContext(GlobalAppContext);
   const id=useLocation().pathname.split('/')[3];
   const navigate=useNavigate();
 
@@ -71,7 +71,7 @@ const AdminEditStashPage=()=>{
       const title=formData.get('title');
       const subtitle=formData.get('subtitle');
       const delta=quillInstance.current.getContents();
-      let data={stash_id:id};
+      let data={stash_id:id, admin_id:user._id};
       if(title && title.trim()) data.title=title.trim();
       if(subtitle && subtitle.trim()) data.summary=subtitle.trim();
       if(coverLink) data.cover={link:coverLink};

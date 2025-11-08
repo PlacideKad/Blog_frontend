@@ -8,7 +8,7 @@ import ErrorPopup from "./utils/ErrorPopup";
 import Loader from "./utils/Loader";
 
 const AdminPublishedArticlesPage=()=>{
-  const {backendURL}=useContext(GlobalAppContext);
+  const {backendURL,user}=useContext(GlobalAppContext);
   const [articles,setArticles]=useState([]);
   const [stashes,setStashes]=useState([]);
   const [totalArticlePages,setTotalArticlePages]=useState(1);
@@ -23,11 +23,13 @@ const AdminPublishedArticlesPage=()=>{
     try{
       (async()=>{await getArticles(setStashes,backendURL,false,3,1,setTotalStashPages,null,false,'createdAt',-1,
         (loadingState)=>{setIsLoadingStash(loadingState)},
-        (error)=>{setErrorMessage(error)}
+        (error)=>{setErrorMessage(error)},
+        user._id
       )})();
       (async()=>{await getArticles(setArticles,backendURL,true,3,1,setTotalArticlePages,null,false,'createdAt',-1,
         (loadingState)=>{setIsLoadingArticle(loadingState)},
-        (error)=>{setErrorMessage(error)}
+        (error)=>{setErrorMessage(error)},
+        user._id
       )})();
     }catch(err){
       console.log(err);

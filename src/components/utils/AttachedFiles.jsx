@@ -4,7 +4,7 @@ import { useContext } from "react";
 const AttachedFiles=({attachedFiles_, setAttachedFiles_,pageId_,fromStash_, fromEdit_})=>{
   //fromStash_ can be true or false if it respectively called from editStash or edit article
   //fromEdit will be false only if we call from create new article
-  const {backendURL, setDisplayChangedCloudinaryRefresh}=useContext(GlobalAppContext);
+  const {backendURL, setDisplayChangedCloudinaryRefresh, user}=useContext(GlobalAppContext);
 
   const handleRemoveFile=async (displayName)=>{
     // setAttachedFiles_(prev=>prev.filter(file=>file.display_name!==displayName));
@@ -12,7 +12,12 @@ const AttachedFiles=({attachedFiles_, setAttachedFiles_,pageId_,fromStash_, from
       const res=await fetch(`${backendURL}/admin/delete/cloudinary/file/${pageId_}`,{
         method:'PATCH',
         headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({related_files:attachedFiles_,display_name_to_delete:displayName,from_stash:fromStash_, from_edit:fromEdit_})
+        body:JSON.stringify({
+          related_files:attachedFiles_,
+          display_name_to_delete:displayName,
+          from_stash:fromStash_,
+          from_edit:fromEdit_,
+          admin_id:user._id})
       });
       if(!res.ok) throw new Error('Error while deleting a file from cloudinary');
       const resJson=await res.json();

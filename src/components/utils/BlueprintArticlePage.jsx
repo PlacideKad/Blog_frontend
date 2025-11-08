@@ -20,7 +20,7 @@ const BlueprintArticlePage=({isPublished_,isAdmin_,limit_})=>{
   const page=parseInt(useLocation().pathname.split('/')[isAdmin_?3:2]) || 1;
   const navigate=useNavigate();
 
-  const {handleButtonActive,setButtons,backendURL}=useContext(GlobalAppContext);
+  const {handleButtonActive,setButtons,backendURL,user}=useContext(GlobalAppContext);
   const searchOptions=isPublished_?{
     sortBy:[
       {
@@ -106,7 +106,8 @@ const BlueprintArticlePage=({isPublished_,isAdmin_,limit_})=>{
   useEffect(()=>{
     (async()=>{await getArticles(setArticles,backendURL,isPublished_,limit_,page,setTotalPages,null,false,sortBy,orderState,
       loadingStateCallback,
-      errorMessageCallback
+      errorMessageCallback,
+      isAdmin_?user._id:null
     )})();
   },[page]);
 

@@ -58,13 +58,9 @@ const App=()=>{
   const [showNavbar,setShowNavbar]=useState(true);
   const [isAuthenticated,setIsAuthenticated]=useState(false);
   const [windowWidth,setWindowWidth]=useState(window.innerWidth);
-  const [user,setUser]=useState({});
+  const [user,setUser]=useState(null);
   const [displayChangedCloudinaryRefresh,setDisplayChangedCloudinaryRefresh]=useState(false);
   const [adminDashboardButtons,setAdminDashboardButtons]=useState(admin_dashboard_buttons_);
-
-  const handleAuth=async (namesocial)=>{
-    window.location.href=`${backendURL}/auth/${namesocial}`;
-  };
 
   const handleChangeAdminPage=(index)=>{
     let new_buttons=[];
@@ -112,7 +108,6 @@ const App=()=>{
         setShowSidebar,
         setShowNavbar,
         showNavbar,
-        handleAuth,
         displayChangedCloudinaryRefresh,
         setDisplayChangedCloudinaryRefresh,
         handleChangeAdminPage,

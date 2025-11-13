@@ -1,7 +1,7 @@
 import { useContext ,useEffect,useState } from "react";
 import { GlobalAppContext } from "./App";
 import Title from "./utils/Title";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import ButtonClikable from "./utils/ButtonClikable";
 import CloudinaryUploadWidget from "./utils/CloudinaryUploadWidget";
 
@@ -11,7 +11,6 @@ const ProfilePage=()=>{
     user,
     setUser,
     backendURL,
-    handleAuth,
     windowWidth}=useContext(GlobalAppContext);
   const [nameEdited,setNameEdited]=useState(false);
   const [nameInput,setNameInput]=useState('');
@@ -174,10 +173,11 @@ const ProfilePage=()=>{
         <div className="flex flex-col items-start justify-center gap-4">
           <p className="text-3xl font-bold text-purple-600">Page non disponible</p>
           <p>Veuillez vous reconnecter a votre compte
-            <span
-            onClick={async()=>{await handleAuth('google')}}
-            className="text-purple-600 cursor-pointer"> Utilisateur
-            </span>
+            <Link to='/login'>
+              <span
+              className="text-purple-600 cursor-pointer"> Utilisateur
+              </span>
+            </Link>
           </p>
         </div>
       </div>
@@ -191,11 +191,11 @@ const ProfilePage=()=>{
           <span className="text-[.9rem] md:text-xl">Se deconnecter</span>
           <span className="material-symbols-outlined m-2 ![font-size:2rem] !md:[font-size:2.5rem] text-fuchsia-400">logout</span>
         </div>:
-        <ButtonClikable
-          content='Se connecter'
-          onclick={async()=>{handleAuth('google')}}
-          p_style='p-2 mx-1 rounded-md'
-        />
+        <Link to="/login">
+          <ButtonClikable
+            content='Se connecter'
+            p_style='p-2 mx-1 rounded-md'/>
+        </Link>
         }
       </div>
     </div>

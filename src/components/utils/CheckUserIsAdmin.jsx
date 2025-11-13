@@ -6,7 +6,7 @@ const CheckUserIsAdmin =()=>{
   const {user}=useContext(GlobalAppContext);
   const navigate=useNavigate();
   if(!user || !user.isAdmin){
-    navigate('/');
+    navigate('/');//we should be redirected to the login as admin page. This is not definitive
   }
   return(<Outlet/>);
 }

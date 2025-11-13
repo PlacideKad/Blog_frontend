@@ -16,13 +16,11 @@ const Navbar=()=>{
     setShowSidebar,
     isAuthenticated,
     user,
-    windowWidth,
-    handleAuth}=useContext(GlobalAppContext);
+    windowWidth}=useContext(GlobalAppContext);
   
   const handleMenuClick=()=>{
     setShowSidebar(prev=>!prev);
   };
-  
   const sidebarRef=useRef(null);
   const menubtnRef=useRef(null);
   const clickOutside=(event)=>{
@@ -95,12 +93,12 @@ const Navbar=()=>{
               />
             </div>
           </Link>:
+          <Link to='/login'>
             <ButtonClikable
               type=''
               content='Se Connecter'
-              p_style="rounded-md p-2"
-              onclick={async()=>{await handleAuth('google')}}
-            />
+              p_style="rounded-md p-2"/>
+          </Link>
         }
       </div>
       {windowWidth<640 &&

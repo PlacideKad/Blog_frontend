@@ -1,5 +1,8 @@
 @import "tailwindcss";
-
+:root{
+  --shadow-light:rgba(255,255,255,0.9);
+  --shadow-dark:rgba(140,92,246,0.18);
+}
 .noto-sans-style{
   font-family: "Noto Sans", sans-serif;
   font-optical-sizing: auto;
@@ -59,4 +62,13 @@
 .rotated{
   transform: rotate(180deg);
   transition: transform ease 200ms;
+}
+
+.shadow-login{
+  box-shadow: -10px -10px 24px var(--shadow-light),
+               12px 12px 24px var(--shadow-dark);
+}
+.shadow-login-hover:hover{
+  box-shadow: -10px -10px 24px var(--shadow-light),
+              12px 12px 24px var(--shadow-dark);
 }

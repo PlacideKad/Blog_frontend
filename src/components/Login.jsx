@@ -5,7 +5,7 @@ import { GlobalAppContext } from './App';
 
 const Login=()=>{
   const {windowWidth,backendURL}=useContext(GlobalAppContext);
-  const [connectToAccount,setConnectToAccount]=useState(true);
+  const [isOnSigninScreen, setIsOnSigninScreen]=useState(true);
   return(
     <div className="absolute 
       w-full h-full
@@ -17,6 +17,7 @@ const Login=()=>{
       transition-all ease duration-300`}>
 
         <form 
+        onSubmit={(e)=>{e.preventDefault()}}
         id="connect-with-username-password" 
         className='h-3/4 w-9/10 
         flex flex-col justify-evenly items-center relative'>
@@ -38,8 +39,7 @@ const Login=()=>{
             focus:ring-2
             focus:ring-fuchsia-400
             focus:border-fuchsia-400
-            transition-all ease duration-300
-            ' />
+            transition-all ease duration-300' />
           </div>
 
           <div id='password-zone'
@@ -60,34 +60,21 @@ const Login=()=>{
             focus:ring-2
             focus:ring-fuchsia-400
             focus:border-fuchsia-400
-            transition-all ease duration-300
-            ' />
+            transition-all ease duration-300' />
           </div>
 
-          {
-            !connectToAccount?
-
-            <div id='repeat-password-zone'
-            className='flex h-4/10 w-full items-center justify-between'>
-              <label htmlFor="repeat-password" 
-              className='cursor-pointer w-15/100 h-full text-center grid content-center text-nowrap text-sm'>
-              Repeter mot de passe
-              </label>
-              <input 
-              id='repeat-password' 
-              type="password" 
-              className='w-75/100 bg-white text-black h-3/5
-              pl-2 py-1 rounded-lg outline-none
-              border-black border-2
-              focus:scale-103
-              focus:ring-2
-              focus:ring-fuchsia-400
-              focus:border-fuchsia-400
-              transition-all ease duration-300
-              ' />
-            </div>:null
-          }  
-
+          <span className='self-end text-sm my-2 text-neutral-700 italic'>
+              {isOnSigninScreen?
+              "Vous n'avez pas de compte?":
+              "Vous avez un compte?"}
+              <button 
+              onClick={()=>{setIsOnSigninScreen(prev=>!prev)}}
+              className='mx-2 text-purple-800 cursor-pointer'>
+              {isOnSigninScreen?
+              "Créer un compte ici":
+              "Connectez-vous ici"}
+              </button>
+          </span>
           <ButtonClikable 
             type='submit'
             p_style="rounded-md py-2 px-8"

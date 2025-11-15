@@ -7,12 +7,24 @@ const Login=()=>{
   const {windowWidth,backendURL}=useContext(GlobalAppContext);
   const [isOnSigninScreen, setIsOnSigninScreen]=useState(true);
   const initialFormField=[
-    {label:'Prénom', name:'given_name', isOnSigninScreen:false,type:'text'},
-    {label:'Nom', name:'family_name', isOnSigninScreen:false,type:'text'},
-    {label:'E-mail', name:'email', isOnSigninScreen:true,type:'email'},
-    {label:'Mot de passe', name:'password', isOnSigninScreen:'true',type:'password'},
-  ]
+    {label:'Prénom', name:'given_name', isOnSigninScreen:false,type:'text',value:''},
+    {label:'Nom', name:'family_name', isOnSigninScreen:false,type:'text', value:''},
+    {label:'E-mail', name:'email', isOnSigninScreen:true,type:'email',value:''},
+    {label:'Mot de passe', name:'password', isOnSigninScreen:true,type:'password',value:''},
+  ];
   const [formFields, setFormFields]=useState(initialFormField);
+  const handleFieldEditing=(e,fieldName)=>{
+    const n_value=e.target.value;
+    setFormFields(prev=>{
+      let data=[];
+      for(let field of prev){
+        if(field.name===fieldName){
+          data.push({...field,value:n_value})
+        }else data.push(field);
+      }
+      return data;
+    });
+  }
   return(
     <div className="absolute 
       w-full h-full
@@ -50,7 +62,9 @@ const Login=()=>{
               focus:ring-2
               focus:ring-fuchsia-400
               focus:border-fuchsia-400
-              transition-all ease duration-300' />
+              transition-all ease duration-300'
+              value={field.value}
+              onChange={(e)=>{handleFieldEditing(e,field.name)}} />
             </div>
           })}
 

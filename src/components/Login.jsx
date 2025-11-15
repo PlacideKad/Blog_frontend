@@ -6,12 +6,19 @@ import { GlobalAppContext } from './App';
 const Login=()=>{
   const {windowWidth,backendURL}=useContext(GlobalAppContext);
   const [isOnSigninScreen, setIsOnSigninScreen]=useState(true);
+  const initialFormField=[
+    {label:'Prénom', name:'given_name', isOnSigninScreen:false,type:'text'},
+    {label:'Nom', name:'family_name', isOnSigninScreen:false,type:'text'},
+    {label:'E-mail', name:'email', isOnSigninScreen:true,type:'email'},
+    {label:'Mot de passe', name:'password', isOnSigninScreen:'true',type:'password'},
+  ]
+  const [formFields, setFormFields]=useState(initialFormField);
   return(
     <div className="absolute 
       w-full h-full
       flex items-center justify-center
       bg-fuchsia-50">
-      <div className={`w-8/10 max-h-[300px] max-w-[600px] h-25/100 lg:w-7/10 
+      <div className={`w-9/10 sm:w-8/10 ${isOnSigninScreen?'h-25/100':'h-35/100'} max-w-[600px] lg:w-7/10 
       flex flex-col items-center justify-evenly
       rounded-xl bg-fuchsia-100 ${windowWidth>1000?'hover:scale-102 shadow-login-hover':'shadow-login'}
       transition-all ease duration-300`}>
@@ -19,51 +26,35 @@ const Login=()=>{
         <form 
         onSubmit={(e)=>{e.preventDefault()}}
         id="connect-with-username-password" 
-        className='h-3/4 w-9/10 
-        flex flex-col justify-evenly items-center relative'>
-          <div id='username-zone'
-          className={`flex h-4/10 w-full items-center ${windowWidth>530?'justify-between':'justify-center'}`}>
+        className={`${isOnSigninScreen?'h-3/4':'h-9/10'} w-9/10 
+        flex flex-col justify-evenly items-center relative`}>
+          {formFields.map((field)=>{
+            return (!field.isOnSigninScreen && isOnSigninScreen)?
+            <div key={field.name}>
+            </div>:
+            <div key={field.name}
+            className={`flex h-4/10 w-full items-center ${windowWidth>530?'justify-between':'justify-center'}`}>
             {windowWidth>530&&
-            <label htmlFor="email" 
-            className='cursor-pointer w-15/100 h-full text-start grid content-center text-nowrap text-sm'>
-            E-mail
-            </label>}
-            <input 
-            placeholder={`${windowWidth<=530?'E-mail':''}`}
-            id='email' 
-            type="email" 
-            className='w-75/100 bg-white text-black h-3/5
-            pl-2 py-1 rounded-lg outline-none
-            border-black border-2
-            focus:scale-103
-            focus:ring-2
-            focus:ring-fuchsia-400
-            focus:border-fuchsia-400
-            transition-all ease duration-300' />
-          </div>
+              <label htmlFor={field.name} 
+              className='cursor-pointer w-15/100 h-full text-start grid content-center text-nowrap text-sm'>
+              {field.label}
+              </label>}
+              <input 
+              placeholder={`${windowWidth<=530?field.label:''}`}
+              id={field.name}
+              type={field.type} 
+              className='w-75/100 bg-white text-black h-4/5
+              pl-2 py-1 rounded-lg outline-none
+              border-black border-2
+              focus:scale-103
+              focus:ring-2
+              focus:ring-fuchsia-400
+              focus:border-fuchsia-400
+              transition-all ease duration-300' />
+            </div>
+          })}
 
-          <div id='password-zone'
-          className={`flex h-4/10 w-full items-center ${windowWidth>530?'justify-between':'justify-center'}`}>
-            {windowWidth>530&&
-            <label htmlFor="password" 
-            className='cursor-pointer w-15/100 h-full text-start grid content-center text-nowrap text-sm'>
-            Mot de passe
-            </label>}
-            <input 
-            placeholder={`${windowWidth<=530?'Mot de passe':''}`}
-            id='password' 
-            type="password" 
-            className='w-75/100 bg-white text-black h-3/5
-            pl-2 py-1 rounded-lg outline-none
-            border-black border-2
-            focus:scale-103
-            focus:ring-2
-            focus:ring-fuchsia-400
-            focus:border-fuchsia-400
-            transition-all ease duration-300' />
-          </div>
-
-          <span className='self-end text-sm my-2 text-neutral-700 italic'>
+          <span className={`self-end ${windowWidth>530?'text-sm':'text-[3vw]'} my-2 text-neutral-700 italic`}>
               {isOnSigninScreen?
               "Vous n'avez pas de compte?":
               "Vous avez un compte?"}
@@ -77,8 +68,8 @@ const Login=()=>{
           </span>
           <ButtonClikable 
             type='submit'
-            p_style="rounded-md py-2 px-8"
-            content='Se Connecter'/>
+            p_style="rounded-md py-2 px-8 my-2"
+            content={isOnSigninScreen?'Se Connecter':'S\'inscrire'}/>
         </form>
       </div>
       <div className="absolute top-0 left-0">

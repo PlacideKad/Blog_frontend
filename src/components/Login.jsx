@@ -1,30 +1,95 @@
 import ButtonClikable from './utils/ButtonClikable';
 import Title from './utils/Title';
-import { useContext , useState } from 'react';
+import { useContext , useEffect, useState } from 'react';
 import { GlobalAppContext } from './App';
+import ErrorPopup from './utils/ErrorPopup';
 
 const Login=()=>{
   const {windowWidth,backendURL}=useContext(GlobalAppContext);
   const [isOnSigninScreen, setIsOnSigninScreen]=useState(true);
   const initialFormField=[
-    {label:'Prénom', name:'given_name', isOnSigninScreen:false,type:'text',value:''},
-    {label:'Nom', name:'family_name', isOnSigninScreen:false,type:'text', value:''},
-    {label:'E-mail', name:'email', isOnSigninScreen:true,type:'email',value:''},
-    {label:'Mot de passe', name:'password', isOnSigninScreen:true,type:'password',value:''},
+    {label:'Prénom', name:'given_name', isOnSigninScreen:false,type:'text',value:'',requirement:'3-15 lettres',ring_border_color:'focus:ring-fuchsia-400 focus:border-fuchsia-400'},
+    {label:'Nom', name:'family_name', isOnSigninScreen:false,type:'text', value:'',requirement:'3-15 lettres',ring_border_color:'focus:ring-fuchsia-400 focus:border-fuchsia-400'},
+    {label:'E-mail', name:'email', isOnSigninScreen:true,type:'email',value:'',requirement:'',ring_border_color:'focus:ring-fuchsia-400 focus:border-fuchsia-400'},
+    {label:'Mot de passe', name:'password', isOnSigninScreen:true,type:'password',value:'',requirement:'6-17 caracteres',ring_border_color:'focus:ring-fuchsia-400 focus:border-fuchsia-400'},
   ];
   const [formFields, setFormFields]=useState(initialFormField);
+  const [isReadyToSubmit,setIsReadyToSubmit]=useState(false);
+  const [errorMessage,setErrorMessage]=useState(null);
+
+  const checkEntries=()=>{
+    const email=formFields.find(field=>field.name==="email").value?.trim();
+    const password=formFields.find(field=>field.name==="password").value?.trim();
+    const given_name=formFields.find(field=>field.name==="given_name").value?.trim();
+    const family_name=formFields.find(field=>field.name==="family_name").value?.trim();
+
+    const emailRegex=/^[a-z][a-z0-9]{1,20}@[a-zA-Z]{1,8}(\.[a-z]{1,10}){1,2}$/;
+    //password must be 6-17 characters or returning false
+    const passwordRegex=/^.{6,17}$/;
+    //given name and family must both be 3-15 letters long
+    const nameRegex=/^[\w]{3,15}$/;
+
+    return (isOnSigninScreen?
+      emailRegex.test(email) && passwordRegex.test(password):
+      emailRegex.test(email) && passwordRegex.test(password) && nameRegex.test(given_name) && nameRegex.test(family_name)
+    );
+  }
+
   const handleFieldEditing=(e,fieldName)=>{
     const n_value=e.target.value;
     setFormFields(prev=>{
+      const emailRegex=/^[a-z][a-z0-9]{1,20}@[a-zA-Z]{1,8}(\.[a-z]{1,10}){1,2}$/;
+      const passwordRegex=/^.{6,17}$/;
+      const nameRegex=/^[\w]{3,15}$/;
       let data=[];
       for(let field of prev){
         if(field.name===fieldName){
-          data.push({...field,value:n_value})
+          data.push({...field,value:n_value});
         }else data.push(field);
       }
+      data.forEach(field=>{
+        switch(field.name){
+          case "email":
+            if(!emailRegex.test(field.value)) field.ring_border_color="focus:ring-red-600 focus:border-red-600";
+            else field.ring_border_color="focus:ring-fuchsia-400 focus:border-fuchsia-400";
+            break;
+          case "password":
+            if(!passwordRegex.test(field.value)) field.ring_border_color="focus:ring-red-600 focus:border-red-600";
+            else field.ring_border_color="focus:ring-fuchsia-400 focus:border-fuchsia-400";
+            break;
+          case "given_name":
+            if(!nameRegex.test(field.value)) field.ring_border_color="focus:ring-red-600 focus:border-red-600";
+            else field.ring_border_color="focus:ring-fuchsia-400 focus:border-fuchsia-400";
+          case "family_name":
+            if(!nameRegex.test(field.value)) field.ring_border_color="focus:ring-red-600 focus:border-red-600";
+            else field.ring_border_color="focus:ring-fuchsia-400 focus:border-fuchsia-400";
+          default:
+            break;
+        }
+      })
       return data;
     });
+  };
+  useEffect(()=>{
+    setIsReadyToSubmit(checkEntries());
+  },[formFields]);
+  const clearingAllStates=()=>{
+    setFormFields(prev=>{
+      let data=[];
+      prev.forEach(field=>{
+        data.push({...field,value:''});
+      });
+      return data;
+    });
+  };
+  const handleSubmission=async ()=>{
+    let email=formFields.find(field=>field.name==="email").value?.trim();
+    let password=formFields.find(field=>field.name==="password").value?.trim();
+    let given_name=formFields.find(field=>field.name==="given_name").value?.trim();
+    let family_name=formFields.find(field=>field.name==="family_name").value?.trim();
+    console.log({data:{email,password,given_name,family_name}});
   }
+  
   return(
     <div className="absolute 
       w-full h-full
@@ -35,8 +100,16 @@ const Login=()=>{
       rounded-xl bg-fuchsia-100 ${windowWidth>1000?'hover:scale-102 shadow-login-hover':'shadow-login'}
       transition-all ease duration-300`}>
 
+        <ErrorPopup
+        message_={errorMessage}
+        showState_={errorMessage?true:false}
+        onCloseCallback_={()=>setErrorMessage(null)}/>
+
         <form 
-        onSubmit={(e)=>{e.preventDefault()}}
+        onSubmit={async (e)=>{
+          e.preventDefault();
+          await handleSubmission();
+        }}
         id="connect-with-username-password" 
         className={`${isOnSigninScreen?'h-3/4':'h-9/10'} w-9/10 
         flex flex-col justify-evenly items-center relative`}>
@@ -52,17 +125,16 @@ const Login=()=>{
               {field.label}
               </label>}
               <input 
-              placeholder={`${windowWidth<=530?field.label:''}`}
+              placeholder={`${windowWidth<=530?`${field.label} : ${field.requirement}`:field.requirement}`}
               id={field.name}
               type={field.type} 
-              className='w-75/100 bg-white text-black h-4/5
+              className={`w-75/100 bg-white text-black h-4/5
               pl-2 py-1 rounded-lg outline-none
               border-black border-2
               focus:scale-103
               focus:ring-2
-              focus:ring-fuchsia-400
-              focus:border-fuchsia-400
-              transition-all ease duration-300'
+              transition-all ease duration-300
+              ${field.ring_border_color}`}
               value={field.value}
               onChange={(e)=>{handleFieldEditing(e,field.name)}} />
             </div>
@@ -72,18 +144,28 @@ const Login=()=>{
               {isOnSigninScreen?
               "Vous n'avez pas de compte?":
               "Vous avez un compte?"}
-              <button 
-              onClick={()=>{setIsOnSigninScreen(prev=>!prev)}}
+              <span 
+              onClick={()=>{
+                clearingAllStates();
+                setIsOnSigninScreen(prev=>!prev);
+              }}
               className='mx-2 text-purple-800 cursor-pointer'>
               {isOnSigninScreen?
               "Créer un compte ici":
               "Connectez-vous ici"}
-              </button>
+              </span>
           </span>
-          <ButtonClikable 
-            type='submit'
-            p_style="rounded-md py-2 px-8 my-2"
-            content={isOnSigninScreen?'Se Connecter':'S\'inscrire'}/>
+          {
+            isReadyToSubmit?
+            <ButtonClikable 
+              onclick={handleSubmission}
+              type='submit'
+              p_style="rounded-md py-2 px-8 my-2"
+              content={isOnSigninScreen?'Se Connecter':'S\'inscrire'}/>:
+            <div className="rounded-md py-2 px-8 my-2 bg-linear-to-r from-fuchsia-400 to-purple-400 opacity-30 text-white">
+              {isOnSigninScreen?'Se Connecter':'S\'inscrire'}
+            </div>
+          }
         </form>
       </div>
       <div className="absolute top-0 left-0">

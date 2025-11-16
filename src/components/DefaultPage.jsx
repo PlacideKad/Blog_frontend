@@ -23,54 +23,15 @@ const DefaultPage=()=>{
   const {
     setShowSidebar,
     showSidebar,
-    setShowNavbar
-    ,showNavbar,
-    setIsAuthenticated,
-    setUser,
-    displayChangedCloudinaryRefresh,
-    backendURL}=useContext(GlobalAppContext);
-  // const [userId,setUserId]=useState(null);
+    setShowNavbar,
+    user
+    ,showNavbar}=useContext(GlobalAppContext);
 
   useEffect(()=>{
-    // const checkUser=async()=>{
-    //   try{
-    //     const res=await fetch(`${backendURL}/user`,{
-    //       method:'GET',
-    //       credentials:'include'
-    //     });
-    //     if(!res.ok) throw new Error('Error when checking the user');
-    //     const resJson=await res.json();
-    //     setIsAuthenticated(resJson.authenticated);
-    //     setUserId(resJson.decoded.id);
-    //   }catch(err){
-    //     console.error(err);
-    //     setIsAuthenticated(false);
-    //   }
-    // }
-    // (async()=>{await checkUser()})()
     setShowNavbar(!['login','profile','dashboard','edit','admin','loginasadmin'].includes(location.pathname.split('/')[1]));
     setShowSidebar(false);
   },[location]);
 
-  // useEffect(()=>{
-  //   if(userId){
-  //     const getUser=async()=>{
-  //       try{
-  //         const res=await fetch(`${backendURL}/user`,{
-  //           method:'POST',
-  //           headers:{'Content-Type':'application/json'},
-  //           body:JSON.stringify({id:userId})
-  //         });
-  //         if(!res.ok) throw new Error('Error occured when getting the user');
-  //         const user=await res.json();
-  //         setUser(user);
-  //       }catch(err){
-  //         console.log(err);
-  //       }
-  //     }
-  //     (async()=>{await getUser()})()
-  //   }
-  // },[userId,displayChangedCloudinaryRefresh]);
   return(
     <div id="default-page" className={`h-85/100 grow-1 bg-gray-50 w-full overflow-y-auto overflow-x-hidden relative 
       ${showSidebar&&'[filter:blur(1px)]'}

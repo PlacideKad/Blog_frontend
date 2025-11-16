@@ -3,9 +3,11 @@ import Title from './utils/Title';
 import { useContext , useEffect, useState } from 'react';
 import { GlobalAppContext } from './App';
 import ErrorPopup from './utils/ErrorPopup';
+import { useNavigate } from 'react-router-dom';
 
 const Login=()=>{
-  const {windowWidth,backendURL}=useContext(GlobalAppContext);
+  const {windowWidth,backendURL , setUser , setIsAuthenticated}=useContext(GlobalAppContext);
+  const navigate=useNavigate();
   const [isOnSigninScreen, setIsOnSigninScreen]=useState(true);
   const initialFormField=[
     {label:'Prénom', name:'given_name', isOnSigninScreen:false,type:'text',value:'',requirement:'3-15 lettres',ring_border_color:'focus:ring-fuchsia-400 focus:border-fuchsia-400'},
@@ -83,11 +85,32 @@ const Login=()=>{
     });
   };
   const handleSubmission=async ()=>{
-    let email=formFields.find(field=>field.name==="email").value?.trim();
-    let password=formFields.find(field=>field.name==="password").value?.trim();
-    let given_name=formFields.find(field=>field.name==="given_name").value?.trim();
-    let family_name=formFields.find(field=>field.name==="family_name").value?.trim();
-    console.log({data:{email,password,given_name,family_name}});
+    if(isReadyToSubmit){
+      let email=formFields.find(field=>field.name==="email").value?.trim();
+      let password=formFields.find(field=>field.name==="password").value?.trim();
+      let given_name=formFields.find(field=>field.name==="given_name").value?.trim();
+      let family_name=formFields.find(field=>field.name==="family_name").value?.trim();
+
+      const data=isOnSigninScreen?{email,password}:{email,password,given_name,family_name};
+      try{
+        const res=await fetch(`${backendURL}/authenticate/${isOnSigninScreen?'signin':'signup'}`,{
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify(data)
+        });
+        const resJson=await res.json();
+        if(resJson.success) {
+          setUser(resJson.user);
+          setIsAuthenticated(true);
+          navigate('/');
+        }else{
+          if(resJson.errorHandled) setErrorMessage(resJson.message);
+          else throw Error(resJson.message);
+        }
+      }catch(err){
+        console.log(err);
+      }
+    }
   }
   
   return(

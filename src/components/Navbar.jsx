@@ -88,7 +88,7 @@ const Navbar=()=>{
             <div className='cursor-pointer w-15 h-15 rounded-full ring-fuchsia-400 ring-2 hover:scale-103 hover:ring-4 transition-all ease-in-out duration-200'>
               <img
                 className="w-20 [aspect-ratio:1/1] rounded-full object-cover"
-                src={user.picture }//&& `${backendURL}/user/avatar/?url=${user.picture}`
+                src={user.picture }
                 alt="profile picture"
               />
             </div>

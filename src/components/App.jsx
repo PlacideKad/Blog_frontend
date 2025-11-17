@@ -83,10 +83,14 @@ const App=()=>{
       name:'Admin',
       icon:'manage_accounts',
       link:'/dashboard',
-      active:false
+      active:false,
+      key:'dashboard'
     }
     if(isAuthenticated && user.isAdmin){
-      setButtons(prev=>[...prev,adminButton]);
+      setButtons(prev=>{
+        if(prev.some(item=> item?.key===adminButton.key)) return prev;
+        return [...prev,adminButton]
+      });
     }else{setButtons(navbar_buttons)}
   },[user, isAuthenticated])
   return(

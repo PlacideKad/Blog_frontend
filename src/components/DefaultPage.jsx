@@ -24,14 +24,30 @@ const DefaultPage=()=>{
     setShowSidebar,
     showSidebar,
     setShowNavbar,
-    user
-    ,showNavbar}=useContext(GlobalAppContext);
+    setIsAuthenticated,
+    setUser,
+    backendURL,
+    showNavbar}=useContext(GlobalAppContext);
 
   useEffect(()=>{
     setShowNavbar(!['login','profile','dashboard','edit','admin','loginasadmin'].includes(location.pathname.split('/')[1]));
     setShowSidebar(false);
   },[location]);
 
+  useEffect(()=>{
+    const checkUser=async ()=>{
+      const res=await fetch(`${backendURL}/authenticate/check_user`,{
+        method:"GET",
+        credentials:"include"
+      });
+      const resJson=await res.json();
+      if(resJson.success) {
+        setUser(resJson.user);
+        setIsAuthenticated(true);
+      };
+    }
+    (async()=>{await checkUser()})();
+  },[])
   return(
     <div id="default-page" className={`h-85/100 grow-1 bg-gray-50 w-full overflow-y-auto overflow-x-hidden relative 
       ${showSidebar&&'[filter:blur(1px)]'}

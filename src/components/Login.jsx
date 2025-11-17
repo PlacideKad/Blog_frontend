@@ -95,6 +95,7 @@ const Login=()=>{
       try{
         const res=await fetch(`${backendURL}/authenticate/${isOnSigninScreen?'signin':'signup'}`,{
           method:'POST',
+          credentials:"include",
           headers:{'Content-Type':'application/json'},
           body:JSON.stringify(data)
         });

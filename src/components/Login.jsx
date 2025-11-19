@@ -4,11 +4,13 @@ import { useContext , useEffect, useState } from 'react';
 import { GlobalAppContext } from './App';
 import ErrorPopup from './utils/ErrorPopup';
 import { useNavigate } from 'react-router-dom';
+import Loader from './utils/Loader';
 
 const Login=()=>{
   const {windowWidth,backendURL , setUser , setIsAuthenticated}=useContext(GlobalAppContext);
   const navigate=useNavigate();
   const [isOnSigninScreen, setIsOnSigninScreen]=useState(true);
+  const [isLoading,setIsLoading]=useState(false);
   const initialFormField=[
     {label:'Prénom', name:'given_name', isOnSigninScreen:false,type:'text',value:'',requirement:'3-15 lettres',ring_border_color:'focus:ring-fuchsia-400 focus:border-fuchsia-400'},
     {label:'Nom', name:'family_name', isOnSigninScreen:false,type:'text', value:'',requirement:'3-15 lettres',ring_border_color:'focus:ring-fuchsia-400 focus:border-fuchsia-400'},
@@ -86,6 +88,7 @@ const Login=()=>{
   };
   const handleSubmission=async ()=>{
     if(isReadyToSubmit){
+      setIsLoading(true);
       let email=formFields.find(field=>field.name==="email").value?.trim();
       let password=formFields.find(field=>field.name==="password").value?.trim();
       let given_name=formFields.find(field=>field.name==="given_name").value?.trim();
@@ -103,8 +106,11 @@ const Login=()=>{
         if(resJson.success) {
           setUser(resJson.user);
           setIsAuthenticated(true);
+          setIsLoading(false);
           navigate('/');
         }else{
+          setIsLoading(false);
+          clearingAllStates();
           if(resJson.errorHandled) setErrorMessage(resJson.message);
           else throw Error(resJson.message);
         }
@@ -185,7 +191,16 @@ const Login=()=>{
               onclick={handleSubmission}
               type='submit'
               p_style="rounded-md py-2 px-8 my-2"
-              content={isOnSigninScreen?'Se Connecter':'S\'inscrire'}/>:
+              content={
+                isLoading?
+                <Loader
+                message_=""
+                style_=""
+                h_="h-6"
+                w_="w-6"
+                border_="border-2"/>:
+                (isOnSigninScreen?'Se Connecter':'S\'inscrire')
+              }/>:
             <div className="rounded-md py-2 px-8 my-2 bg-linear-to-r from-fuchsia-400 to-purple-400 opacity-30 text-white">
               {isOnSigninScreen?'Se Connecter':'S\'inscrire'}
             </div>

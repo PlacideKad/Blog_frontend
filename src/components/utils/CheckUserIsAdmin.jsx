@@ -13,7 +13,7 @@ const CheckUserIsAdmin =()=>{
     </div>)
   }else{
     if(!user || !user.isAdmin){
-      return navigate('/loginasadmin');//we should be redirected to the login as admin page. This is not definitive
+      return navigate('/loginasadmin');
     }else return(<Outlet/>);
   }
 }

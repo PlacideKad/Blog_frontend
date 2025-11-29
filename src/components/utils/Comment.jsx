@@ -1,7 +1,8 @@
 import { useState , useEffect , useContext} from "react";
 import { GlobalAppContext } from "../App";
+import DropdownMenu from "./DropdownMenu";
 
-const Comment=({comment_, setIsAnimated_})=>{
+const Comment=({comment_, setIsAnimated_,setIsEditingComment_,setCommentContent_,setCommentId_,setIsDeleting_})=>{
   const [isLiked,setIsLiked]=useState(false);
   const [likes,setLikes]=useState(comment_?.likes);
   const {user, isAuthenticated , backendURL}=useContext(GlobalAppContext);
@@ -13,8 +14,8 @@ const Comment=({comment_, setIsAnimated_})=>{
   },[user]);
 
   const handleNewLike=async ()=>{
-    setIsLiked(isLiked?false:true);
     if(isAuthenticated && !user?.blocked){
+      setIsLiked(isLiked?false:true);
       try{
         const res=await fetch(`${backendURL}/comments/${comment_?._id}`,{
           method:'POST',
@@ -28,7 +29,7 @@ const Comment=({comment_, setIsAnimated_})=>{
         console.log(err);
       }
     }else setIsAnimated_(true)
-  }
+  };
 
   return(
     <div className="comment-container min-h-[60px] w-fit max-w-[9/10] md:max-w-250">
@@ -36,9 +37,21 @@ const Comment=({comment_, setIsAnimated_})=>{
       <div className=" profile-picture-zone flex flex-col items-center justify-start py-2 ">
         <img className="w-full [aspect-ratio:1/1] rounded-full" src={comment_?.author_infos?.picture} alt="author_profile_picture" />
       </div>
-      <div className="comment-zone bg-fuchsia-100 px-4 py-2 rounded-lg flex flex-col">{comment_?.content?.split('\n').map(
-        (line,n_line)=>(<span key={n_line}>{line?line:<div className="h-2 w-full"></div>}</span>)
-      )}
+      <div className="comment-zone bg-fuchsia-100 px-4 py-2 rounded-lg flex flex-col relative">
+        {comment_?.content?.split('\n').map(
+          (line,n_line)=>(<span key={n_line}>{line?line:<div className="h-2 w-full"></div>}</span>)
+        )}
+        {(comment_.author===user?._id) &&
+        <DropdownMenu 
+          onEdit_={()=>{
+            setIsEditingComment_(true);
+            setCommentContent_(comment_.content);
+            setCommentId_(comment_._id)
+          }}
+          onDelete_={()=>{
+            setCommentId_(comment_._id)
+            setIsDeleting_(true)}}/>
+        }
       </div>
       <div className="like-zone flex items-center justify-end md:justify-start gap-5">
         <div className="flex items-center">

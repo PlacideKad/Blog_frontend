@@ -6,6 +6,7 @@ import Quill from "quill";
 import Loader from "./utils/Loader";
 import ErrorPopup from "./utils/ErrorPopup";
 import Comment from "./utils/Comment";
+import ConfirmDialog from "./utils/DialogueBox";
 
 const ReadArticlePage=()=>{
   const editorRef=useRef(null);
@@ -26,6 +27,7 @@ const ReadArticlePage=()=>{
   const [isLoadingOnSubmit,setIsLoadingOnSubmit]=useState(false);
   const [commentContent,setCommentContent]=useState('');
   const [commentId, setCommentId]=useState(null);
+  const [isDeleting,setIsDeleting]=useState(false);
 
   useEffect(()=>{
     const fetchArticleData=async (article_id)=>{
@@ -86,6 +88,7 @@ const ReadArticlePage=()=>{
             body:JSON.stringify(data)
           });
           if(res.ok){
+            setIsEditingComment(false);
             setTriggerComments(prev=>!prev);
             setCommentContent('');
           }
@@ -112,6 +115,23 @@ const ReadArticlePage=()=>{
         console.log(err);
       }
     }else setIsAnimated(true)
+  };
+  
+  const deleteComment=async ()=>{
+    try{
+      const res=await fetch(`${backendURL}/comment/delete/${commentId}`,{
+        method:'DELETE',
+        headers:{'Content-Type':'application/json'},
+      });
+      if(!res.ok) throw new Error('Error whrn deleting a comment');
+      const resJson=await res.json();
+      if(resJson.success){
+        setTriggerComments(prev=>!prev);
+      }
+
+    }catch(err){
+      console.log(err);
+    }
   }
   return(
     <div className="flex flex-col items-center justify-start min-h-[50vh] w-full space-y-4">
@@ -119,6 +139,14 @@ const ReadArticlePage=()=>{
       showState_={errorMessage?true:false}
       onCloseCallback_={()=>setErrorMessage(null)}
       message_={errorMessage}/>
+      
+      <ConfirmDialog
+      open_={isDeleting}
+      onClose_={()=>{setIsDeleting(false)}}
+      onConfirm_={async()=>{await deleteComment()}}
+      title_="Supprimer"
+      message_="Voulez-vous vraiment supprimer ce commentaire?"/>
+
       {isPageLoading?
       <Loader
       message_="Chargement de l'article..."
@@ -181,6 +209,7 @@ const ReadArticlePage=()=>{
               setCommentId_={setCommentId}
               setCommentContent_={setCommentContent}
               setIsEditingComment_={setIsEditingComment}
+              setIsDeleting_={setIsDeleting}
               key={index}
               comment_={comment}
               setIsAnimated_={setIsAnimated}/>

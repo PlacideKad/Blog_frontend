@@ -2,7 +2,7 @@ import { useState , useEffect , useContext} from "react";
 import { GlobalAppContext } from "../App";
 import DropdownMenu from "./DropdownMenu";
 
-const Comment=({comment_, setIsAnimated_,setIsEditingComment_,setCommentContent_,setCommentId_})=>{
+const Comment=({comment_, setIsAnimated_,setIsEditingComment_,setCommentContent_,setCommentId_,setIsDeleting_})=>{
   const [isLiked,setIsLiked]=useState(false);
   const [likes,setLikes]=useState(comment_?.likes);
   const {user, isAuthenticated , backendURL}=useContext(GlobalAppContext);
@@ -48,7 +48,9 @@ const Comment=({comment_, setIsAnimated_,setIsEditingComment_,setCommentContent_
             setCommentContent_(comment_.content);
             setCommentId_(comment_._id)
           }}
-          onDelete_={()=>console.log('Delete')}/>
+          onDelete_={()=>{
+            setCommentId_(comment_._id)
+            setIsDeleting_(true)}}/>
         }
       </div>
       <div className="like-zone flex items-center justify-end md:justify-start gap-5">

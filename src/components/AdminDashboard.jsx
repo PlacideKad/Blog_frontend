@@ -3,7 +3,12 @@ import Title from "./utils/Title";
 import { GlobalAppContext } from "./App";
 
 const AdminDashboard=()=>{
-  const {handleChangeAdminPage, adminDashboardButtons}=useContext(GlobalAppContext);
+  const {handleChangeAdminPage, adminDashboardButtons, handleButtonActive, setButtons}=useContext(GlobalAppContext);
+
+  useEffect(()=>{
+    setButtons((prev)=>handleButtonActive(prev,2));
+  },[]);
+
   return(
     <div className="min-h-full w-full p-2 bg-fuchsia-50 text-gray-900 items-center justify-center relative z-0">
       {/* * title */}

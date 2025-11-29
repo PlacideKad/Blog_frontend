@@ -92,7 +92,20 @@ const App=()=>{
         return [...prev,adminButton]
       });
     }else{setButtons(navbar_buttons)}
-  },[user, isAuthenticated])
+  },[user, isAuthenticated]);
+
+  useEffect(()=>{
+    const wakeServer=async ()=>{
+      try{
+        const res=await fetch(`${backendURL}/startserver`);
+        const resJson=await res.json();
+        if(!resJson.success) throw Error('Error when waking up the server');
+      }catch(err){
+        console.log(err);
+      }
+    }
+    (async()=>{await wakeServer()})()
+  },[])
   return(
     <Router>
       <ScrollToTop/>

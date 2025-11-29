@@ -5,6 +5,7 @@ import "quill/dist/quill.snow.css";
 import Quill from "quill";
 import Loader from "./utils/Loader";
 import ErrorPopup from "./utils/ErrorPopup";
+import Comment from "./utils/Comment";
 
 const ReadArticlePage=()=>{
   const editorRef=useRef(null);
@@ -61,12 +62,6 @@ const ReadArticlePage=()=>{
     }
   },[article]);
   useEffect(()=>{
-    if(comments.length>0){
-      console.log(comments);
-    }
-  },[comments])
-  useEffect(()=>{
-    console.log(user);
     if(likes.includes(user?._id)) setIsLiked(true);
   },[likes,user]);
 
@@ -140,9 +135,12 @@ const ReadArticlePage=()=>{
         <section className="w-full mt-2 p-1 border-t-2 border-fuchsia-400 relative">
           {/* Check if the user is authenticated */}
           {(!isAuthenticated || user?.blocked)&&
-          <div onAnimationEnd={()=>{setIsAnimated(false)}} className={`mb-2 italic text-sm w-full md:w-5/10 h-20 rounded-xl flex items-center ${user?.blocked?'from-red-400 to-pink-600':'from-purple-400 to-fuchsia-400'} bg-linear-45  text-neutral-100 justify-center p-2 color-animation ${isAnimated&&'shake-div'} shadow shadow-neutral-400`}> 
+          <div 
+          onAnimationEnd={()=>{setIsAnimated(false)}} 
+          className={`mb-2 italic text-sm w-full md:w-5/10 h-20 rounded-xl flex items-center ${user?.blocked?'from-red-400 to-pink-600':'from-purple-400 to-fuchsia-400'} bg-linear-45  text-neutral-100 justify-center p-2 color-animation ${isAnimated&&'shake-div'} shadow shadow-neutral-400`}> 
             {user?.blocked?'Vous avez été bloqué par les administrateurs. Vous ne pouvez plus ni commenter , ni liker les articles':'Connectez-vous à votre compte pour pouvoir liker et commenter'}
           </div>}
+          
           {/* likes & comments */}
           <div className="flex items-center space-x-2">
             {/* likes number */}
@@ -170,26 +168,10 @@ const ReadArticlePage=()=>{
           <div className="p-2 w-full flex flex-col items-start justify-start space-y-4">
           {
             comments.map((comment,index)=>(
-              <div className="comment-container min-h-[60px] w-fit max-w-[9/10] md:max-w-250" key={index}>
-                <div className="name-zone text-[.7rem] text-neutral-400 italic">{comment.author_infos?.given_name} {comment.author_infos?.family_name}</div>
-                <div className=" profile-picture-zone flex flex-col items-center justify-start py-2 ">
-                  <img className="w-full [aspect-ratio:1/1] rounded-full" src={comment.author_infos?.picture} alt="author_profile_picture" />
-                </div>
-                <div className="comment-zone bg-fuchsia-100 px-4 py-2 rounded-lg flex flex-col">{comment.content?.split('\n').map(
-                  (line,n_line)=>(<span key={n_line}>{line?line:<div className="h-2 w-full"></div>}</span>)
-                )}
-                </div>
-                <div className="like-zone flex items-center justify-end md:justify-start gap-5">
-                  <div className="flex items-center">
-                    <span className="font-bold text-[.9rem]">0</span>
-                    <span className="material-symbols-outlined !text-[1rem] !text-purple-400">favorite</span>
-                  </div>
-                  <div className="flex items-center">
-                    <span className="font-bold text-[.9rem]">0</span>
-                    <span className="material-symbols-outlined !text-[1rem] !text-purple-400">reply_all</span>
-                  </div>
-                </div>
-              </div>
+              <Comment
+              key={index}
+              comment_={comment}
+              setIsAnimated_={setIsAnimated}/>
             ))
           }
           </div>

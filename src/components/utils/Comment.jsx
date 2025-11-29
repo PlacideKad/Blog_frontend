@@ -2,7 +2,7 @@ import { useState , useEffect , useContext} from "react";
 import { GlobalAppContext } from "../App";
 import DropdownMenu from "./DropdownMenu";
 
-const Comment=({comment_, setIsAnimated_})=>{
+const Comment=({comment_, setIsAnimated_,setIsEditingComment_,setCommentContent_})=>{
   const [isLiked,setIsLiked]=useState(false);
   const [likes,setLikes]=useState(comment_?.likes);
   const {user, isAuthenticated , backendURL}=useContext(GlobalAppContext);
@@ -14,8 +14,8 @@ const Comment=({comment_, setIsAnimated_})=>{
   },[user]);
 
   const handleNewLike=async ()=>{
-    setIsLiked(isLiked?false:true);
     if(isAuthenticated && !user?.blocked){
+      setIsLiked(isLiked?false:true);
       try{
         const res=await fetch(`${backendURL}/comments/${comment_?._id}`,{
           method:'POST',
@@ -29,7 +29,7 @@ const Comment=({comment_, setIsAnimated_})=>{
         console.log(err);
       }
     }else setIsAnimated_(true)
-  }
+  };
 
   return(
     <div className="comment-container min-h-[60px] w-fit max-w-[9/10] md:max-w-250">
@@ -43,8 +43,11 @@ const Comment=({comment_, setIsAnimated_})=>{
         )}
         {(comment_.author===user?._id) &&
         <DropdownMenu 
-          onEdit={()=>console.log('Edit')}
-          onDelete={()=>console.log('Delete')}/>
+          onEdit_={()=>{
+            setIsEditingComment_(true);
+            setCommentContent_(comment_.content);
+          }}
+          onDelete_={()=>console.log('Delete')}/>
         }
       </div>
       <div className="like-zone flex items-center justify-end md:justify-start gap-5">

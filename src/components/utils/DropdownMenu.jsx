@@ -1,18 +1,18 @@
 import { useState, useRef, useEffect } from "react";
 
-const DropdownMenu = ({ onEdit, onDelete }) => {
+const DropdownMenu = ({ onEdit_, onDelete_ }) => {
   const [open, setOpen] = useState(false);
   const menuRef = useRef(null);
   const buttons=[
     {
       text:"Modifier",
-      actionOnClick:onEdit,
+      actionOnClick:onEdit_,
       textColor:"text-fuchsia-900",
       icon:"edit"
     },
     {
       text:"Supprimer",
-      actionOnClick:onDelete,
+      actionOnClick:onDelete_,
       textColor:"text-red-600",
       icon:"delete"
     }

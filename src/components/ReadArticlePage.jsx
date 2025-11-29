@@ -22,6 +22,9 @@ const ReadArticlePage=()=>{
   const [triggerComments,setTriggerComments]=useState(false);
   const [isPageLoading,setIsPageLoading]=useState(true);
   const [errorMessage, setErrorMessage]=useState(null);
+  const [isEditingComment, setIsEditingComment]=useState(false);
+  const [isLoadingOnSubmit,setIsLoadingOnSubmit]=useState(false);
+  const [commentContent,setCommentContent]=useState('');
 
   useEffect(()=>{
     const fetchArticleData=async (article_id)=>{
@@ -66,7 +69,7 @@ const ReadArticlePage=()=>{
   },[likes,user]);
 
   const handleNewComment=async (formData)=>{
-    if(isAuthenticated && !user?.blocked){
+    if(isAuthenticated && !user?.blocked && !isLoadingOnSubmit){
       const content_=formData.get('newComment');
       const content=content_.trim();
       if(content){
@@ -74,6 +77,7 @@ const ReadArticlePage=()=>{
         const parent_id=id;
         const parentModel='article';
         const data={content,author_id,parent_id,parentModel};
+        setIsLoadingOnSubmit(true);
         try{
           const res=await fetch(`${backendURL}/comment`,{
             method:'POST',
@@ -83,14 +87,14 @@ const ReadArticlePage=()=>{
           setTriggerComments(prev=>!prev);
         }catch(err){
           console.log(err);
-        }
+        }finally{setIsLoadingOnSubmit(false);}
       }
     }
   }
   
   const handleNewLike=async ()=>{
-    setIsLiked(isLiked?false:true);
     if(isAuthenticated && !user.blocked){
+      setIsLiked(isLiked?false:true);
       try{
         const res=await fetch(`${backendURL}/articles/${id}/like`,{
           method:'POST',
@@ -170,6 +174,8 @@ const ReadArticlePage=()=>{
           {
             comments.map((comment,index)=>(
               <Comment
+              setCommentContent_={setCommentContent}
+              setIsEditingComment_={setIsEditingComment}
               key={index}
               comment_={comment}
               setIsAnimated_={setIsAnimated}/>
@@ -179,7 +185,18 @@ const ReadArticlePage=()=>{
         </section>
 
         {/* Laisser un commentaire */}
-        <section className={`w-full md:w-6/10 !h-50 px-2 ${(isAuthenticated && !user?.blocked)?'opacity-100':'opacity-30'}`}>
+        <section className={`w-full md:w-6/10 relative !h-50 px-2 ${(isAuthenticated && !user?.blocked)?'opacity-100':'opacity-30'}`}>
+          {isEditingComment &&
+            <div 
+            onClick={()=>{
+              setCommentContent('');
+              setIsEditingComment(false);
+            }}
+            className="absolute cursor-pointer -top-10 right-5 bg-red w-25 flex items-center justify-evenly bg-red-600 text-fuchsia-50 shadow rounded-md px-2 py-1">
+              <span className="material-symbols-outlined">cancel</span>
+              <span>Annuler</span>
+            </div>
+          }
           <form action={handleNewComment} className="flex flex-col items-center space-y-2">
             <textarea 
 
@@ -189,8 +206,12 @@ const ReadArticlePage=()=>{
             [&::-webkit-scrollbar-track]:rounded-full
             [&::-webkit-scrollbar-thumb]:rounded-full 
           [&::-webkit-scrollbar-thumb]:bg-purple-400" 
-            name="newComment" id="newComment" 
-            placeholder="Ajouter un commentaire..." disabled={(isAuthenticated && !user?.blocked)?false:true}></textarea>
+            name="newComment" 
+            value={commentContent}
+            onChange={(e)=>{setCommentContent(e.target.value)}}
+            id="newComment" 
+            placeholder="Ajouter un commentaire..." 
+            disabled={(isAuthenticated && !user?.blocked)?false:true}></textarea>
 
             <button className={`px-4 py-2 bg-linear-to-r from-fuchsia-400 to-purple-500 text-white rounded-lg ${(isAuthenticated && !user?.blocked)&& `${isPressed?'scale-97':'shadow-md shadow-neutral-700'}`} transition-all ease duration-200 flex items-center space-x-1`}
             onMouseUp={()=>{setIsPressed(false)}}
@@ -198,9 +219,20 @@ const ReadArticlePage=()=>{
             onTouchStart={()=>{setIsPressed(true)}}
             onTouchEnd={()=>{setIsPressed(false)}}
             >
-              <span>Envoyer</span>
-              <span className="material-symbols-outlined">send</span>
-            </button>
+            {
+              isLoadingOnSubmit?
+              <Loader
+                message_=""
+                style_=""
+                h_="h-6"
+                w_="w-6"
+                border_="border-2"/>:
+              <>
+                <span>{isEditingComment?"Enregistrer":"Commenter"}</span>
+                <span className="material-symbols-outlined">{isEditingComment?"save":"comment"}</span>
+              </>
+            }
+          </button>
           </form>
         </section>
       </>}

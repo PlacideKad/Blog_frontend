@@ -58,7 +58,8 @@ const App=()=>{
   const [showNavbar,setShowNavbar]=useState(true);
   const [isAuthenticated,setIsAuthenticated]=useState(false);
   const [windowWidth,setWindowWidth]=useState(window.innerWidth);
-  const [user,setUser]=useState(null);
+  const [user,setUser]=useState({});
+  const [userIsLoading, setUserIsLoading]=useState(false);
   const [displayChangedCloudinaryRefresh,setDisplayChangedCloudinaryRefresh]=useState(false);
   const [adminDashboardButtons,setAdminDashboardButtons]=useState(admin_dashboard_buttons_);
 
@@ -114,6 +115,8 @@ const App=()=>{
         setIsAuthenticated,
         user,
         setUser,
+        userIsLoading,
+        setUserIsLoading,
         backendURL,
         defaultCover,
         defaultStashCover,

@@ -188,7 +188,7 @@ const ProfilePage=()=>{
         {Object.keys(user).length!==0?
         <div onClick={handleDisconnect}
         className="flex items-center justify-evenly cursor-pointer">
-          <span className="text-[.9rem] md:text-xl">Se deconnecter</span>
+          <span className="text-[.9rem] md:text-xl">Se déconnecter</span>
           <span className="material-symbols-outlined m-2 ![font-size:2rem] !md:[font-size:2.5rem] text-fuchsia-400">logout</span>
         </div>:
         <Link to="/login">

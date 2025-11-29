@@ -27,7 +27,8 @@ const DefaultPage=()=>{
     setIsAuthenticated,
     setUser,
     backendURL,
-    showNavbar}=useContext(GlobalAppContext);
+    showNavbar,
+    setUserIsLoading}=useContext(GlobalAppContext);
 
   useEffect(()=>{
     setShowNavbar(!['login','profile','dashboard','edit','admin','loginasadmin'].includes(location.pathname.split('/')[1]));
@@ -36,6 +37,7 @@ const DefaultPage=()=>{
 
   useEffect(()=>{
     const checkUser=async ()=>{
+      setUserIsLoading(true);
       const res=await fetch(`${backendURL}/authenticate/check_user`,{
         method:"GET",
         credentials:"include"
@@ -45,6 +47,7 @@ const DefaultPage=()=>{
         setUser(resJson.user);
         setIsAuthenticated(true);
       };
+      setUserIsLoading(false);
     }
     (async()=>{await checkUser()})();
   },[])

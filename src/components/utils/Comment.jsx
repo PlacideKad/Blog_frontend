@@ -13,6 +13,7 @@ const Comment=({comment_, setIsAnimated_})=>{
   },[user]);
 
   const handleNewLike=async ()=>{
+    setIsLiked(isLiked?false:true);
     if(isAuthenticated && !user?.blocked){
       try{
         const res=await fetch(`${backendURL}/comments/${comment_?._id}`,{

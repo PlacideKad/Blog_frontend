@@ -25,6 +25,7 @@ const ReadArticlePage=()=>{
   const [isEditingComment, setIsEditingComment]=useState(false);
   const [isLoadingOnSubmit,setIsLoadingOnSubmit]=useState(false);
   const [commentContent,setCommentContent]=useState('');
+  const [commentId, setCommentId]=useState(null);
 
   useEffect(()=>{
     const fetchArticleData=async (article_id)=>{
@@ -76,15 +77,18 @@ const ReadArticlePage=()=>{
         const author_id=user?._id;
         const parent_id=id;
         const parentModel='article';
-        const data={content,author_id,parent_id,parentModel};
+        const data={content,author_id,parent_id,parentModel,updateComment:isEditingComment};
         setIsLoadingOnSubmit(true);
         try{
-          const res=await fetch(`${backendURL}/comment`,{
+          const res=await fetch(`${backendURL}/comment${isEditingComment && `/edit/${commentId}`}`,{
             method:'POST',
             headers:{'Content-Type':'application/json'},
             body:JSON.stringify(data)
           });
-          setTriggerComments(prev=>!prev);
+          if(res.ok){
+            setTriggerComments(prev=>!prev);
+            setCommentContent('');
+          }
         }catch(err){
           console.log(err);
         }finally{setIsLoadingOnSubmit(false);}
@@ -174,6 +178,7 @@ const ReadArticlePage=()=>{
           {
             comments.map((comment,index)=>(
               <Comment
+              setCommentId_={setCommentId}
               setCommentContent_={setCommentContent}
               setIsEditingComment_={setIsEditingComment}
               key={index}

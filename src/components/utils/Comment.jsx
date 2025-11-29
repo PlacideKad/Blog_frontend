@@ -2,7 +2,7 @@ import { useState , useEffect , useContext} from "react";
 import { GlobalAppContext } from "../App";
 import DropdownMenu from "./DropdownMenu";
 
-const Comment=({comment_, setIsAnimated_,setIsEditingComment_,setCommentContent_})=>{
+const Comment=({comment_, setIsAnimated_,setIsEditingComment_,setCommentContent_,setCommentId_})=>{
   const [isLiked,setIsLiked]=useState(false);
   const [likes,setLikes]=useState(comment_?.likes);
   const {user, isAuthenticated , backendURL}=useContext(GlobalAppContext);
@@ -46,6 +46,7 @@ const Comment=({comment_, setIsAnimated_,setIsEditingComment_,setCommentContent_
           onEdit_={()=>{
             setIsEditingComment_(true);
             setCommentContent_(comment_.content);
+            setCommentId_(comment_._id)
           }}
           onDelete_={()=>console.log('Delete')}/>
         }

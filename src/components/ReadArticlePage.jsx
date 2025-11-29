@@ -170,12 +170,12 @@ const ReadArticlePage=()=>{
           <div className="p-2 w-full flex flex-col items-start justify-start space-y-4">
           {
             comments.map((comment,index)=>(
-              <div className="comment-container min-h-[60px] w-9/10 md:w-6/10" key={index}>
+              <div className="comment-container min-h-[60px] w-fit max-w-[9/10] md:max-w-[5/10]" key={index}>
                 <div className="name-zone text-[.7rem] text-neutral-400 italic">{comment.author_infos?.given_name} {comment.author_infos?.family_name}</div>
                 <div className=" profile-picture-zone flex flex-col items-center justify-start py-2 ">
                   <img className="w-full [aspect-ratio:1/1] rounded-full" src={comment.author_infos?.picture} alt="author_profile_picture" />
                 </div>
-                <div className="comment-zone bg-fuchsia-100 px-2 py-1 rounded-lg flex flex-col">{comment.content?.split('\n').map(
+                <div className="comment-zone bg-fuchsia-100 px-4 py-2 rounded-lg flex flex-col">{comment.content?.split('\n').map(
                   (line,n_line)=>(<span key={n_line}>{line?line:<div className="h-2 w-full"></div>}</span>)
                 )}
                 </div>
@@ -200,7 +200,7 @@ const ReadArticlePage=()=>{
           <form action={handleNewComment} className="flex flex-col items-center space-y-2">
             <textarea 
 
-            className="w-full !h-30 px-2 py-1 rounded-2xl outline-none ring-1 ring-fuchsia-900 focus:ring-fuchsia-400 focus:ring-3 transition-all ease duration-200
+            className="w-full !h-30 px-4 py-2 rounded-2xl outline-none ring-1 ring-fuchsia-900 focus:ring-fuchsia-400 focus:ring-3 transition-all ease duration-200
             [&::-webkit-scrollbar]:w-2
           [&::-webkit-scrollbar-track]:bg-fuchsia-100
             [&::-webkit-scrollbar-track]:rounded-full
@@ -208,6 +208,7 @@ const ReadArticlePage=()=>{
           [&::-webkit-scrollbar-thumb]:bg-purple-400" 
             name="newComment" id="newComment" 
             placeholder="Ajouter un commentaire..." disabled={(isAuthenticated && !user?.blocked)?false:true}></textarea>
+
             <button className={`px-4 py-2 bg-linear-to-r from-fuchsia-400 to-purple-500 text-white rounded-lg ${(isAuthenticated && !user?.blocked)&& `${isPressed?'scale-97':'shadow-md shadow-neutral-700'}`} transition-all ease duration-200 flex items-center space-x-1`}
             onMouseUp={()=>{setIsPressed(false)}}
             onMouseDown={()=>{setIsPressed(true)}}

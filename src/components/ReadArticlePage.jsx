@@ -170,7 +170,7 @@ const ReadArticlePage=()=>{
           <div className="p-2 w-full flex flex-col items-start justify-start space-y-4">
           {
             comments.map((comment,index)=>(
-              <div className="comment-container min-h-[60px] w-fit max-w-[9/10] md:max-w-[5/10]" key={index}>
+              <div className="comment-container min-h-[60px] w-fit max-w-[9/10] md:max-w-250" key={index}>
                 <div className="name-zone text-[.7rem] text-neutral-400 italic">{comment.author_infos?.given_name} {comment.author_infos?.family_name}</div>
                 <div className=" profile-picture-zone flex flex-col items-center justify-start py-2 ">
                   <img className="w-full [aspect-ratio:1/1] rounded-full" src={comment.author_infos?.picture} alt="author_profile_picture" />

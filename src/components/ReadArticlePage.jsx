@@ -89,6 +89,7 @@ const ReadArticlePage=()=>{
   }
   
   const handleNewLike=async ()=>{
+    setIsLiked(isLiked?false:true);
     if(isAuthenticated && !user.blocked){
       try{
         const res=await fetch(`${backendURL}/articles/${id}/like`,{
